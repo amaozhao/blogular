@@ -1,0 +1,18 @@
+/*!
+ * Bootstrap v3.3.1 (http://getbootstrap.com)
+ * Copyright 2011-2014 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ */
+body {
+  margin-top: 60px;
+}
+footer {
+  padding: 20px 0px;
+  color: #999;
+  text-align: center;
+  background-color: #F9F9F9;
+  border-top: 1px solid #E5E5E5;
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+}
