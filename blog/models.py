@@ -6,6 +6,8 @@ from django.utils.encoding import python_2_unicode_compatible
 
 from taggit.managers import TaggableManager
 
+from markdown import markdown
+
 DRAFT = 0
 HIDDEN = 1
 PUBLISHED = 2
@@ -15,11 +17,12 @@ STATUS_CHOICES = (
     (PUBLISHED, _('published'))
 )
 
+
 @python_2_unicode_compatible
 class Entry(models.Model):
     author = models.ForeignKey(
         User,
-        related_name='entries', 
+        related_name='entries',
         verbose_name=_('author')
     )
     title = models.CharField(_('title'), max_length=255)
@@ -47,15 +50,19 @@ class Entry(models.Model):
         db_index=True,
         auto_now=True
     )
-    
+
+    @property
+    def html(self):
+        return markdown(self.content, ['markdown.extensions.fenced_code'])
+
     def __str__(self):
         return self.title
-    
+
     class Meta:
         ordering = ['created']
         verbose_name = _('entry')
         verbose_name_plural = _('entries')
         index_together = [
-            ['created',],
+            ['created', ],
             ['status', 'created']
         ]

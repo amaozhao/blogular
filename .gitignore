@@ -6,6 +6,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+.settings/
 env/
 build/
 develop-eggs/
@@ -25,6 +26,8 @@ var/
 #  before PyInstaller builds the exe, so as to inject date/other infos into it.
 *.manifest
 *.spec
+.project
+.pydevproject
 
 # Installer logs
 pip-log.txt
