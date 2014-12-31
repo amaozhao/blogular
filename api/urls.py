@@ -16,5 +16,6 @@ router.register(r'users', UserViewSet)
 router.register(r'entries', EntryViewSet)
 
 urlpatterns = patterns(
+    '',
     url(r'^', include(router.urls)),
 )
