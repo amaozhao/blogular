@@ -13,3 +13,4 @@ from rest_framework import viewsets
 class EntryViewSet(viewsets.ModelViewSet):
     queryset = Entry.objects.filter(status=2)
     serializer_class = EntrySerializer
+    paginate_by = 20

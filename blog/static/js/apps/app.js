@@ -6,6 +6,9 @@ var blog = angular.module('blog', [
   'ngCookies',
   'hc.marked',
   'angular-loading-bar',
+  'blog.user.controllers',
+  'blog.tag.controllers',
+  'blog.nav.controllers',
   'blog.post.controllers'
 ]);
 
@@ -17,12 +20,21 @@ blog.config(['$routeProvider', '$locationProvider', '$httpProvider', 'markedProv
   }).when('/post/:id', {
     templateUrl: '/static/js/partials/post/detail.html',
     controller: 'PostDetailCtrl'
+  }).when('/tag/:id', {
+    templateUrl: '/static/js/partials/post/list.html',
+    controller: 'TagListCtrl'
+  }).when('/user/:id', {
+    templateUrl: '/static/js/partials/post/list.html',
+    controller: 'UserListCtrl'
+  }).when('/signin', {
+    templateUrl: '/static/js/partials/auth/signin.html',
+    controller: 'AuthCtrl'
   })
   .otherwise({redirectTo: '/'});
 
   markedProvider.setOptions({
     gfm: true,
-    tables: true,
+    // tables: true,
     highlight: function (code) {
       return hljs.highlightAuto(code).value;
     }
@@ -32,4 +44,5 @@ blog.config(['$routeProvider', '$locationProvider', '$httpProvider', 'markedProv
 
   $httpProvider.defaults.xsrfCookieName = 'csrftoken';
   $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+  $httpProvider.defaults.withCredentials = true;
 }]);
