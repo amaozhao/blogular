@@ -33,13 +33,12 @@ class AuthUserView(generics.RetrieveAPIView):
 
 
 class SignInView(View):
-    model = User
-    serializer_class = UserSerializer
 
     def get(self, request, *args, **kwargs):
         return Response({}, status=400)
 
     def post(self, request, *args, **kwargs):
+        print 1111111
         import json
         obj = json.loads(request.body)
         username = obj['username']

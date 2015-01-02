@@ -30,6 +30,7 @@ class Entry(models.Model):
     excerpt = models.TextField(
         _('excerpt'),
         blank=True,
+        editable=False,
         help_text=_('Used for search and SEO.')
     )
     featured = models.BooleanField(_('featured'), default=False)
@@ -53,13 +54,19 @@ class Entry(models.Model):
 
     @property
     def html(self):
-        return markdown(self.content, ['markdown.extensions.fenced_code'])
+        return markdown(
+            self.content,
+            [
+                'markdown.extensions.codehilite',
+                'markdown.extensions.fenced_code'
+            ]
+        )
 
     def __str__(self):
         return self.title
 
     class Meta:
-        ordering = ['created']
+        ordering = ['-created', '-updated']
         verbose_name = _('entry')
         verbose_name_plural = _('entries')
         index_together = [

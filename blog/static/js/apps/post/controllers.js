@@ -14,4 +14,11 @@ angular.module('blog.post.controllers', [])
     $http.get($scope.url).success(function(data, status, header, config){
       $scope.entry = data;
     }).error(function(data, status, header, config) {});
+  }])
+  .controller('FindListCtrl', ['$scope', '$http', '$location',
+  function($scope, $http, $location){
+    $scope.url = '/api/find/';
+    $http.get($scope.url).success(function(data, status, header, config){
+      $scope.data = data;
+    }).error(function(data, status, header, config) {});
   }]);

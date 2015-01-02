@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('blog.nav.controllers', [])
-  .controller('HeaderCtrl', ['$scope', '$rootScope', '$http',
-  function($scope, $rootScope, $http) {
+  .controller('HeaderCtrl', ['$scope', '$rootScope', '$http', '$location',
+  function($scope, $rootScope, $http, $location) {
     $scope.auth_url = '/api/auth-user/';
     $http.get($scope.auth_url).success(function(data, status, header, config){
       if(data && data.username){
@@ -10,8 +10,8 @@ angular.module('blog.nav.controllers', [])
       }
     }).error(function(data, status, header, config) {});
 
-    $scope.find = function(){
-      console.log('Header nav controller.');
+    $scope.isActive = function(route) {
+      return route === $location.path();
     };
 
     $scope.signout = function(){
@@ -20,6 +20,9 @@ angular.module('blog.nav.controllers', [])
       }).error(function(data, status, header, config) {});
     };
   }])
-  .controller('SidebarCtrl', ['$scope', function($scope) {
-    console.log('Sidebar controller.');
+  .controller('SidebarCtrl', ['$scope', '$http', function($scope, $http) {
+    $scope.recent_url = '/api/recententry/';
+    $http.get($scope.recent_url).success(function(data, status, header, config){
+      $scope.recententries = data;
+    }).error(function(data, status, header, config){});
   }]);

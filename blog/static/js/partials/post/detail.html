@@ -1,17 +1,21 @@
 <div class="col-md-9">
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h3 class="panel-title">
-        <a ng-href="/post/{{ entry.id }}">{{ entry.title }}</a>
-      </h3>
-      <hr style="margin: 4px -15px; border-bottom: 1px solid #DDD;">
-      <span>
-        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-        <a ng-href="/user/{{ entry.author.id }}">{{ entry.author.username }}</a>
-        | <span class="glyphicon glyphicon-time" aria-hidden="true"></span> {{ entry.created }}
-        | <span class="glyphicon glyphicon-tags" aria-hidden="true"></span>
-        <span ng-repeat="tag in entry.tags"><a ng-href="tag/{{ tag.id }}">{{ tag.name }}</a></span>
-      </span>
+      <div class="media">
+        <a ng-href="/user/{{ entry.author.id }}" class="media-left">
+          <img src="https://avatars.githubusercontent.com/{{entry.author.username}}?v=3&s=48" alt="{{ entry.author.username }}" class="img-circle">
+        </a>
+        <div class="media-body">
+          <h3 class="panel-title"><a ng-href="/post/{{ entry.id }}">{{ entry.title }}</a></h3>
+          <hr style="margin: 4px -15px 8px; border-bottom: 1px solid #DDD;">
+          <span>
+            <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
+            <span am-time-ago="entry.created"></span>
+            | <span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>
+            <span ng-repeat="tag in entry.tags"><a ng-href="/tag/{{ tag.id }}">{{ tag.name }}</a></span>
+          </span>
+        </div>
+      </div>
     </div>
     <div class="panel-body" marked="entry.content">
     </div>
@@ -19,4 +23,4 @@
     </div>
   </div>
 </div>
-<div class="col-md-3" ng-include="'/static/js/partials/nav/sidebar.html'"></div>
+<div class="col-md-3" ng-include="'/static/js/partials/nav/sidebar.html'" ng-controller="SidebarCtrl"></div>
