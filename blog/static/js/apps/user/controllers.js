@@ -1,17 +1,18 @@
 'use strict';
 
 angular.module('blog.user.controllers', [])
-  .controller('UserListCtrl', ['$scope', '$http', '$location', '$routeParams',
-    function($scope, $http, $location, $routeParams) {
-    console.log($routeParams.id);
+  .controller('UserListCtrl', ['$scope', '$rootScope', '$http', '$location', '$routeParams',
+    function($scope, $rootScope, $http, $location, $routeParams) {
     $scope.url = '/api/entries/';
     $http.get($scope.url).success(function(data, status, header, config){
       $scope.data = data;
+      $rootScope.title = '用户';
     }).error(function(data, status, header, config) {});
   }])
   .controller('AuthCtrl', ['$scope', '$rootScope', '$location', '$http',
     function($scope, $rootScope, $location, $http){
     $scope.message = {};
+    $rootScope.title = '用户登陆';
     $scope.signin = function(){
       $scope.url = '/api/auth/signin/';
       $http.post($scope.url, $scope.user).success(function(data, status, header, config){
