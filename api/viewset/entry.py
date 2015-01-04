@@ -28,7 +28,7 @@ class RecentEntryView(ListAPIView):
 
     def get_queryset(self):
         return Entry.objects.filter(status=2)[:5]
-    
+
     def post(self, request, *args, **kwargs):
         return Response({}, status=403)
 
