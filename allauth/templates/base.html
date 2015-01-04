@@ -1,21 +1,46 @@
 {% load url from future %}
+{% load i18n staticfiles %}
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>{% block head_title %}{% endblock %}</title>
-    {% block extra_head %}
-    {% endblock %}
-  </head>
-  <body>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="AmaoZhao">
+  <link rel="icon" href="{% static 'img/favicon.ico' %}">
+
+  <title>{% block head_title %}{% endblock %} | {{ request.site.name }}</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet">
+  <link href="{% static 'css/bootstrap-theme.css' %}" rel="stylesheet">
+  {% block extra_head %}
+  {% endblock %}
+
+  <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+  <!--[if lt IE 9]><script src="{% static 'js/libs/bootstrap/ie8-responsive-file-warning.js' %}"></script><![endif]-->
+  <script src="{% static 'js/libs/bootstrap/ie-emulation-modes-warning.js' %}"></script>
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+  <script src="{% static 'js/libs/bootstrap/html5shiv.min.js' %}"></script>
+  <script src="{% static 'js/libs/bootstrap/respond.min.js' %}"></script>
+  <![endif]-->
+</head>
+
+<body>
+  <div class="container">
     {% block body %}
 
     {% if messages %}
     <div>
       <strong>Messages:</strong>
       <ul>
-	{% for message in messages %}
-	<li>{{message}}</li>
-	{% endfor %}
+        {% for message in messages %}
+        <li>{{message}}</li>
+        {% endfor %}
       </ul>
     </div>
     {% endif %}
@@ -23,13 +48,13 @@
     <div>
       <strong>Menu:</strong>
       <ul>
-	{% if user.is_authenticated %}
-	<li><a href="{% url 'account_email' %}">Change E-mail</a></li>
-	<li><a href="{% url 'account_logout' %}">Sign Out</a></li>
-	{% else %}
-	<li><a href="{% url 'account_login' %}">Sign In</a></li>
-	<li><a href="{% url 'account_signup' %}">Sign Up</a></li>
-	{% endif %}
+        {% if user.is_authenticated %}
+        <li><a href="{% url 'account_email' %}">Change E-mail</a></li>
+        <li><a href="{% url 'account_logout' %}">Sign Out</a></li>
+        {% else %}
+        <li><a href="{% url 'account_login' %}">Sign In</a></li>
+        <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
+        {% endif %}
       </ul>
     </div>
     {% block content %}
@@ -37,5 +62,14 @@
     {% endblock %}
     {% block extra_body %}
     {% endblock %}
-  </body>
+  </div>
+  <footer class="footer">
+    <div class="container">
+      <p class="text-muted">Place sticky footer content here.</p>
+    </div>
+  </footer>
+  <script src="{% static 'js/libs/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'js/libs/bootstrap/bootstrap.min.js' %}"></script>
+  <script src="{% static 'js/libs/bootstrap/ie10-viewport-bug-workaround.js' %}"></script>
+</body>
 </html>

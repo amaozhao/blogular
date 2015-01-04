@@ -4,6 +4,8 @@ var blog = angular.module('blog', [
   'ngRoute',
   'ngSanitize',
   'ngCookies',
+  'ui.bootstrap',
+  'uikit.editor',
   'hc.marked',
   'angularMoment',
   'angular-loading-bar',
@@ -18,13 +20,16 @@ blog.config(['$routeProvider', '$locationProvider', '$httpProvider', 'markedProv
   $routeProvider.when('/', {
     templateUrl: '/static/js/partials/post/list.html',
     controller: 'PostListCtrl'
-  }).when('/post/:id', {
+  }).when('/posts/:id', {
     templateUrl: '/static/js/partials/post/detail.html',
     controller: 'PostDetailCtrl'
-  }).when('/tag/:id', {
+  }).when('/post/add', {
+    templateUrl: '/static/js/partials/post/edit.html',
+    controller: 'PostAddCtrl'
+  }).when('/tags/:id', {
     templateUrl: '/static/js/partials/post/list.html',
     controller: 'TagListCtrl'
-  }).when('/user/:id', {
+  }).when('/users/:id', {
     templateUrl: '/static/js/partials/post/list.html',
     controller: 'UserListCtrl'
   }).when('/signin', {

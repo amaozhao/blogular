@@ -3,6 +3,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import python_2_unicode_compatible
+from django.utils.text import Truncator
 
 from taggit.managers import TaggableManager
 
@@ -40,7 +41,7 @@ class Entry(models.Model):
         choices=STATUS_CHOICES,
         default=DRAFT
     )
-    tags = TaggableManager()
+    tags = TaggableManager(blank=True)
     created = models.DateTimeField(
         _('created date'),
         db_index=True,
@@ -64,6 +65,11 @@ class Entry(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        self.excerpt = Truncator(self.html).words(50, html=True)
+        print self.author
+        super(Entry, self).save(*args, **kwargs)
 
     class Meta:
         ordering = ['-created', '-updated']

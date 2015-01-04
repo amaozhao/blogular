@@ -12,13 +12,9 @@ from api.serializers.tag import TagSerializer
 
 
 class EntrySerializer(serializers.ModelSerializer):
-    author = UserSerializer()
-    tags = TagSerializer(many=True)
+    author = UserSerializer(read_only=True)
+    tags = TagSerializer(many=True, read_only=True)
 
     class Meta:
         model = Entry
-        fields = (
-            'id', 'author', 'title', 'content',
-            'excerpt', 'created', 'updated', 'tags',
-        )
         depth = 1

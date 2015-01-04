@@ -13,16 +13,18 @@ from api.viewset.entry import (
     EntryViewSet, RecentEntryView, FindViewSet
 )
 from api.viewset.auth import AuthUserView, SignInView, SignOutView
+from api.viewset.tag import TagViewSet
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'entries', EntryViewSet)
+router.register(r'tags', TagViewSet)
 router.register(r'find', FindViewSet)
 
 urlpatterns = patterns(
     '',
     url(r'^', include(router.urls)),
-    url(r'^recententry/$', RecentEntryView.as_view()),
+    url(r'^recententries/$', RecentEntryView.as_view()),
     url(r'^auth-user/$', AuthUserView.as_view()),
     url(r'^auth/signin/$', SignInView.as_view()),
     url(r'^auth/signout/$', SignOutView.as_view()),

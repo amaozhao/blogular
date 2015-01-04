@@ -1,0 +1,28 @@
+<div class="col-md-12">
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="media">
+        <a ng-href="/user/{{ authuser.id }}" class="media-left">
+          <img ng-src="https://avatars.githubusercontent.com/{{ authuser.username }}?v=3&s=48" alt="{{ authuser.username }}" class="img-circle">
+        </a>
+        <div class="media-body">
+          <div class="form-group">
+            <input ng-model="entry.title" class="form-control" placeholder="标题"></input>
+          </div>
+          <div class="form-group">
+            <textarea uikit-editor ng-model="entry.content" placeholder="日志内容"></textarea>
+          </div>
+          <div class="form-group">
+            <select multiple class="form-control" ng-model="entry.tags">
+              <option ng-repeat="tag in tags" value="{{ tag }}">{{tag.name}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel-footer" style="text-align: right;">
+      <button class="btn btn-primary" ng-click="save()">保存</button>
+      <button class="btn btn-default" ng-click="cancel()">取消</button>
+    </div>
+  </div>
+</div>

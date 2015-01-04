@@ -21,7 +21,7 @@ angular.module('blog.nav.controllers', [])
     };
   }])
   .controller('SidebarCtrl', ['$scope', '$http', function($scope, $http) {
-    $scope.recent_url = '/api/recententry/';
+    $scope.recent_url = '/api/recententries/';
     $http.get($scope.recent_url).success(function(data, status, header, config){
       $scope.recententries = data;
     }).error(function(data, status, header, config){});
