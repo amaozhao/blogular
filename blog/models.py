@@ -39,7 +39,7 @@ class Entry(models.Model):
         _('status'),
         db_index=True,
         choices=STATUS_CHOICES,
-        default=DRAFT
+        default=PUBLISHED
     )
     tags = TaggableManager(blank=True)
     created = models.DateTimeField(
@@ -68,7 +68,6 @@ class Entry(models.Model):
 
     def save(self, *args, **kwargs):
         self.excerpt = Truncator(self.html).words(50, html=True)
-        print self.author
         super(Entry, self).save(*args, **kwargs)
 
     class Meta:
