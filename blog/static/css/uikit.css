@@ -141,8 +141,6 @@ sub {
  * 4. Remove the gap between images and the bottom of their containers
  */
 img {
-  /* 1 */
-  max-width: 100%;
   height: auto;
   /* 2 */
   -moz-box-sizing: border-box;
@@ -325,7 +323,7 @@ pre {
   /* 1 */
   overflow: auto;
 }
-/* Selection pseudo-element 
+/* Selection pseudo-element
  ========================================================================== */
 ::-moz-selection {
   background: #3399ff;

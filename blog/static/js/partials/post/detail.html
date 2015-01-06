@@ -3,7 +3,7 @@
     <div class="panel-heading">
       <div class="media">
         <a ng-href="/user/{{ entry.author.id }}" class="media-left">
-          <img src="https://avatars.githubusercontent.com/{{entry.author.username}}?v=3&s=48" alt="{{ entry.author.username }}" class="img-circle">
+          <img ng-src="https://avatars.githubusercontent.com/{{entry.author.username}}?v=3&s=48" alt="{{ entry.author.username }}" class="img-circle">
         </a>
         <div class="media-body">
           <h3 class="panel-title"><a ng-href="/posts/{{ entry.id }}">{{ entry.title }}</a></h3>
