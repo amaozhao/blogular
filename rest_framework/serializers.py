@@ -236,11 +236,11 @@ class BaseSerializer(Field):
 
 class SerializerMetaclass(type):
     """
-    This metaclass sets a dictionary named `base_fields` on the class.
+    This metaclass sets a dictionary named `_declared_fields` on the class.
 
     Any instances of `Field` included as attributes on either the class
     or on any of its superclasses will be include in the
-    `base_fields` dictionary.
+    `_declared_fields` dictionary.
     """
 
     @classmethod
@@ -419,8 +419,14 @@ class Serializer(BaseSerializer):
         fields = [field for field in self.fields.values() if not field.write_only]
 
         for field in fields:
-            attribute = field.get_attribute(instance)
+            try:
+                attribute = field.get_attribute(instance)
+            except SkipField:
+                continue
+
             if attribute is None:
+                # We skip `to_representation` for `None` values so that
+                # fields do not have to explicitly deal with that case.
                 ret[field.field_name] = None
             else:
                 ret[field.field_name] = field.to_representation(attribute)
