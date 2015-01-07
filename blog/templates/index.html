@@ -17,10 +17,10 @@
     <link href="{% static 'css/loading-bar.min.css' %}" rel="stylesheet">
     <link href="{% static 'css/pygments/github.css' %}" rel="stylesheet">
     <link href="{% static 'css/highlight/github.css' %}" rel="stylesheet">
-    <link href="{% static 'css/highlight/github.css' %}" rel="stylesheet">
     <link href="{% static 'css/codemirror.css' %}" rel="stylesheet">
     <link href="{% static 'css/uikit/htmleditor.css' %}" rel="stylesheet">
     <link href="{% static 'css/bootstrap-theme.css' %}" rel="stylesheet">
+    <link href="{% static 'css/selectize/selectize.bootstrap3.css' %}" rel="stylesheet">
 
     <script src="{% static 'js/libs/bootstrap/ie-emulation-modes-warning.js' %}"></script>
 
@@ -44,6 +44,7 @@
     </footer>
     {% csrf_token %}
     <script src="{% static 'js/libs/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'js/libs/selectize/selectize.js' %}"></script>
     <script src="{% static 'js/libs/bootstrap/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/libs/angular/angular.js' %}"></script>
     <script src="{% static 'js/libs/angular/angular-animate.js' %}"></script>
@@ -77,6 +78,8 @@
     <script src="{% static 'js/libs/ng-uikit/ng-uikit.js' %}"></script>
 
     <script src="{% static 'js/libs/angular-ui/ui-bootstrap.js' %}"></script>
+
+    <script src="{% static 'js/libs/angular-selectize/selectize.js' %}"></script>
 
     <script src="{% static 'js/apps/user/controllers.js' %}"></script>
     <script src="{% static 'js/apps/tag/controllers.js' %}"></script>

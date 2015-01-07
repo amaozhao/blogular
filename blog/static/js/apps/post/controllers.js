@@ -23,6 +23,14 @@ angular.module('blog.post.controllers', [])
     $rootScope.title = '新建日志';
     $scope.entry = {};
 
+    $scope.config = {
+      create: true,
+      valueField: 'name',
+      labelField: 'name',
+      delimiter: '|',
+      placeholder: '添加标签'
+    };
+
     $http.get('/api/tags/').success(function(data, status, header, config){
       $scope.tags = data;
     }).error(function(data, status, header, config) {});

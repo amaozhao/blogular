@@ -13,7 +13,7 @@
             <span am-time-ago="entry.created"></span>
             | <span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>
             <span ng-repeat="tag in entry.tags">
-              <a ng-href="/tag/{{ tag.id }}">{{ tag.name }}</a>
+              <a ng-href="/tags/{{ tag.id }}">{{ tag.name }}</a>
               <span ng-if="!$last">, </span>
             </span>
           </span>

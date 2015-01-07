@@ -9,6 +9,7 @@ var blog = angular.module('blog', [
   'hc.marked',
   'angularMoment',
   'angular-loading-bar',
+  'selectize',
   'blog.user.controllers',
   'blog.tag.controllers',
   'blog.nav.controllers',

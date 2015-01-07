@@ -6,17 +6,21 @@
           <img ng-src="https://avatars.githubusercontent.com/{{ authuser.username }}?v=3&s=48" alt="{{ authuser.username }}" class="img-circle">
         </a>
         <div class="media-body">
-          <div class="form-group">
-            <input ng-model="entry.title" class="form-control" placeholder="标题"></input>
-          </div>
-          <div class="form-group">
-            <textarea uikit-editor ng-model="entry.content" placeholder="日志内容"></textarea>
-          </div>
-          <div class="form-group">
-            <select multiple class="form-control" ng-model="entry.tags">
-              <option ng-repeat="tag in tags" value="{{ tag.name }}">{{tag.name}}</option>
-            </select>
-          </div>
+          <form class="form-horizontal" role="form">
+            <div class="form-group">
+              <div class="col-sm-6">
+                <input ng-model="entry.title" class="form-control" placeholder="标题"></input>
+              </div>
+              <div class="col-sm-6">
+                <selectize config="config" options='tags' ng-model="entry.tags"></selectize>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-12">
+                <textarea uikit-editor ng-model="entry.content" placeholder="日志内容"></textarea>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>
