@@ -27,6 +27,9 @@ blog.config(['$routeProvider', '$locationProvider', '$httpProvider', 'markedProv
   }).when('/post/add', {
     templateUrl: '/static/js/partials/post/edit.html',
     controller: 'PostAddCtrl'
+  }).when('/post/:id', {
+    templateUrl: '/static/js/partials/post/edit.html',
+    controller: 'PostEditCtrl'
   }).when('/tags/:id', {
     templateUrl: '/static/js/partials/post/list.html',
     controller: 'TagListCtrl'

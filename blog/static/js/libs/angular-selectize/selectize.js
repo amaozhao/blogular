@@ -38,7 +38,7 @@ angular.module('selectize', []).value('selectizeConfig', {}).directive("selectiz
       function generateOptions(data){
         if(!data)
           return [];
-          
+
         data = angular.isArray(data) ? data : [data]
 
         return $.map(data, function(opt){
@@ -49,17 +49,17 @@ angular.module('selectize', []).value('selectizeConfig', {}).directive("selectiz
       function updateSelectize(){
         validate();
 
-        selectize.$control.toggleClass('ng-valid', modelCtrl.$valid)
-        selectize.$control.toggleClass('ng-invalid', modelCtrl.$invalid)
-        selectize.$control.toggleClass('ng-dirty', modelCtrl.$dirty)
-        selectize.$control.toggleClass('ng-pristine', modelCtrl.$pristine)
+        selectize.$control.toggleClass('ng-valid', modelCtrl.$valid);
+        selectize.$control.toggleClass('ng-invalid', modelCtrl.$invalid);
+        selectize.$control.toggleClass('ng-dirty', modelCtrl.$dirty);
+        selectize.$control.toggleClass('ng-pristine', modelCtrl.$pristine);
 
         if( !angular.equals(selectize.items, scope.ngModel) ){
-          selectize.addOption(generateOptions(scope.ngModel))
-          selectize.setValue(scope.ngModel)
+          selectize.addOption(generateOptions(scope.ngModel));
+          selectize.setValue(scope.ngModel);
         }
       }
-      
+
       config.onChange = function(){
         if( !angular.equals(selectize.items, scope.ngModel) )
           scope.$evalAsync(function(){
@@ -78,8 +78,8 @@ angular.module('selectize', []).value('selectizeConfig', {}).directive("selectiz
 
       config.onInitialize = function(){
         selectize = element[0].selectize;
-        selectize.addOption(scope.options)
-        selectize.setValue(scope.ngModel)
+        selectize.addOption(scope.options);
+        selectize.setValue(scope.ngModel);
 
         scope.$watchCollection('options', selectize.addOption.bind(selectize));
         scope.$watch('ngModel', updateSelectize);

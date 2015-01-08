@@ -45,6 +45,41 @@ angular.module('blog.post.controllers', [])
       $window.history.back();
     };
   }])
+  .controller('PostEditCtrl', ['$scope', '$rootScope', '$routeParams', '$http', '$window',
+  function($scope, $rootScope, $routeParams, $http, $window){
+    $http.get('/api/tags/').success(function(data, status, header, config){
+      $scope.tags = data;
+    }).error(function(data, status, header, config) {});
+
+    $scope.url = '/api/entries/' + $routeParams.id + '/';
+    $http.get($scope.url).success(function(data, status, header, config){
+      $scope.entry = data;
+      var tags = $scope.entry.tags;
+      $scope.entry.tags = [];
+      angular.forEach(tags, function(tag) {
+        this.push(tag.name);
+      }, $scope.entry.tags);
+      $rootScope.title = data.title;
+    }).error(function(data, status, header, config) {});
+
+    $scope.config = {
+      create: true,
+      valueField: 'name',
+      labelField: 'name',
+      delimiter: '|',
+      placeholder: '添加标签'
+    };
+
+    $scope.save = function(){
+      $http.put($scope.url, $scope.entry).success(function(data, status, header, config){
+        $window.history.back();
+      }).error(function(data, status, header, config) {});
+    };
+
+    $scope.cancel = function(){
+      $window.history.back();
+    };
+  }])
   .controller('FindListCtrl', ['$scope', '$rootScope', '$http', '$location',
   function($scope, $rootScope, $http, $location){
     $scope.url = '/api/find/';
