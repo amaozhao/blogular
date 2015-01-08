@@ -30,3 +30,53 @@ footer {
 .uk-htmleditor-fullscreen {
   z-index: 9999;
 }
+
+.media .media-left img {
+  width: 32px;
+  height: 32px;
+}
+.media, .media-body {
+  overflow: visible;
+}
+.media .media-body h6 {
+  color: #999;
+}
+
+.panel-google-plus > .dropdown {
+  top: 5px;
+  right: 15px;
+}
+.panel-google-plus > .dropdown > span > span {
+  font-size: 10px;
+}
+.panel-google-plus > .dropdown > .dropdown-menu {
+  left: initial;
+  right: 0px;
+  border-radius: 2px;
+}
+
+.panel-google-plus > .panel-heading > a > img {
+  margin-right: 15px;
+}
+.panel-google-plus > .panel-heading >  h3 {
+  margin: 0px;
+  font-size: 18px;
+  font-weight: 700;
+}
+.panel-google-plus > .panel-heading > h5 {
+  color: rgb(153, 153, 153);
+  font-size: 12px;
+  font-weight: 400;
+}
+.panel-google-plus > .panel-body {
+  padding-top: 5px;
+}
+.panel-google-plus > .panel-body > .panel-google-plus-image {
+  display: block;
+  text-align: center;
+  background-color: rgb(245, 245, 245);
+  border: 1px solid rgb(217, 217, 217);
+}
+.panel-google-plus > .panel-body > .panel-google-plus-image > img {
+  max-width: 100%;
+}

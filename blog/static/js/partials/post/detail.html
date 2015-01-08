@@ -1,28 +1,65 @@
 <div class="col-md-9">
-  <div class="panel panel-default">
+  <div class="panel panel-default panel-google-plus">
+    <div class="dropdown pull-right">
+      <span class="dropdown-toggle" type="button" data-toggle="dropdown">
+        <span class="glyphicon glyphicon-chevron-down"></span>
+      </span>
+      <ul class="dropdown-menu" role="menu">
+        <li><a ng-href="/post/{{entry.id}}">编辑</a></li>
+        <li class="divider"></li>
+        <li><a href="#">删除</a></li>
+      </ul>
+    </div>
     <div class="panel-heading">
+      <a ng-href="/users/{{ entry.author.id }}">
+        <img class="img-circle pull-left" ng-src="https://avatars.githubusercontent.com/{{entry.author.username}}?v=3&s=48" alt="{{ entry.author.username }}" />
+      </a>
+      <h3><a ng-href="/posts/{{ entry.id }}">{{ entry.title }}</a></h3>
+      <h5>
+        <span class="glyphicon glyphicon-time" aria-hidden="true"></span>  <span am-time-ago="entry.created"></span>
+        <span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>
+        <span ng-repeat="tag in entry.tags">
+          <a ng-href="/tags/{{ tag.id }}">{{ tag.name }}</a>
+          <span ng-if="!$last">, </span>
+        </span>
+      </h5>
+    </div>
+    <div class="panel-body" marked="entry.content"></div>
+    <div class="panel-footer">
       <div class="media">
-        <a ng-href="/users/{{ entry.author.id }}" class="media-left">
-          <img ng-src="https://avatars.githubusercontent.com/{{entry.author.username}}?v=3&s=48" alt="{{ entry.author.username }}" class="img-circle">
+        <a class="media-left" href="#">
+          <img src="https://avatars.githubusercontent.com/{{authuser.username}}?v=3&s=32" class="media-object img-circle">
         </a>
         <div class="media-body">
-          <h3 class="panel-title"><a ng-href="/posts/{{ entry.id }}">{{ entry.title }}</a></h3>
-          <hr style="margin: 4px -15px 8px; border-bottom: 1px solid #DDD;">
-          <span>
-            <span class="glyphicon glyphicon-time" aria-hidden="true"></span>
-            <span am-time-ago="entry.created"></span>
-            | <span class="glyphicon glyphicon-bookmark" aria-hidden="true"></span>
-            <span ng-repeat="tag in entry.tags">
-              <a ng-href="/tags/{{ tag.id }}">{{ tag.name }}</a>
-              <span ng-if="!$last">, </span>
+          <div class="dropdown pull-right">
+            <span class="dropdown-toggle" type="button" data-toggle="dropdown">
+              <span class="glyphicon glyphicon-chevron-down"></span>
             </span>
-          </span>
+            <ul class="dropdown-menu" role="menu">
+              <li><a ng-href="/post/{{entry.id}}">编辑</a></li>
+              <li class="divider"></li>
+              <li><a href="#">删除</a></li>
+            </ul>
+          </div>
+          <h4 class="media-heading">Media heading</h4>
+          <h6><span class="glyphicon glyphicon-time" aria-hidden="true"></span>  <span am-time-ago="entry.created"></span></h6>
+          <div>
+            Cras sit amet nibh libero
+          </div>
         </div>
       </div>
-    </div>
-    <div class="panel-body" marked="entry.content">
-    </div>
-    <div class="panel-footer">
+      <div class="media">
+        <a class="media-left" href="#">
+          <img src="https://avatars.githubusercontent.com/{{authuser.username}}?v=3&s=32" class="media-object img-circle">
+        </a>
+        <div class="media-body" style="height: 40px;">
+          <textarea uikit-editor ng-model="comment.content" placeholder="评论" options='{"height":160,"mode":"tab", "markdown":true}'></textarea>
+          <div style="margin-top: 10px;">
+            <button type="button" class="btn btn-primary">添加评论</button>
+            <button type="button" class="btn btn-default">取消</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

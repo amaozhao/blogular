@@ -12,7 +12,8 @@ angular.module('uikit.editor', [])
     require: '?ngModel',
     priority: 1,
     link: function(scope, iElement, iAttrs, ngModel) {
-      var editor = $.UIkit.htmleditor(iElement[0], uikitEditorConfig);
+      var options = JSON.parse(iAttrs.options) || uikitEditorConfig;
+      var editor = $.UIkit.htmleditor(iElement[0], options);
       ngModel.$render = function() {
         var safeViewValue = ngModel.$viewValue || '';
         editor.editor.setValue(safeViewValue);
