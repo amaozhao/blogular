@@ -17,11 +17,11 @@ from api.viewset.auth import AuthUserView, SignInView, SignOutView
 from api.viewset.tag import TagViewSet
 
 router = routers.DefaultRouter()
-router.register(r'users', UserViewSet)
-router.register(r'entries', EntryViewSet)
-router.register(r'comments/(?P<entry>\d+)', CommentViewSet)
-router.register(r'tags', TagViewSet)
-router.register(r'find', FindViewSet)
+router.register(r'users', UserViewSet, base_name='users')
+router.register(r'comments/(?P<entry>\d+)', CommentViewSet, base_name='comments')
+router.register(r'tags', TagViewSet, base_name='tags')
+router.register(r'find', FindViewSet, base_name='find')
+router.register(r'entries', EntryViewSet, base_name='entries')
 
 urlpatterns = patterns(
     '',

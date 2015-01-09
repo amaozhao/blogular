@@ -7,7 +7,8 @@ Created on 2014年12月31日
 
 from blog.models import Entry
 from api.serializers.entry import EntrySerializer
-from rest_framework import viewsets, permissions
+from api.permissions import IsOwnerOrReadOnly, ReadOnly
+from rest_framework import viewsets
 from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 
@@ -15,7 +16,7 @@ from rest_framework.response import Response
 class EntryViewSet(viewsets.ModelViewSet):
     queryset = Entry.objects.filter(status=2)
     serializer_class = EntrySerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = (IsOwnerOrReadOnly,)
     paginate_by = 20
 
     def perform_create(self, serializer):
@@ -25,6 +26,7 @@ class EntryViewSet(viewsets.ModelViewSet):
 class RecentEntryView(ListAPIView):
     model = Entry
     serializer_class = EntrySerializer
+    permission_classes = (ReadOnly,)
 
     def get_queryset(self):
         return Entry.objects.filter(status=2)[:5]
@@ -36,6 +38,7 @@ class RecentEntryView(ListAPIView):
 class FindViewSet(viewsets.ModelViewSet):
     queryset = Entry.objects.filter(status=2)
     serializer_class = EntrySerializer
+    permission_classes = (ReadOnly,)
     paginate_by = 20
 
     def post(self, request, *args, **kwargs):
