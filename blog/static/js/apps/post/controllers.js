@@ -8,6 +8,24 @@ angular.module('blog.post.controllers', [])
     $http.get($scope.url).success(function(data, status, header, config){
       $scope.data = data;
     }).error(function(data, status, header, config) {});
+
+    $scope.delete = function(entry) {
+      $http.delete($scope.url + entry.id + '/').success(function(data, status, header, config){
+        $scope.data.results.splice($scope.data.results.indexOf(entry), 1);
+      }).error(function(data, status, header, config){});
+    };
+
+    $scope.next = function() {
+      $http.get($scope.data.next).success(function(data, status, header, config){
+        $scope.data = data;
+      }).error(function(data, status, header, config) {});
+    };
+
+    $scope.previous = function() {
+      $http.get($scope.data.previous).success(function(data, status, header, config){
+        $scope.data = data;
+      }).error(function(data, status, header, config) {});
+    };
   }])
   .controller('PostDetailCtrl', ['$scope', '$rootScope', '$routeParams', '$http', '$location',
   function($scope, $rootScope, $routeParams, $http, $location){

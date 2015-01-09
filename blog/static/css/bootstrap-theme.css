@@ -21,6 +21,10 @@ footer {
   color: #337AB7;
   text-decoration: none;
 }
+.panel .panel-heading img {
+  height: 48px;
+  width: 48px;
+}
 .panel-title {
   font-size: 22px;
 }

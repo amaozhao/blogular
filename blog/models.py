@@ -78,3 +78,49 @@ class Entry(models.Model):
             ['created', ],
             ['status', 'created']
         ]
+
+
+@python_2_unicode_compatible
+class Comment(models.Model):
+    author = models.ForeignKey(
+        User,
+        related_name='comments',
+        verbose_name=_('author')
+    )
+    entry = models.ForeignKey(
+        Entry,
+        related_name="comments",
+        verbose_name=_('entry')
+    )
+    content = models.TextField(_('content'))
+    created = models.DateTimeField(
+        _('created date'),
+        db_index=True,
+        auto_now_add=True,
+    )
+    updated = models.DateTimeField(
+        _('updated date'),
+        db_index=True,
+        auto_now=True
+    )
+    
+    @property
+    def html(self):
+        return markdown(
+            self.content,
+            [
+                'markdown.extensions.codehilite',
+                'markdown.extensions.fenced_code'
+            ]
+        )
+
+    def __str__(self):
+        return '%s-%s' % (self.entry.id, self.id)
+    
+    class Meta:
+        ordering = ['-created',]
+        verbose_name = _('comment')
+        verbose_name_plural = _('comments')
+        index_together = [
+            ['created', ],
+        ]

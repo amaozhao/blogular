@@ -5,14 +5,17 @@
 */
 
 angular.module('uikit.editor', [])
-.constant('uikitEditorConfig', {mode:'tab', markdown:true})
+.constant('uikitEditorConfig', {mode:'tab', markdown:true, height: 500})
 .directive('uikitEditor', ['$timeout', 'uikitEditorConfig', function($timeout, uikitEditorConfig) {
   return {
     restrict: 'EA',
     require: '?ngModel',
     priority: 1,
     link: function(scope, iElement, iAttrs, ngModel) {
-      var options = JSON.parse(iAttrs.options) || uikitEditorConfig;
+      var options = angular.copy(uikitEditorConfig);
+      if(iAttrs.options){
+        $.extend(true, options, JSON.parse(iAttrs.options));
+      }
       var editor = $.UIkit.htmleditor(iElement[0], options);
       ngModel.$render = function() {
         var safeViewValue = ngModel.$viewValue || '';

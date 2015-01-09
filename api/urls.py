@@ -12,12 +12,14 @@ from api.viewset.user import UserViewSet
 from api.viewset.entry import (
     EntryViewSet, RecentEntryView, FindViewSet
 )
+from api.viewset.comment import CommentViewSet
 from api.viewset.auth import AuthUserView, SignInView, SignOutView
 from api.viewset.tag import TagViewSet
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'entries', EntryViewSet)
+router.register(r'comments/(?P<entry>\d+)', CommentViewSet)
 router.register(r'tags', TagViewSet)
 router.register(r'find', FindViewSet)
 

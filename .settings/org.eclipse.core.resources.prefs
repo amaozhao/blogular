@@ -1,11 +1,13 @@
 eclipse.preferences.version=1
 encoding//allauth/models.py=utf-8
 encoding//allauth/tests.py=utf-8
+encoding//api/serializers/comment.py=utf-8
 encoding//api/serializers/entry.py=utf-8
 encoding//api/serializers/tag.py=utf-8
 encoding//api/serializers/user.py=utf-8
 encoding//api/urls.py=utf-8
 encoding//api/viewset/auth.py=utf-8
+encoding//api/viewset/comment.py=utf-8
 encoding//api/viewset/entry.py=utf-8
 encoding//api/viewset/tag.py=utf-8
 encoding//api/viewset/user.py=utf-8

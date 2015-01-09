@@ -13,7 +13,8 @@ var blog = angular.module('blog', [
   'blog.user.controllers',
   'blog.tag.controllers',
   'blog.nav.controllers',
-  'blog.post.controllers'
+  'blog.post.controllers',
+  'blog.comment.controllers'
 ]);
 
 blog.config(['$routeProvider', '$locationProvider', '$httpProvider', 'markedProvider',
