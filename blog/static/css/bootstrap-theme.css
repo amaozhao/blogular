@@ -31,6 +31,9 @@ footer {
 .panel .panel-body h1, h2, h3 {
   font-size: 20px;
 }
+.panel .panel-footer {
+  background-color: #FCFCFC;
+}
 .uk-htmleditor-fullscreen {
   z-index: 9999;
 }
