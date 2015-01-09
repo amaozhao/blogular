@@ -49,6 +49,7 @@ INSTALLED_APPS = (
 
     'blog',
     'taggit',
+    'friends',
     'rest_framework',
     'api',
 )

@@ -7,13 +7,14 @@ Created on 2015年1月9日
 
 from blog.models import Entry, Comment
 from api.serializers.comment import CommentSerializer
-from rest_framework import viewsets, permissions
+from api.permissions import IsOwnerOrReadOnly
+from rest_framework import viewsets
 
 
 class CommentViewSet(viewsets.ModelViewSet):
     model = Comment
     serializer_class = CommentSerializer
-    permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+    permission_classes = (IsOwnerOrReadOnly,)
     paginate_by = 20
     
     def perform_create(self, serializer):
