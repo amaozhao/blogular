@@ -10,7 +10,6 @@ from rest_framework import serializers
 
 
 class FriendshipSerializer(serializers.ModelSerializer):
-#     id = serializers.IntegerField()
     to_user = UserSerializer()
     from_user = UserSerializer()
     class Meta:

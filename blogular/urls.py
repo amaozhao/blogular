@@ -15,5 +15,7 @@ urlpatterns = patterns(
     url(r'^users', Home.as_view()),
     url(r'^tags', Home.as_view()),
     url(r'^find', Home.as_view()),
+    url(r'^following', Home.as_view()),
+    url(r'^followed', Home.as_view()),
     url(r'^signin', Home.as_view()),
 )

@@ -97,12 +97,4 @@ angular.module('blog.post.controllers', [])
     $scope.cancel = function(){
       $window.history.back();
     };
-  }])
-  .controller('FindListCtrl', ['$scope', '$rootScope', '$http', '$location',
-  function($scope, $rootScope, $http, $location){
-    $scope.url = '/api/find/';
-    $rootScope.title = '发现';
-    $http.get($scope.url).success(function(data, status, header, config){
-      $scope.data = data;
-    }).error(function(data, status, header, config) {});
   }]);

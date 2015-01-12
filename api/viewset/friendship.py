@@ -7,15 +7,15 @@ Created on 2015年1月9日
 from friends.models import FriendShip
 from api.serializers.friendship import FriendshipSerializer
 from rest_framework import permissions
-from api.permissions import IsOwnerOrReadOnly, ReadOnly
+from api.permissions import FollowingOrReadOnly, ReadOnly
 from rest_framework import viewsets
 
 
 class FollowingViewSet(viewsets.ModelViewSet):
     model = FriendShip
     serializer_class = FriendshipSerializer
-    permission_classes = (IsOwnerOrReadOnly, permissions.IsAuthenticatedOrReadOnly)
-    paginate_by = 20
+    permission_classes = (FollowingOrReadOnly, permissions.IsAuthenticatedOrReadOnly)
+    paginate_by = 24
     
     def perform_create(self, serializer):
         serializer.save(from_user=self.request.user)
@@ -29,8 +29,8 @@ class FollowingViewSet(viewsets.ModelViewSet):
 class FollowedViewSet(viewsets.ModelViewSet):
     model = FriendShip
     serializer_class = FriendshipSerializer
-    permission_classes = (ReadOnly, permissions.IsAuthenticatedOrReadOnly)
-    paginate_by = 20
+    permission_classes = (ReadOnly, )
+    paginate_by = 24
     
     def get_queryset(self):
         if self.request.user.is_authenticated():

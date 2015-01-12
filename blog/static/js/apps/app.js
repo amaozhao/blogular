@@ -14,7 +14,8 @@ var blog = angular.module('blog', [
   'blog.tag.controllers',
   'blog.nav.controllers',
   'blog.post.controllers',
-  'blog.comment.controllers'
+  'blog.comment.controllers',
+  'blog.friendship.controllers'
 ]);
 
 blog.config(['$routeProvider', '$locationProvider', '$httpProvider', 'markedProvider',
@@ -31,21 +32,25 @@ blog.config(['$routeProvider', '$locationProvider', '$httpProvider', 'markedProv
   }).when('/post/:id', {
     templateUrl: '/static/js/partials/post/edit.html',
     controller: 'PostEditCtrl'
+  }).when('/tags', {
+    templateUrl: '/static/js/partials/tag/list.html',
+    controller: 'TagListCtrl'
   }).when('/tags/:id', {
     templateUrl: '/static/js/partials/post/list.html',
-    controller: 'TagListCtrl'
+    controller: 'TagDetailCtrl'
   }).when('/users/:id', {
     templateUrl: '/static/js/partials/post/list.html',
     controller: 'UserListCtrl'
+  }).when('/following', {
+    templateUrl: '/static/js/partials/friendship/list.html',
+    controller: 'FollowingListCtrl'
+  }).when('/followed', {
+    templateUrl: '/static/js/partials/friendship/list.html',
+    controller: 'FollowedListCtrl'
   }).when('/signin', {
     templateUrl: '/static/js/partials/auth/signin.html',
     controller: 'AuthCtrl'
-  })
-  .when('/find', {
-    templateUrl: '/static/js/partials/post/list.html',
-    controller: 'FindListCtrl'
-  })
-  .otherwise({redirectTo: '/'});
+  }).otherwise({redirectTo: '/'});
 
   markedProvider.setOptions({
     gfm: true,
