@@ -7,10 +7,14 @@ Created on 2015年1月4日
 
 from api.serializers.tag import TagSerializer
 from api.serializers.entry import EntrySerializer
-from api.permissions import ReadOnly
+from api.permissions import ReadOnly, IsOwnerOrReadOnly
 from taggit.models import Tag
 from blog.models import Entry
+from friends.models import FollowingTag
 from rest_framework import generics
+from rest_framework import viewsets
+from rest_framework import status
+from rest_framework.response import Response
 
 
 class TagList(generics.ListAPIView):
@@ -19,6 +23,38 @@ class TagList(generics.ListAPIView):
     permission_classes = (ReadOnly,)
     serializer_class = TagSerializer
     paginate_by = 48
+
+
+class FollowingTagList(viewsets.ModelViewSet):
+    model = Tag
+    permission_classes = (IsOwnerOrReadOnly,)
+    serializer_class = TagSerializer
+    paginate_by = 48
+    
+    def get_queryset(self):
+        if self.request.user.is_authenticated():
+            return FollowingTag.objects.get_or_create(author=self.request.user).tags.all()
+        return []
+    
+    def create(self, request, *args, **kwargs):
+        tag_id = request.data.get('id', None)
+        if tag_id:
+            tag = Tag.objects.get(id=int(tag_id))
+            followingtag = FollowingTag.objects.get_or_create(author=self.request.user)
+            followingtag.tags.add(tag)
+            serializer = self.get_serializer(tag)
+            headers = self.get_success_headers(serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        return None
+    
+    def destroy(self, request, *args, **kwargs):
+        tag_id = request.data.get('id', None)
+        if tag_id:
+            tag = Tag.objects.get(id=int(tag_id))
+            followingtag = FollowingTag.objects.get_or_create(author=self.request.user)
+            followingtag.tags.remove(tag)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return None
 
 
 class TagDetail(generics.ListAPIView):

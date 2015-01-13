@@ -4,6 +4,8 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import python_2_unicode_compatible
+from taggit.models import Tag
+
 
 class FriendShipManager(models.Manager):
 
@@ -39,3 +41,12 @@ class FriendShip(models.Model):
         if self.to_user == self.from_user:
             raise ValidationError("Users cannot be friends with themselves.")
         super(FriendShip, self).save(*args, **kwargs)
+
+
+@python_2_unicode_compatible
+class FollowingTag(models.Model):
+    author = models.ForeignKey(User, related_name='followingtags')
+    tags = models.ManyToManyField(Tag, related_name='tags', blank=True, null=True)
+    
+    def __str__(self):
+        return "%s" % self.id
