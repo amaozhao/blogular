@@ -14,7 +14,7 @@ from api.viewset.entry import (
 )
 from api.viewset.comment import CommentViewSet
 from api.viewset.auth import AuthUserView, SignInView, SignOutView
-from api.viewset.tag import TagList, TagDetail
+from api.viewset.tag import TagList, TagDetail, FollowingTagList
 from api.viewset.friendship import FollowingViewSet, FollowedViewSet
 
 router = routers.DefaultRouter()
@@ -24,6 +24,7 @@ router.register(r'find', FindViewSet, base_name='find')
 router.register(r'entries', EntryViewSet, base_name='entries')
 router.register(r'following', FollowingViewSet, base_name='following')
 router.register(r'followed', FollowedViewSet, base_name='followed')
+router.register(r'tagfollowing', FollowingTagList, base_name='tagfollowing')
 
 urlpatterns = patterns(
     '',

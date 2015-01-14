@@ -6,7 +6,8 @@
           <img class="img-circle" ng-src="" alt="{{ tag.name }}" />
         </a>
         <div class="caption text-center">
-          <a ng-click="add(tag)" class="btn btn-primary btn-sm">订阅</a>
+          <a ng-click="add(tag)" class="btn btn-primary btn-sm" ng-if="!tag.added">订阅</a>
+          <a ng-click="delete(tag)" class="btn btn-danger btn-sm" ng-if="tag.added">取消订阅</a>
         </div>
       </div>
     </div>

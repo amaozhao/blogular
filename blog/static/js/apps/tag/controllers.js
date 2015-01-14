@@ -10,7 +10,15 @@ angular.module('blog.tag.controllers', [])
     }).error(function(data, status, header, config) {});
 
     $scope.add = function(tag) {
-      console.log(tag.name);
+      $http.post('/api/tagfollowing/', {'id': tag.id}).success(function(data, status, header, config){
+        tag.added = true;
+      }).error(function(data, status, header, config){});
+    };
+
+    $scope.delete = function(tag) {
+      $http.delete('/api/tagfollowing/' + tag.id + '/').success(function(data, status, header, config){
+        tag.added = false;
+      }).error(function(data, status, header, config){});
     };
   }])
   .controller('TagDetailCtrl', ['$scope', '$rootScope', '$http', '$location', '$routeParams',

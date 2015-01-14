@@ -33,28 +33,29 @@ class FollowingTagList(viewsets.ModelViewSet):
     
     def get_queryset(self):
         if self.request.user.is_authenticated():
-            return FollowingTag.objects.get_or_create(author=self.request.user).tags.all()
+            return FollowingTag.objects.get_or_create(author=self.request.user)[0].tags.all()
         return []
     
     def create(self, request, *args, **kwargs):
         tag_id = request.data.get('id', None)
         if tag_id:
             tag = Tag.objects.get(id=int(tag_id))
-            followingtag = FollowingTag.objects.get_or_create(author=self.request.user)
+            followingtag = FollowingTag.objects.get_or_create(author=self.request.user)[0]
             followingtag.tags.add(tag)
             serializer = self.get_serializer(tag)
             headers = self.get_success_headers(serializer.data)
             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-        return None
+        return Response()
     
     def destroy(self, request, *args, **kwargs):
-        tag_id = request.data.get('id', None)
+        tag_id = kwargs.get('pk', None)
         if tag_id:
             tag = Tag.objects.get(id=int(tag_id))
-            followingtag = FollowingTag.objects.get_or_create(author=self.request.user)
+            followingtag = FollowingTag.objects.get_or_create(author=self.request.user)[0]
             followingtag.tags.remove(tag)
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        return None
+            serializer = self.get_serializer(tag)
+            return Response(serializer.data)
+        return Response()
 
 
 class TagDetail(generics.ListAPIView):
