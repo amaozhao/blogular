@@ -50,7 +50,10 @@ angular.module('blog.post.controllers', [])
     };
 
     $http.get('/api/tags/').success(function(data, status, header, config){
-      $scope.tags = data;
+      $scope.tags = data.results;
+      angular.forEach($scope.tags, function(tag) {
+        this.push(tag.name);
+      }, data.results);
     }).error(function(data, status, header, config) {});
 
     $scope.save = function(){
@@ -66,7 +69,10 @@ angular.module('blog.post.controllers', [])
   .controller('PostEditCtrl', ['$scope', '$rootScope', '$routeParams', '$http', '$window',
   function($scope, $rootScope, $routeParams, $http, $window){
     $http.get('/api/tags/').success(function(data, status, header, config){
-      $scope.tags = data;
+      $scope.tags = data.results;
+      angular.forEach($scope.tags, function(tag) {
+        this.push(tag.name);
+      }, data.results);
     }).error(function(data, status, header, config) {});
 
     $scope.url = '/api/entries/' + $routeParams.id + '/';
@@ -85,7 +91,10 @@ angular.module('blog.post.controllers', [])
       valueField: 'name',
       labelField: 'name',
       delimiter: '|',
-      placeholder: '添加标签'
+      placeholder: '添加标签',
+      onInitialize: function(selectize){
+        // receives the selectize object as an argument
+      },
     };
 
     $scope.save = function(){
