@@ -3792,8 +3792,13 @@
       });
     }
     function clearSearchHighlight(cm) {
+      var state = getSearchState(cm);
       cm.removeOverlay(getSearchState(cm).getOverlay());
-      getSearchState(cm).setOverlay(null);
+      state.setOverlay(null);
+      if (state.getScrollbarAnnotate()) {
+        state.getScrollbarAnnotate().clear();
+        state.setScrollbarAnnotate(null);
+      }
     }
     /**
      * Check if pos is in the specified range, INCLUSIVE.
@@ -4802,6 +4807,7 @@
       var macroModeState = vimGlobalState.macroModeState;
       var lastChange = macroModeState.lastInsertModeChanges;
       var keyName = CodeMirror.keyName(e);
+      if (!keyName) { return; }
       function onKeyFound() {
         lastChange.changes.push(new InsertModeKey(keyName));
         return true;
