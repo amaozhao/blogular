@@ -20,7 +20,7 @@ def unicode_repr(instance):
     # Get the repr of an instance, but ensure it is a unicode string
     # on both python 3 (already the case) and 2 (not the case).
     if six.PY2:
-        repr(instance).decode('utf-8')
+        return repr(instance).decode('utf-8')
     return repr(instance)
 
 
@@ -31,6 +31,14 @@ def unicode_to_repr(value):
     if six.PY2:
         return value.encode('utf-8')
     return value
+
+
+def total_seconds(timedelta):
+    # TimeDelta.total_seconds() is only available in Python 2.7
+    if hasattr(timedelta, 'total_seconds'):
+        return timedelta.total_seconds()
+    else:
+        return (timedelta.days * 86400.0) + float(timedelta.seconds) + (timedelta.microseconds / 1000000.0)
 
 
 # OrderedDict only available in Python 2.7.
@@ -48,6 +56,13 @@ try:
     from django.http.response import HttpResponseBase
 except ImportError:
     from django.http import HttpResponse as HttpResponseBase
+
+
+# contrib.postgres only supported from 1.8 onwards.
+try:
+    from django.contrib.postgres import fields as postgres_fields
+except ImportError:
+    postgres_fields = None
 
 
 # request only provides `resolver_match` from 1.5 onwards.

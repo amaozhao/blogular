@@ -250,7 +250,7 @@ class FileUploadParser(BaseParser):
                                               None,
                                               encoding)
             if result is not None:
-                return DataAndFiles(None, {'file': result[1]})
+                return DataAndFiles({}, {'file': result[1]})
 
         # This is the standard case.
         possible_sizes = [x.chunk_size for x in upload_handlers if x.chunk_size]
@@ -298,7 +298,7 @@ class FileUploadParser(BaseParser):
             if 'filename*' in filename_parm:
                 return self.get_encoded_filename(filename_parm)
             return force_text(filename_parm['filename'])
-        except (AttributeError, KeyError):
+        except (AttributeError, KeyError, ValueError):
             pass
 
     def get_encoded_filename(self, filename_parm):
