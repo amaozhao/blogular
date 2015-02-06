@@ -38,7 +38,6 @@ class SignInView(View):
         return Response({}, status=400)
 
     def post(self, request, *args, **kwargs):
-        print 1111111
         import json
         obj = json.loads(request.body)
         username = obj['username']
