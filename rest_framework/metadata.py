@@ -11,6 +11,7 @@ from __future__ import unicode_literals
 from django.core.exceptions import PermissionDenied
 from django.http import Http404
 from django.utils.encoding import force_text
+
 from rest_framework import exceptions, serializers
 from rest_framework.compat import OrderedDict
 from rest_framework.request import clone_request
@@ -36,6 +37,7 @@ class SimpleMetadata(BaseMetadata):
     label_lookup = ClassLookupDict({
         serializers.Field: 'field',
         serializers.BooleanField: 'boolean',
+        serializers.NullBooleanField: 'boolean',
         serializers.CharField: 'string',
         serializers.URLField: 'url',
         serializers.EmailField: 'email',
@@ -51,6 +53,9 @@ class SimpleMetadata(BaseMetadata):
         serializers.MultipleChoiceField: 'multiple choice',
         serializers.FileField: 'file upload',
         serializers.ImageField: 'image upload',
+        serializers.ListField: 'list',
+        serializers.DictField: 'nested object',
+        serializers.Serializer: 'nested object',
     })
 
     def determine_metadata(self, request, view):
@@ -115,12 +120,23 @@ class SimpleMetadata(BaseMetadata):
         field_info['type'] = self.label_lookup[field]
         field_info['required'] = getattr(field, 'required', False)
 
-        for attr in ['read_only', 'label', 'help_text', 'min_length', 'max_length']:
+        attrs = [
+            'read_only', 'label', 'help_text',
+            'min_length', 'max_length',
+            'min_value', 'max_value'
+        ]
+
+        for attr in attrs:
             value = getattr(field, attr, None)
             if value is not None and value != '':
                 field_info[attr] = force_text(value, strings_only=True)
 
-        if hasattr(field, 'choices'):
+        if getattr(field, 'child', None):
+            field_info['child'] = self.get_field_info(field.child)
+        elif getattr(field, 'fields', None):
+            field_info['children'] = self.get_serializer_info(field)
+
+        if not field_info.get('read_only') and hasattr(field, 'choices'):
             field_info['choices'] = [
                 {
                     'value': choice_value,

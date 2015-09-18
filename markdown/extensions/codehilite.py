@@ -75,7 +75,7 @@ class CodeHilite(object):
 
     def __init__(self, src=None, linenums=None, guess_lang=True,
                  css_class="codehilite", lang=None, style='default',
-                 noclasses=False, tab_length=4, hl_lines=None):
+                 noclasses=False, tab_length=4, hl_lines=None, use_pygments=True):
         self.src = src
         self.lang = lang
         self.linenums = linenums
@@ -85,6 +85,7 @@ class CodeHilite(object):
         self.noclasses = noclasses
         self.tab_length = tab_length
         self.hl_lines = hl_lines or []
+        self.use_pygments = use_pygments
 
     def hilite(self):
         """
@@ -102,7 +103,7 @@ class CodeHilite(object):
         if self.lang is None:
             self._parseHeader()
 
-        if pygments:
+        if pygments and self.use_pygments:
             try:
                 lexer = get_lexer_by_name(self.lang)
             except ValueError:
@@ -201,18 +202,18 @@ class HiliteTreeprocessor(Treeprocessor):
 
     def run(self, root):
         """ Find code blocks and store in htmlStash. """
-        blocks = root.getiterator('pre')
+        blocks = root.iter('pre')
         for block in blocks:
-            children = block.getchildren()
-            if len(children) == 1 and children[0].tag == 'code':
+            if len(block) == 1 and block[0].tag == 'code':
                 code = CodeHilite(
-                    children[0].text,
+                    block[0].text,
                     linenums=self.config['linenums'],
                     guess_lang=self.config['guess_lang'],
                     css_class=self.config['css_class'],
                     style=self.config['pygments_style'],
                     noclasses=self.config['noclasses'],
-                    tab_length=self.markdown.tab_length
+                    tab_length=self.markdown.tab_length,
+                    use_pygments=self.config['use_pygments']
                 )
                 placeholder = self.markdown.htmlStash.store(code.hilite(),
                                                             safe=True)
@@ -232,9 +233,6 @@ class CodeHiliteExtension(Extension):
         self.config = {
             'linenums': [None,
                          "Use lines numbers. True=yes, False=no, None=auto"],
-            'force_linenos': [False,
-                              "Depreciated! Use 'linenums' instead. Force "
-                              "line numbers - Default: False"],
             'guess_lang': [True,
                            "Automatic language detection - Default: True"],
             'css_class': ["codehilite",
@@ -245,7 +243,11 @@ class CodeHiliteExtension(Extension):
                                '(Colorscheme) - Default: default'],
             'noclasses': [False,
                           'Use inline styles instead of CSS classes - '
-                          'Default false']
+                          'Default false'],
+            'use_pygments': [True,
+                             'Use Pygments to Highlight code blocks. '
+                             'Disable if using a JavaScript library. '
+                             'Default: True']
             }
 
         super(CodeHiliteExtension, self).__init__(*args, **kwargs)

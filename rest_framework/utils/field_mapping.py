@@ -2,13 +2,14 @@
 Helper functions for mapping model fields to a dictionary of default
 keyword arguments that should be used for their equivelent serializer fields.
 """
+import inspect
+
 from django.core import validators
 from django.db import models
 from django.utils.text import capfirst
+
 from rest_framework.compat import clean_manytomany_helptext
 from rest_framework.validators import UniqueValidator
-import inspect
-
 
 NUMERIC_FIELD_TYPES = (
     models.IntegerField, models.FloatField, models.DecimalField
@@ -36,7 +37,7 @@ class ClassLookupDict(object):
         for cls in inspect.getmro(base_class):
             if cls in self.mapping:
                 return self.mapping[cls]
-        raise KeyError('Class %s not found in lookup.', cls.__name__)
+        raise KeyError('Class %s not found in lookup.' % base_class.__name__)
 
     def __setitem__(self, key, value):
         self.mapping[key] = value
@@ -102,13 +103,14 @@ def get_field_kwargs(field_name, model_field):
     if model_field.null and not isinstance(model_field, models.NullBooleanField):
         kwargs['allow_null'] = True
 
-    if model_field.blank:
+    if model_field.blank and (isinstance(model_field, models.CharField) or
+                              isinstance(model_field, models.TextField)):
         kwargs['allow_blank'] = True
 
-    if model_field.flatchoices:
+    if model_field.choices:
         # If this model field contains choices, then return early.
         # Further keyword arguments are not valid.
-        kwargs['choices'] = model_field.flatchoices
+        kwargs['choices'] = model_field.choices
         return kwargs
 
     # Ensure that max_length is passed explicitly as a keyword arg,
@@ -183,6 +185,13 @@ def get_field_kwargs(field_name, model_field):
             if validator is not validators.validate_slug
         ]
 
+    # IPAddressField do not need to include the 'validate_ipv46_address' argument,
+    if isinstance(model_field, models.GenericIPAddressField):
+        validator_kwarg = [
+            validator for validator in validator_kwarg
+            if validator is not validators.validate_ipv46_address
+        ]
+
     if getattr(model_field, 'unique', False):
         validator = UniqueValidator(queryset=model_field.model._default_manager)
         validator_kwarg.append(validator)
@@ -223,7 +232,8 @@ def get_relation_kwargs(field_name, relation_info):
             # If this field is read-only, then return early.
             # No further keyword arguments are valid.
             return kwargs
-        if model_field.has_default() or model_field.null:
+
+        if model_field.has_default() or model_field.blank or model_field.null:
             kwargs['required'] = False
         if model_field.null:
             kwargs['allow_null'] = True
@@ -232,6 +242,8 @@ def get_relation_kwargs(field_name, relation_info):
         if getattr(model_field, 'unique', False):
             validator = UniqueValidator(queryset=model_field.model._default_manager)
             kwargs['validators'] = kwargs.get('validators', []) + [validator]
+        if to_many and not model_field.blank:
+            kwargs['allow_empty'] = False
 
     return kwargs
 

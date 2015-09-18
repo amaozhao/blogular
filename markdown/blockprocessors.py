@@ -38,7 +38,7 @@ def build_block_parser(md_instance, **kwargs):
     return parser
 
 
-class BlockProcessor:
+class BlockProcessor(object):
     """ Base class for block processors.
 
     Each subclass will provide the methods below to work with the source and
@@ -141,14 +141,14 @@ class ListIndentProcessor(BlockProcessor):
     LIST_TYPES = ['ul', 'ol']
 
     def __init__(self, *args):
-        BlockProcessor.__init__(self, *args)
+        super(ListIndentProcessor, self).__init__(*args)
         self.INDENT_RE = re.compile(r'^(([ ]{%s})+)' % self.tab_length)
 
     def test(self, parent, block):
         return block.startswith(' '*self.tab_length) and \
             not self.parser.state.isstate('detabbed') and \
             (parent.tag in self.ITEM_TYPES or
-                (len(parent) and parent[-1] and
+                (len(parent) and parent[-1] is not None and
                     (parent[-1].tag in self.LIST_TYPES)))
 
     def run(self, parent, blocks):
@@ -231,8 +231,8 @@ class CodeBlockProcessor(BlockProcessor):
         sibling = self.lastChild(parent)
         block = blocks.pop(0)
         theRest = ''
-        if (sibling is not None and sibling.tag == "pre"
-           and len(sibling) and sibling[0].tag == "code"):
+        if (sibling is not None and sibling.tag == "pre" and
+           len(sibling) and sibling[0].tag == "code"):
             # The previous block was a code block. As blank lines do not start
             # new code blocks, append this block to the previous, adding back
             # linebreaks removed from the split into a list.
@@ -300,12 +300,6 @@ class OListProcessor(BlockProcessor):
     """ Process ordered list blocks. """
 
     TAG = 'ol'
-    # Detect an item (``1. item``). ``group(1)`` contains contents of item.
-    RE = re.compile(r'^[ ]{0,3}\d+\.[ ]+(.*)')
-    # Detect items on secondary lines. they can be of either list type.
-    CHILD_RE = re.compile(r'^[ ]{0,3}((\d+\.)|[*+-])[ ]+(.*)')
-    # Detect indented (nested) items of either type
-    INDENT_RE = re.compile(r'^[ ]{4,7}((\d+\.)|[*+-])[ ]+.*')
     # The integer (python string) with which the lists starts (default=1)
     # Eg: If list is intialized as)
     #   3. Item
@@ -313,6 +307,17 @@ class OListProcessor(BlockProcessor):
     STARTSWITH = '1'
     # List of allowed sibling tags.
     SIBLING_TAGS = ['ol', 'ul']
+
+    def __init__(self, parser):
+        super(OListProcessor, self).__init__(parser)
+        # Detect an item (``1. item``). ``group(1)`` contains contents of item.
+        self.RE = re.compile(r'^[ ]{0,%d}\d+\.[ ]+(.*)' % (self.tab_length - 1))
+        # Detect items on secondary lines. they can be of either list type.
+        self.CHILD_RE = re.compile(r'^[ ]{0,%d}((\d+\.)|[*+-])[ ]+(.*)' %
+                                   (self.tab_length - 1))
+        # Detect indented (nested) items of either type
+        self.INDENT_RE = re.compile(r'^[ ]{%d,%d}((\d+\.)|[*+-])[ ]+.*' %
+                                    (self.tab_length, self.tab_length * 2 - 1))
 
     def test(self, parent, block):
         return bool(self.RE.match(block))
@@ -407,7 +412,11 @@ class UListProcessor(OListProcessor):
     """ Process unordered list blocks. """
 
     TAG = 'ul'
-    RE = re.compile(r'^[ ]{0,3}[*+-][ ]+(.*)')
+
+    def __init__(self, parser):
+        super(UListProcessor, self).__init__(parser)
+        # Detect an item (``1. item``). ``group(1)`` contains contents of item.
+        self.RE = re.compile(r'^[ ]{0,%d}[*+-][ ]+(.*)' % (self.tab_length - 1))
 
 
 class HashHeaderProcessor(BlockProcessor):
@@ -517,8 +526,8 @@ class EmptyBlockProcessor(BlockProcessor):
                 # Add remaining lines to master blocks for later.
                 blocks.insert(0, theRest)
         sibling = self.lastChild(parent)
-        if (sibling is not None and sibling.tag == 'pre'
-           and len(sibling) and sibling[0].tag == 'code'):
+        if (sibling is not None and sibling.tag == 'pre' and
+           len(sibling) and sibling[0].tag == 'code'):
             # Last block is a codeblock. Append to preserve whitespace.
             sibling[0].text = util.AtomicString(
                 '%s%s' % (sibling[0].text, filler)

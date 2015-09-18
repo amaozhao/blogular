@@ -1,22 +1,5 @@
 from __future__ import unicode_literals
-from django.conf import settings
-from django.core.exceptions import ObjectDoesNotExist
-from django.core.exceptions import ValidationError as DjangoValidationError
-from django.core.validators import RegexValidator
-from django.forms import ImageField as DjangoImageField
-from django.utils import six, timezone
-from django.utils.dateparse import parse_date, parse_datetime, parse_time
-from django.utils.encoding import is_protected_type, smart_text
-from django.utils.translation import ugettext_lazy as _
-from rest_framework import ISO_8601
-from rest_framework.compat import (
-    EmailValidator, MinValueValidator, MaxValueValidator,
-    MinLengthValidator, MaxLengthValidator, URLValidator, OrderedDict,
-    unicode_repr, unicode_to_repr
-)
-from rest_framework.exceptions import ValidationError
-from rest_framework.settings import api_settings
-from rest_framework.utils import html, representation, humanize_datetime
+
 import collections
 import copy
 import datetime
@@ -24,6 +7,29 @@ import decimal
 import inspect
 import re
 import uuid
+
+from django.conf import settings
+from django.core.exceptions import ValidationError as DjangoValidationError
+from django.core.exceptions import ObjectDoesNotExist
+from django.core.validators import RegexValidator, ip_address_validators
+from django.forms import FilePathField as DjangoFilePathField
+from django.forms import ImageField as DjangoImageField
+from django.utils import six, timezone
+from django.utils.dateparse import parse_date, parse_datetime, parse_time
+from django.utils.encoding import is_protected_type, smart_text
+from django.utils.functional import cached_property
+from django.utils.ipv6 import clean_ipv6_address
+from django.utils.translation import ugettext_lazy as _
+
+from rest_framework import ISO_8601
+from rest_framework.compat import (
+    EmailValidator, MaxLengthValidator, MaxValueValidator, MinLengthValidator,
+    MinValueValidator, OrderedDict, URLValidator, duration_string,
+    parse_duration, unicode_repr, unicode_to_repr
+)
+from rest_framework.exceptions import ValidationError
+from rest_framework.settings import api_settings
+from rest_framework.utils import html, humanize_datetime, representation
 
 
 class empty:
@@ -71,7 +77,14 @@ def get_attribute(instance, attrs):
         except ObjectDoesNotExist:
             return None
         if is_simple_callable(instance):
-            instance = instance()
+            try:
+                instance = instance()
+            except (AttributeError, KeyError) as exc:
+                # If we raised an Attribute or KeyError here it'd get treated
+                # as an omitted field in `Field.get_attribute()`. Instead we
+                # raise a ValueError to ensure the exception is not masked.
+                raise ValueError('Exception raised in callable attribute "{0}"; original exception was: {1}'.format(attr, exc))
+
     return instance
 
 
@@ -96,7 +109,101 @@ def set_value(dictionary, keys, value):
     dictionary[keys[-1]] = value
 
 
-class CreateOnlyDefault:
+def to_choices_dict(choices):
+    """
+    Convert choices into key/value dicts.
+
+    pairwise_choices([1]) -> {1: 1}
+    pairwise_choices([(1, '1st'), (2, '2nd')]) -> {1: '1st', 2: '2nd'}
+    pairwise_choices([('Group', ((1, '1st'), 2))]) -> {'Group': {1: '1st', 2: '2nd'}}
+    """
+    # Allow single, paired or grouped choices style:
+    # choices = [1, 2, 3]
+    # choices = [(1, 'First'), (2, 'Second'), (3, 'Third')]
+    # choices = [('Category', ((1, 'First'), (2, 'Second'))), (3, 'Third')]
+    ret = OrderedDict()
+    for choice in choices:
+        if (not isinstance(choice, (list, tuple))):
+            # single choice
+            ret[choice] = choice
+        else:
+            key, value = choice
+            if isinstance(value, (list, tuple)):
+                # grouped choices (category, sub choices)
+                ret[key] = to_choices_dict(value)
+            else:
+                # paired choice (key, display value)
+                ret[key] = value
+    return ret
+
+
+def flatten_choices_dict(choices):
+    """
+    Convert a group choices dict into a flat dict of choices.
+
+    flatten_choices({1: '1st', 2: '2nd'}) -> {1: '1st', 2: '2nd'}
+    flatten_choices({'Group': {1: '1st', 2: '2nd'}}) -> {1: '1st', 2: '2nd'}
+    """
+    ret = OrderedDict()
+    for key, value in choices.items():
+        if isinstance(value, dict):
+            # grouped choices (category, sub choices)
+            for sub_key, sub_value in value.items():
+                ret[sub_key] = sub_value
+        else:
+            # choice (key, display value)
+            ret[key] = value
+    return ret
+
+
+def iter_options(grouped_choices, cutoff=None, cutoff_text=None):
+    """
+    Helper function for options and option groups in templates.
+    """
+    class StartOptionGroup(object):
+        start_option_group = True
+        end_option_group = False
+
+        def __init__(self, label):
+            self.label = label
+
+    class EndOptionGroup(object):
+        start_option_group = False
+        end_option_group = True
+
+    class Option(object):
+        start_option_group = False
+        end_option_group = False
+
+        def __init__(self, value, display_text, disabled=False):
+            self.value = value
+            self.display_text = display_text
+            self.disabled = disabled
+
+    count = 0
+
+    for key, value in grouped_choices.items():
+        if cutoff and count >= cutoff:
+            break
+
+        if isinstance(value, dict):
+            yield StartOptionGroup(label=key)
+            for sub_key, sub_value in value.items():
+                if cutoff and count >= cutoff:
+                    break
+                yield Option(value=sub_key, display_text=sub_value)
+                count += 1
+            yield EndOptionGroup()
+        else:
+            yield Option(value=key, display_text=value)
+            count += 1
+
+    if cutoff and count >= cutoff and cutoff_text:
+        cutoff_text = cutoff_text.format(count=cutoff)
+        yield Option(value='n/a', display_text=cutoff_text, disabled=True)
+
+
+class CreateOnlyDefault(object):
     """
     This class may be used to provide default values that are only used
     for create operations, but that do not return any value for update
@@ -107,6 +214,8 @@ class CreateOnlyDefault:
 
     def set_context(self, serializer_field):
         self.is_update = serializer_field.parent.instance is not None
+        if callable(self.default) and hasattr(self.default, 'set_context') and not self.is_update:
+            self.default.set_context(serializer_field)
 
     def __call__(self):
         if self.is_update:
@@ -121,7 +230,7 @@ class CreateOnlyDefault:
         )
 
 
-class CurrentUserDefault:
+class CurrentUserDefault(object):
     def set_context(self, serializer_field):
         self.user = serializer_field.context['request'].user
 
@@ -186,9 +295,7 @@ class Field(object):
         self.allow_null = allow_null
 
         if self.default_empty_html is not empty:
-            if not required:
-                self.default_empty_html = empty
-            elif default is not empty:
+            if default is not empty:
                 self.default_empty_html = default
 
         if validators is not None:
@@ -278,6 +385,10 @@ class Field(object):
                 # If the field is blank, and null is a valid value then
                 # determine if we should use null instead.
                 return '' if getattr(self, 'allow_blank', False) else None
+            elif ret == '' and not self.required:
+                # If the field is blank, and emptyness is valid then
+                # determine if we should use emptyness instead.
+                return '' if getattr(self, 'allow_blank', False) else empty
             return ret
         return dictionary.get(self.field_name, empty)
 
@@ -330,7 +441,7 @@ class Field(object):
         * Raise `ValidationError`, indicating invalid data.
         * Raise `SkipField`, indicating that the field should be ignored.
         * Return (True, data), indicating an empty value that should be
-          returned without any furhter validation being applied.
+          returned without any further validation being applied.
         * Return (False, data), indicating a non-empty value, that should
           have validation applied as normal.
         """
@@ -407,10 +518,11 @@ class Field(object):
         Transform the *outgoing* native value into primitive data.
         """
         raise NotImplementedError(
-            '{cls}.to_representation() must be implemented.\n'
-            'If you are upgrading from REST framework version 2 '
-            'you might want `ReadOnlyField`.'.format(
-                cls=self.__class__.__name__
+            '{cls}.to_representation() must be implemented for field '
+            '{field_name}. If you do not need to support write operations '
+            'you probably want to subclass `ReadOnlyField` instead.'.format(
+                cls=self.__class__.__name__,
+                field_name=self.field_name,
             )
         )
 
@@ -427,7 +539,7 @@ class Field(object):
         message_string = msg.format(**kwargs)
         raise ValidationError(message_string)
 
-    @property
+    @cached_property
     def root(self):
         """
         Returns the top-level serializer for this field.
@@ -437,7 +549,7 @@ class Field(object):
             root = root.parent
         return root
 
-    @property
+    @cached_property
     def context(self):
         """
         Returns the context as passed to the root serializer on initialization.
@@ -484,7 +596,7 @@ class Field(object):
 
 class BooleanField(Field):
     default_error_messages = {
-        'invalid': _('`{input}` is not a valid boolean.')
+        'invalid': _('"{input}" is not a valid boolean.')
     }
     default_empty_html = False
     initial = False
@@ -496,10 +608,13 @@ class BooleanField(Field):
         super(BooleanField, self).__init__(**kwargs)
 
     def to_internal_value(self, data):
-        if data in self.TRUE_VALUES:
-            return True
-        elif data in self.FALSE_VALUES:
-            return False
+        try:
+            if data in self.TRUE_VALUES:
+                return True
+            elif data in self.FALSE_VALUES:
+                return False
+        except TypeError:  # Input is an unhashable type
+            pass
         self.fail('invalid', input=data)
 
     def to_representation(self, value):
@@ -512,7 +627,7 @@ class BooleanField(Field):
 
 class NullBooleanField(Field):
     default_error_messages = {
-        'invalid': _('`{input}` is not a valid boolean.')
+        'invalid': _('"{input}" is not a valid boolean.')
     }
     initial = None
     TRUE_VALUES = set(('t', 'T', 'true', 'True', 'TRUE', '1', 1, True))
@@ -555,28 +670,30 @@ class CharField(Field):
 
     def __init__(self, **kwargs):
         self.allow_blank = kwargs.pop('allow_blank', False)
-        max_length = kwargs.pop('max_length', None)
-        min_length = kwargs.pop('min_length', None)
+        self.trim_whitespace = kwargs.pop('trim_whitespace', True)
+        self.max_length = kwargs.pop('max_length', None)
+        self.min_length = kwargs.pop('min_length', None)
         super(CharField, self).__init__(**kwargs)
-        if max_length is not None:
-            message = self.error_messages['max_length'].format(max_length=max_length)
-            self.validators.append(MaxLengthValidator(max_length, message=message))
-        if min_length is not None:
-            message = self.error_messages['min_length'].format(min_length=min_length)
-            self.validators.append(MinLengthValidator(min_length, message=message))
+        if self.max_length is not None:
+            message = self.error_messages['max_length'].format(max_length=self.max_length)
+            self.validators.append(MaxLengthValidator(self.max_length, message=message))
+        if self.min_length is not None:
+            message = self.error_messages['min_length'].format(min_length=self.min_length)
+            self.validators.append(MinLengthValidator(self.min_length, message=message))
 
     def run_validation(self, data=empty):
         # Test for the empty string here so that it does not get validated,
         # and so that subclasses do not need to handle it explicitly
         # inside the `to_internal_value()` method.
-        if data == '':
+        if data == '' or (self.trim_whitespace and six.text_type(data).strip() == ''):
             if not self.allow_blank:
                 self.fail('blank')
             return ''
         return super(CharField, self).run_validation(data)
 
     def to_internal_value(self, data):
-        return six.text_type(data)
+        value = six.text_type(data)
+        return value.strip() if self.trim_whitespace else value
 
     def to_representation(self, value):
         return six.text_type(value)
@@ -592,12 +709,6 @@ class EmailField(CharField):
         validator = EmailValidator(message=self.error_messages['invalid'])
         self.validators.append(validator)
 
-    def to_internal_value(self, data):
-        return six.text_type(data).strip()
-
-    def to_representation(self, value):
-        return six.text_type(value).strip()
-
 
 class RegexField(CharField):
     default_error_messages = {
@@ -612,7 +723,7 @@ class RegexField(CharField):
 
 class SlugField(CharField):
     default_error_messages = {
-        'invalid': _("Enter a valid 'slug' consisting of letters, numbers, underscores or hyphens.")
+        'invalid': _('Enter a valid "slug" consisting of letters, numbers, underscores or hyphens.')
     }
 
     def __init__(self, **kwargs):
@@ -624,7 +735,7 @@ class SlugField(CharField):
 
 class URLField(CharField):
     default_error_messages = {
-        'invalid': _("Enter a valid URL.")
+        'invalid': _('Enter a valid URL.')
     }
 
     def __init__(self, **kwargs):
@@ -634,20 +745,62 @@ class URLField(CharField):
 
 
 class UUIDField(Field):
+    valid_formats = ('hex_verbose', 'hex', 'int', 'urn')
+
     default_error_messages = {
         'invalid': _('"{value}" is not a valid UUID.'),
     }
 
+    def __init__(self, **kwargs):
+        self.uuid_format = kwargs.pop('format', 'hex_verbose')
+        if self.uuid_format not in self.valid_formats:
+            raise ValueError(
+                'Invalid format for uuid representation. '
+                'Must be one of "{0}"'.format('", "'.join(self.valid_formats))
+            )
+        super(UUIDField, self).__init__(**kwargs)
+
     def to_internal_value(self, data):
         if not isinstance(data, uuid.UUID):
             try:
-                return uuid.UUID(data)
+                if isinstance(data, six.integer_types):
+                    return uuid.UUID(int=data)
+                else:
+                    return uuid.UUID(hex=data)
             except (ValueError, TypeError):
                 self.fail('invalid', value=data)
         return data
 
     def to_representation(self, value):
-        return str(value)
+        if self.uuid_format == 'hex_verbose':
+            return str(value)
+        else:
+            return getattr(value, self.uuid_format)
+
+
+class IPAddressField(CharField):
+    """Support both IPAddressField and GenericIPAddressField"""
+
+    default_error_messages = {
+        'invalid': _('Enter a valid IPv4 or IPv6 address.'),
+    }
+
+    def __init__(self, protocol='both', **kwargs):
+        self.protocol = protocol.lower()
+        self.unpack_ipv4 = (self.protocol == 'both')
+        super(IPAddressField, self).__init__(**kwargs)
+        validators, error_message = ip_address_validators(protocol, self.unpack_ipv4)
+        self.validators.extend(validators)
+
+    def to_internal_value(self, data):
+        if data and ':' in data:
+            try:
+                if self.protocol in ('both', 'ipv6'):
+                    return clean_ipv6_address(data, self.unpack_ipv4)
+            except DjangoValidationError:
+                self.fail('invalid', value=data)
+
+        return super(IPAddressField, self).to_internal_value(data)
 
 
 # Number types...
@@ -657,27 +810,28 @@ class IntegerField(Field):
         'invalid': _('A valid integer is required.'),
         'max_value': _('Ensure this value is less than or equal to {max_value}.'),
         'min_value': _('Ensure this value is greater than or equal to {min_value}.'),
-        'max_string_length': _('String value too large')
+        'max_string_length': _('String value too large.')
     }
     MAX_STRING_LENGTH = 1000  # Guard against malicious string inputs.
+    re_decimal = re.compile(r'\.0*\s*$')  # allow e.g. '1.0' as an int, but not '1.2'
 
     def __init__(self, **kwargs):
-        max_value = kwargs.pop('max_value', None)
-        min_value = kwargs.pop('min_value', None)
+        self.max_value = kwargs.pop('max_value', None)
+        self.min_value = kwargs.pop('min_value', None)
         super(IntegerField, self).__init__(**kwargs)
-        if max_value is not None:
-            message = self.error_messages['max_value'].format(max_value=max_value)
-            self.validators.append(MaxValueValidator(max_value, message=message))
-        if min_value is not None:
-            message = self.error_messages['min_value'].format(min_value=min_value)
-            self.validators.append(MinValueValidator(min_value, message=message))
+        if self.max_value is not None:
+            message = self.error_messages['max_value'].format(max_value=self.max_value)
+            self.validators.append(MaxValueValidator(self.max_value, message=message))
+        if self.min_value is not None:
+            message = self.error_messages['min_value'].format(min_value=self.min_value)
+            self.validators.append(MinValueValidator(self.min_value, message=message))
 
     def to_internal_value(self, data):
         if isinstance(data, six.text_type) and len(data) > self.MAX_STRING_LENGTH:
             self.fail('max_string_length')
 
         try:
-            data = int(data)
+            data = int(self.re_decimal.sub('', str(data)))
         except (ValueError, TypeError):
             self.fail('invalid')
         return data
@@ -688,23 +842,23 @@ class IntegerField(Field):
 
 class FloatField(Field):
     default_error_messages = {
-        'invalid': _("A valid number is required."),
+        'invalid': _('A valid number is required.'),
         'max_value': _('Ensure this value is less than or equal to {max_value}.'),
         'min_value': _('Ensure this value is greater than or equal to {min_value}.'),
-        'max_string_length': _('String value too large')
+        'max_string_length': _('String value too large.')
     }
     MAX_STRING_LENGTH = 1000  # Guard against malicious string inputs.
 
     def __init__(self, **kwargs):
-        max_value = kwargs.pop('max_value', None)
-        min_value = kwargs.pop('min_value', None)
+        self.max_value = kwargs.pop('max_value', None)
+        self.min_value = kwargs.pop('min_value', None)
         super(FloatField, self).__init__(**kwargs)
-        if max_value is not None:
-            message = self.error_messages['max_value'].format(max_value=max_value)
-            self.validators.append(MaxValueValidator(max_value, message=message))
-        if min_value is not None:
-            message = self.error_messages['min_value'].format(min_value=min_value)
-            self.validators.append(MinValueValidator(min_value, message=message))
+        if self.max_value is not None:
+            message = self.error_messages['max_value'].format(max_value=self.max_value)
+            self.validators.append(MaxValueValidator(self.max_value, message=message))
+        if self.min_value is not None:
+            message = self.error_messages['min_value'].format(min_value=self.min_value)
+            self.validators.append(MinValueValidator(self.min_value, message=message))
 
     def to_internal_value(self, data):
         if isinstance(data, six.text_type) and len(data) > self.MAX_STRING_LENGTH:
@@ -727,7 +881,7 @@ class DecimalField(Field):
         'max_digits': _('Ensure that there are no more than {max_digits} digits in total.'),
         'max_decimal_places': _('Ensure that there are no more than {max_decimal_places} decimal places.'),
         'max_whole_digits': _('Ensure that there are no more than {max_whole_digits} digits before the decimal point.'),
-        'max_string_length': _('String value too large')
+        'max_string_length': _('String value too large.')
     }
     MAX_STRING_LENGTH = 1000  # Guard against malicious string inputs.
 
@@ -737,20 +891,28 @@ class DecimalField(Field):
         self.max_digits = max_digits
         self.decimal_places = decimal_places
         self.coerce_to_string = coerce_to_string if (coerce_to_string is not None) else self.coerce_to_string
+
+        self.max_value = max_value
+        self.min_value = min_value
+
+        if self.max_digits is not None and self.decimal_places is not None:
+            self.max_whole_digits = self.max_digits - self.decimal_places
+        else:
+            self.max_whole_digits = None
+
         super(DecimalField, self).__init__(**kwargs)
-        if max_value is not None:
-            message = self.error_messages['max_value'].format(max_value=max_value)
-            self.validators.append(MaxValueValidator(max_value, message=message))
-        if min_value is not None:
-            message = self.error_messages['min_value'].format(min_value=min_value)
-            self.validators.append(MinValueValidator(min_value, message=message))
+
+        if self.max_value is not None:
+            message = self.error_messages['max_value'].format(max_value=self.max_value)
+            self.validators.append(MaxValueValidator(self.max_value, message=message))
+        if self.min_value is not None:
+            message = self.error_messages['min_value'].format(min_value=self.min_value)
+            self.validators.append(MinValueValidator(self.min_value, message=message))
 
     def to_internal_value(self, data):
         """
-        Validates that the input is a decimal number. Returns a Decimal
-        instance. Returns None for empty values. Ensures that there are no more
-        than max_digits in the number, and no more than decimal_places digits
-        after the decimal point.
+        Validate that the input is a decimal number and return a Decimal
+        instance.
         """
         data = smart_text(data).strip()
         if len(data) > self.MAX_STRING_LENGTH:
@@ -770,24 +932,40 @@ class DecimalField(Field):
         if value in (decimal.Decimal('Inf'), decimal.Decimal('-Inf')):
             self.fail('invalid')
 
-        sign, digittuple, exponent = value.as_tuple()
-        decimals = abs(exponent)
-        # digittuple doesn't include any leading zeros.
-        digits = len(digittuple)
-        if decimals > digits:
-            # We have leading zeros up to or past the decimal point.  Count
-            # everything past the decimal point as a digit.  We do not count
-            # 0 before the decimal point as a digit since that would mean
-            # we would not allow max_digits = decimal_places.
-            digits = decimals
-        whole_digits = digits - decimals
+        return self.validate_precision(value)
 
-        if self.max_digits is not None and digits > self.max_digits:
+    def validate_precision(self, value):
+        """
+        Ensure that there are no more than max_digits in the number, and no
+        more than decimal_places digits after the decimal point.
+
+        Override this method to disable the precision validation for input
+        values or to enhance it in any way you need to.
+        """
+        sign, digittuple, exponent = value.as_tuple()
+
+        if exponent >= 0:
+            # 1234500.0
+            total_digits = len(digittuple) + exponent
+            whole_digits = total_digits
+            decimal_places = 0
+        elif len(digittuple) > abs(exponent):
+            # 123.45
+            total_digits = len(digittuple)
+            whole_digits = total_digits - abs(exponent)
+            decimal_places = abs(exponent)
+        else:
+            # 0.001234
+            total_digits = abs(exponent)
+            whole_digits = 0
+            decimal_places = total_digits
+
+        if self.max_digits is not None and total_digits > self.max_digits:
             self.fail('max_digits', max_digits=self.max_digits)
-        if self.decimal_places is not None and decimals > self.decimal_places:
+        if self.decimal_places is not None and decimal_places > self.decimal_places:
             self.fail('max_decimal_places', max_decimal_places=self.decimal_places)
-        if self.max_digits is not None and self.decimal_places is not None and whole_digits > (self.max_digits - self.decimal_places):
-            self.fail('max_whole_digits', max_whole_digits=self.max_digits - self.decimal_places)
+        if self.max_whole_digits is not None and whole_digits > self.max_whole_digits:
+            self.fail('max_whole_digits', max_whole_digits=self.max_whole_digits)
 
         return value
 
@@ -795,27 +973,34 @@ class DecimalField(Field):
         if not isinstance(value, decimal.Decimal):
             value = decimal.Decimal(six.text_type(value).strip())
 
-        context = decimal.getcontext().copy()
-        context.prec = self.max_digits
-        quantized = value.quantize(
-            decimal.Decimal('.1') ** self.decimal_places,
-            context=context
-        )
+        quantized = self.quantize(value)
+
         if not self.coerce_to_string:
             return quantized
         return '{0:f}'.format(quantized)
+
+    def quantize(self, value):
+        """
+        Quantize the decimal value to the configured precision.
+        """
+        context = decimal.getcontext().copy()
+        context.prec = self.max_digits
+        return value.quantize(
+            decimal.Decimal('.1') ** self.decimal_places,
+            context=context)
 
 
 # Date & time fields...
 
 class DateTimeField(Field):
     default_error_messages = {
-        'invalid': _('Datetime has wrong format. Use one of these formats instead: {format}'),
+        'invalid': _('Datetime has wrong format. Use one of these formats instead: {format}.'),
         'date': _('Expected a datetime but got a date.'),
     }
     format = api_settings.DATETIME_FORMAT
     input_formats = api_settings.DATETIME_INPUT_FORMATS
     default_timezone = timezone.get_default_timezone() if settings.USE_TZ else None
+    datetime_parser = datetime.datetime.strptime
 
     def __init__(self, format=empty, input_formats=None, default_timezone=None, *args, **kwargs):
         self.format = format if format is not empty else self.format
@@ -852,7 +1037,7 @@ class DateTimeField(Field):
                         return self.enforce_timezone(parsed)
             else:
                 try:
-                    parsed = datetime.datetime.strptime(value, format)
+                    parsed = self.datetime_parser(value, format)
                 except (ValueError, TypeError):
                     pass
                 else:
@@ -875,11 +1060,12 @@ class DateTimeField(Field):
 
 class DateField(Field):
     default_error_messages = {
-        'invalid': _('Date has wrong format. Use one of these formats instead: {format}'),
+        'invalid': _('Date has wrong format. Use one of these formats instead: {format}.'),
         'datetime': _('Expected a date but got a datetime.'),
     }
     format = api_settings.DATE_FORMAT
     input_formats = api_settings.DATE_INPUT_FORMATS
+    datetime_parser = datetime.datetime.strptime
 
     def __init__(self, format=empty, input_formats=None, *args, **kwargs):
         self.format = format if format is not empty else self.format
@@ -904,7 +1090,7 @@ class DateField(Field):
                         return parsed
             else:
                 try:
-                    parsed = datetime.datetime.strptime(value, format)
+                    parsed = self.datetime_parser(value, format)
                 except (ValueError, TypeError):
                     pass
                 else:
@@ -914,6 +1100,9 @@ class DateField(Field):
         self.fail('invalid', format=humanized_format)
 
     def to_representation(self, value):
+        if not value:
+            return None
+
         if self.format is None:
             return value
 
@@ -927,16 +1116,20 @@ class DateField(Field):
         )
 
         if self.format.lower() == ISO_8601:
+            if (isinstance(value, str)):
+                value = datetime.datetime.strptime(value, '%Y-%m-%d').date()
             return value.isoformat()
+
         return value.strftime(self.format)
 
 
 class TimeField(Field):
     default_error_messages = {
-        'invalid': _('Time has wrong format. Use one of these formats instead: {format}'),
+        'invalid': _('Time has wrong format. Use one of these formats instead: {format}.'),
     }
     format = api_settings.TIME_FORMAT
     input_formats = api_settings.TIME_INPUT_FORMATS
+    datetime_parser = datetime.datetime.strptime
 
     def __init__(self, format=empty, input_formats=None, *args, **kwargs):
         self.format = format if format is not empty else self.format
@@ -958,7 +1151,7 @@ class TimeField(Field):
                         return parsed
             else:
                 try:
-                    parsed = datetime.datetime.strptime(value, format)
+                    parsed = self.datetime_parser(value, format)
                 except (ValueError, TypeError):
                     pass
                 else:
@@ -985,25 +1178,43 @@ class TimeField(Field):
         return value.strftime(self.format)
 
 
+class DurationField(Field):
+    default_error_messages = {
+        'invalid': _('Duration has wrong format. Use one of these formats instead: {format}.'),
+    }
+
+    def __init__(self, *args, **kwargs):
+        if parse_duration is None:
+            raise NotImplementedError(
+                'DurationField not supported for django versions prior to 1.8')
+        return super(DurationField, self).__init__(*args, **kwargs)
+
+    def to_internal_value(self, value):
+        if isinstance(value, datetime.timedelta):
+            return value
+        parsed = parse_duration(six.text_type(value))
+        if parsed is not None:
+            return parsed
+        self.fail('invalid', format='[DD] [HH:[MM:]]ss[.uuuuuu]')
+
+    def to_representation(self, value):
+        return duration_string(value)
+
+
 # Choice types...
 
 class ChoiceField(Field):
     default_error_messages = {
-        'invalid_choice': _('`{input}` is not a valid choice.')
+        'invalid_choice': _('"{input}" is not a valid choice.')
     }
+    html_cutoff = None
+    html_cutoff_text = _('More than {count} items...')
 
     def __init__(self, choices, **kwargs):
-        # Allow either single or paired choices style:
-        # choices = [1, 2, 3]
-        # choices = [(1, 'First'), (2, 'Second'), (3, 'Third')]
-        pairs = [
-            isinstance(item, (list, tuple)) and len(item) == 2
-            for item in choices
-        ]
-        if all(pairs):
-            self.choices = OrderedDict([(key, display_value) for key, display_value in choices])
-        else:
-            self.choices = OrderedDict([(item, item) for item in choices])
+        self.grouped_choices = to_choices_dict(choices)
+        self.choices = flatten_choices_dict(self.grouped_choices)
+        self.html_cutoff = kwargs.pop('html_cutoff', self.html_cutoff)
+        self.html_cutoff_text = kwargs.pop('html_cutoff_text', self.html_cutoff_text)
 
         # Map the string representation of choices to the underlying value.
         # Allows us to deal with eg. integer choices while supporting either
@@ -1028,26 +1239,47 @@ class ChoiceField(Field):
     def to_representation(self, value):
         if value in ('', None):
             return value
-        return self.choice_strings_to_values[six.text_type(value)]
+        return self.choice_strings_to_values.get(six.text_type(value), value)
+
+    def iter_options(self):
+        """
+        Helper method for use with templates rendering select widgets.
+        """
+        return iter_options(
+            self.grouped_choices,
+            cutoff=self.html_cutoff,
+            cutoff_text=self.html_cutoff_text
+        )
 
 
 class MultipleChoiceField(ChoiceField):
     default_error_messages = {
-        'invalid_choice': _('`{input}` is not a valid choice.'),
-        'not_a_list': _('Expected a list of items but got type `{input_type}`.')
+        'invalid_choice': _('"{input}" is not a valid choice.'),
+        'not_a_list': _('Expected a list of items but got type "{input_type}".'),
+        'empty': _('This selection may not be empty.')
     }
     default_empty_html = []
+
+    def __init__(self, *args, **kwargs):
+        self.allow_empty = kwargs.pop('allow_empty', True)
+        super(MultipleChoiceField, self).__init__(*args, **kwargs)
 
     def get_value(self, dictionary):
         # We override the default field access in order to support
         # lists in HTML forms.
         if html.is_html_input(dictionary):
-            return dictionary.getlist(self.field_name)
+            ret = dictionary.getlist(self.field_name)
+            if getattr(self.root, 'partial', False) and not ret:
+                ret = empty
+            return ret
+
         return dictionary.get(self.field_name, empty)
 
     def to_internal_value(self, data):
         if isinstance(data, type('')) or not hasattr(data, '__iter__'):
             self.fail('not_a_list', input_type=type(data).__name__)
+        if not self.allow_empty and len(data) == 0:
+            self.fail('empty')
 
         return set([
             super(MultipleChoiceField, self).to_internal_value(item)
@@ -1056,18 +1288,35 @@ class MultipleChoiceField(ChoiceField):
 
     def to_representation(self, value):
         return set([
-            self.choice_strings_to_values[six.text_type(item)] for item in value
+            self.choice_strings_to_values.get(six.text_type(item), item) for item in value
         ])
+
+
+class FilePathField(ChoiceField):
+    default_error_messages = {
+        'invalid_choice': _('"{input}" is not a valid path choice.')
+    }
+
+    def __init__(self, path, match=None, recursive=False, allow_files=True,
+                 allow_folders=False, required=None, **kwargs):
+        # Defer to Django's FilePathField implmentation to get the
+        # valid set of choices.
+        field = DjangoFilePathField(
+            path, match=match, recursive=recursive, allow_files=allow_files,
+            allow_folders=allow_folders, required=required
+        )
+        kwargs['choices'] = field.choices
+        super(FilePathField, self).__init__(**kwargs)
 
 
 # File types...
 
 class FileField(Field):
     default_error_messages = {
-        'required': _("No file was submitted."),
-        'invalid': _("The submitted data was not a file. Check the encoding type on the form."),
-        'no_name': _("No filename could be determined."),
-        'empty': _("The submitted file is empty."),
+        'required': _('No file was submitted.'),
+        'invalid': _('The submitted data was not a file. Check the encoding type on the form.'),
+        'no_name': _('No filename could be determined.'),
+        'empty': _('The submitted file is empty.'),
         'max_length': _('Ensure this filename has at most {max_length} characters (it has {length}).'),
     }
     use_url = api_settings.UPLOADED_FILES_USE_URL
@@ -1096,8 +1345,12 @@ class FileField(Field):
         return data
 
     def to_representation(self, value):
+        if not value:
+            return None
+
         if self.use_url:
-            if not value:
+            if not getattr(value, 'url', None):
+                # If the file has not been saved it may not have a URL.
                 return None
             url = value.url
             request = self.context.get('request', None)
@@ -1110,8 +1363,7 @@ class FileField(Field):
 class ImageField(FileField):
     default_error_messages = {
         'invalid_image': _(
-            'Upload a valid image. The file you uploaded was either not an '
-            'image or a corrupted image.'
+            'Upload a valid image. The file you uploaded was either not an image or a corrupted image.'
         ),
     }
 
@@ -1149,12 +1401,20 @@ class ListField(Field):
     child = _UnvalidatedField()
     initial = []
     default_error_messages = {
-        'not_a_list': _('Expected a list of items but got type `{input_type}`')
+        'not_a_list': _('Expected a list of items but got type "{input_type}".'),
+        'empty': _('This list may not be empty.')
     }
 
     def __init__(self, *args, **kwargs):
         self.child = kwargs.pop('child', copy.deepcopy(self.child))
+        self.allow_empty = kwargs.pop('allow_empty', True)
+
         assert not inspect.isclass(self.child), '`child` has not been instantiated.'
+        assert self.child.source is None, (
+            "The `source` argument is not meaningful when applied to a `child=` field. "
+            "Remove `source=` from the field declaration."
+        )
+
         super(ListField, self).__init__(*args, **kwargs)
         self.child.bind(field_name='', parent=self)
 
@@ -1162,6 +1422,10 @@ class ListField(Field):
         # We override the default field access in order to support
         # lists in HTML forms.
         if html.is_html_input(dictionary):
+            val = dictionary.getlist(self.field_name, [])
+            if len(val) > 0:
+                # Support QueryDict lists in HTML input.
+                return val
             return html.parse_html_list(dictionary, prefix=self.field_name)
         return dictionary.get(self.field_name, empty)
 
@@ -1173,6 +1437,8 @@ class ListField(Field):
             data = html.parse_html_list(data)
         if isinstance(data, type('')) or not hasattr(data, '__iter__'):
             self.fail('not_a_list', input_type=type(data).__name__)
+        if not self.allow_empty and len(data) == 0:
+            self.fail('empty')
         return [self.child.run_validation(item) for item in data]
 
     def to_representation(self, data):
@@ -1184,22 +1450,28 @@ class ListField(Field):
 
 class DictField(Field):
     child = _UnvalidatedField()
-    initial = []
+    initial = {}
     default_error_messages = {
-        'not_a_dict': _('Expected a dictionary of items but got type `{input_type}`')
+        'not_a_dict': _('Expected a dictionary of items but got type "{input_type}".')
     }
 
     def __init__(self, *args, **kwargs):
         self.child = kwargs.pop('child', copy.deepcopy(self.child))
+
         assert not inspect.isclass(self.child), '`child` has not been instantiated.'
+        assert self.child.source is None, (
+            "The `source` argument is not meaningful when applied to a `child=` field. "
+            "Remove `source=` from the field declaration."
+        )
+
         super(DictField, self).__init__(*args, **kwargs)
         self.child.bind(field_name='', parent=self)
 
     def get_value(self, dictionary):
         # We override the default field access in order to support
-        # lists in HTML forms.
+        # dictionaries in HTML forms.
         if html.is_html_input(dictionary):
-            return html.parse_html_list(dictionary, prefix=self.field_name)
+            return html.parse_html_dict(dictionary, prefix=self.field_name)
         return dictionary.get(self.field_name, empty)
 
     def to_internal_value(self, data):

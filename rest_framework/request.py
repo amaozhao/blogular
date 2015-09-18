@@ -9,16 +9,17 @@ The wrapped request then offers a richer API, in particular :
     - form overloading of HTTP method, content type and content
 """
 from __future__ import unicode_literals
+
+import sys
+
 from django.conf import settings
 from django.http import QueryDict
 from django.http.multipartparser import parse_header
+from django.utils import six
 from django.utils.datastructures import MultiValueDict
-from django.utils.datastructures import MergeDict as DjangoMergeDict
-from django.utils.six import BytesIO
-from rest_framework import HTTP_HEADER_ENCODING
-from rest_framework import exceptions
+
+from rest_framework import HTTP_HEADER_ENCODING, exceptions
 from rest_framework.settings import api_settings
-import warnings
 
 
 def is_form_media_type(media_type):
@@ -48,25 +49,14 @@ class override_method(object):
 
     def __enter__(self):
         self.view.request = clone_request(self.request, self.method)
-        if self.action is not None:
-            # For viewsets we also set the `.action` attribute.
-            action_map = getattr(self.view, 'action_map', {})
-            self.view.action = action_map.get(self.method.lower())
+        # For viewsets we also set the `.action` attribute.
+        action_map = getattr(self.view, 'action_map', {})
+        self.view.action = action_map.get(self.method.lower())
         return self.view.request
 
     def __exit__(self, *args, **kwarg):
         self.view.request = self.request
-        if self.action is not None:
-            self.view.action = self.action
-
-
-class MergeDict(DjangoMergeDict, dict):
-    """
-    Using this as a workaround until the parsers API is properly
-    addressed in 3.1.
-    """
-    def __init__(self, *dicts):
-        self.dicts = dicts
+        self.view.action = self.action
 
 
 class Empty(object):
@@ -107,6 +97,10 @@ def clone_request(request, method):
         ret.accepted_renderer = request.accepted_renderer
     if hasattr(request, 'accepted_media_type'):
         ret.accepted_media_type = request.accepted_media_type
+    if hasattr(request, 'version'):
+        ret.version = request.version
+    if hasattr(request, 'versioning_scheme'):
+        ret.versioning_scheme = request.versioning_scheme
     return ret
 
 
@@ -210,56 +204,10 @@ class Request(object):
         return self._request.GET
 
     @property
-    def QUERY_PARAMS(self):
-        """
-        Synonym for `.query_params`, for backwards compatibility.
-        """
-        warnings.warn(
-            "`request.QUERY_PARAMS` is pending deprecation. Use `request.query_params` instead.",
-            PendingDeprecationWarning,
-            stacklevel=1
-        )
-        return self._request.GET
-
-    @property
     def data(self):
         if not _hasattr(self, '_full_data'):
             self._load_data_and_files()
         return self._full_data
-
-    @property
-    def DATA(self):
-        """
-        Parses the request body and returns the data.
-
-        Similar to usual behaviour of `request.POST`, except that it handles
-        arbitrary parsers, and also works on methods other than POST (eg PUT).
-        """
-        warnings.warn(
-            "`request.DATA` is pending deprecation. Use `request.data` instead.",
-            PendingDeprecationWarning,
-            stacklevel=1
-        )
-        if not _hasattr(self, '_data'):
-            self._load_data_and_files()
-        return self._data
-
-    @property
-    def FILES(self):
-        """
-        Parses the request body and returns any files uploaded in the request.
-
-        Similar to usual behaviour of `request.FILES`, except that it handles
-        arbitrary parsers, and also works on methods other than POST (eg PUT).
-        """
-        warnings.warn(
-            "`request.FILES` is pending deprecation. Use `request.data` instead.",
-            PendingDeprecationWarning,
-            stacklevel=1
-        )
-        if not _hasattr(self, '_files'):
-            self._load_data_and_files()
-        return self._files
 
     @property
     def user(self):
@@ -323,7 +271,8 @@ class Request(object):
         if not _hasattr(self, '_data'):
             self._data, self._files = self._parse()
             if self._files:
-                self._full_data = MergeDict(self._data, self._files)
+                self._full_data = self._data.copy()
+                self._full_data.update(self._files)
             else:
                 self._full_data = self._data
 
@@ -362,7 +311,7 @@ class Request(object):
         elif hasattr(self._request, 'read'):
             self._stream = self._request
         else:
-            self._stream = BytesIO(self.raw_post_data)
+            self._stream = six.BytesIO(self.raw_post_data)
 
     def _perform_form_overloading(self):
         """
@@ -378,16 +327,17 @@ class Request(object):
 
         # We only need to use form overloading on form POST requests.
         if (
-            not USE_FORM_OVERLOADING
-            or self._request.method != 'POST'
-            or not is_form_media_type(self._content_type)
+            self._request.method != 'POST' or
+            not USE_FORM_OVERLOADING or
+            not is_form_media_type(self._content_type)
         ):
             return
 
         # At this point we're committed to parsing the request as form data.
         self._data = self._request.POST
         self._files = self._request.FILES
-        self._full_data = MergeDict(self._data, self._files)
+        self._full_data = self._data.copy()
+        self._full_data.update(self._files)
 
         # Method overloading - change the method and remove the param from the content.
         if (
@@ -404,7 +354,7 @@ class Request(object):
             self._CONTENTTYPE_PARAM in self._data
         ):
             self._content_type = self._data[self._CONTENTTYPE_PARAM]
-            self._stream = BytesIO(self._data[self._CONTENT_PARAM].encode(self.parser_context['encoding']))
+            self._stream = six.BytesIO(self._data[self._CONTENT_PARAM].encode(self.parser_context['encoding']))
             self._data, self._files, self._full_data = (Empty, Empty, Empty)
 
     def _parse(self):
@@ -485,8 +435,39 @@ class Request(object):
         else:
             self.auth = None
 
-    def __getattr__(self, attr):
+    def __getattribute__(self, attr):
         """
-        Proxy other attributes to the underlying HttpRequest object.
+        If an attribute does not exist on this instance, then we also attempt
+        to proxy it to the underlying HttpRequest object.
         """
-        return getattr(self._request, attr)
+        try:
+            return super(Request, self).__getattribute__(attr)
+        except AttributeError:
+            info = sys.exc_info()
+            try:
+                return getattr(self._request, attr)
+            except AttributeError:
+                six.reraise(info[0], info[1], info[2].tb_next)
+
+    @property
+    def DATA(self):
+        raise NotImplementedError(
+            '`request.DATA` has been deprecated in favor of `request.data` '
+            'since version 3.0, and has been fully removed as of version 3.2.'
+        )
+
+    @property
+    def FILES(self):
+        # Leave this one alone for backwards compat with Django's request.FILES
+        # Different from the other two cases, which are not valid property
+        # names on the WSGIRequest class.
+        if not _hasattr(self, '_files'):
+            self._load_data_and_files()
+        return self._files
+
+    @property
+    def QUERY_PARAMS(self):
+        raise NotImplementedError(
+            '`request.QUERY_PARAMS` has been deprecated in favor of `request.query_params` '
+            'since version 3.0, and has been fully removed as of version 3.2.'
+        )

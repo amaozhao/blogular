@@ -178,10 +178,11 @@ class HtmlBlockPreprocessor(Preprocessor):
                 else:  # raw html
                     if len(items) - right_listindex <= 1:  # last element
                         right_listindex -= 1
-                    offset = 1 if i == right_listindex else 0
+                    if right_listindex <= i:
+                        right_listindex = i + 1
                     placeholder = self.markdown.htmlStash.store('\n\n'.join(
-                        items[i:right_listindex + offset]))
-                    del items[i:right_listindex + offset]
+                        items[i:right_listindex]))
+                    del items[i:right_listindex]
                     items.insert(i, placeholder)
         return items
 
@@ -216,14 +217,11 @@ class HtmlBlockPreprocessor(Preprocessor):
                                                                 block)
                     # keep checking conditions below and maybe just append
 
-                    if data_index < len(block) \
-                       and (util.isBlockLevel(left_tag)
-                       or left_tag == '--'):
+                    if data_index < len(block) and (util.isBlockLevel(left_tag) or left_tag == '--'):
                         text.insert(0, block[data_index:])
                         block = block[:data_index]
 
-                    if not (util.isBlockLevel(left_tag)
-                       or block[1] in ["!", "?", "@", "%"]):
+                    if not (util.isBlockLevel(left_tag) or block[1] in ["!", "?", "@", "%"]):
                         new_blocks.append(block)
                         continue
 

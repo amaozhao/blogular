@@ -96,7 +96,9 @@ class FootnoteExtension(Extension):
                 if child.tail:
                     if child.tail.find(self.getConfig("PLACE_MARKER")) > -1:
                         return child, element, False
-                finder(child)
+                child_res = finder(child)
+                if child_res is not None:
+                    return child_res
             return None
 
         res = finder(root)
@@ -287,7 +289,7 @@ class FootnoteTreeprocessor(Treeprocessor):
 
     def run(self, root):
         footnotesDiv = self.footnotes.makeFootnotesDiv(root)
-        if footnotesDiv:
+        if footnotesDiv is not None:
             result = self.footnotes.findFootnotesPlaceholder(root)
             if result:
                 child, parent, isText = result

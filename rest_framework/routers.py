@@ -17,15 +17,16 @@ from __future__ import unicode_literals
 
 import itertools
 from collections import namedtuple
-from django.conf.urls import patterns, url
+
+from django.conf.urls import url
 from django.core.exceptions import ImproperlyConfigured
 from django.core.urlresolvers import NoReverseMatch
+
 from rest_framework import views
-from rest_framework.compat import get_resolver_match, OrderedDict
+from rest_framework.compat import OrderedDict
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.urlpatterns import format_suffix_patterns
-
 
 Route = namedtuple('Route', ['url', 'mapping', 'name', 'initkwargs'])
 DynamicDetailRoute = namedtuple('DynamicDetailRoute', ['url', 'name', 'initkwargs'])
@@ -76,7 +77,7 @@ class BaseRouter(object):
     @property
     def urls(self):
         if not hasattr(self, '_urls'):
-            self._urls = patterns('', *self.get_urls())
+            self._urls = self.get_urls()
         return self._urls
 
 
@@ -165,34 +166,30 @@ class SimpleRouter(BaseRouter):
                 else:
                     list_routes.append((httpmethods, methodname))
 
+        def _get_dynamic_routes(route, dynamic_routes):
+            ret = []
+            for httpmethods, methodname in dynamic_routes:
+                method_kwargs = getattr(viewset, methodname).kwargs
+                initkwargs = route.initkwargs.copy()
+                initkwargs.update(method_kwargs)
+                url_path = initkwargs.pop("url_path", None) or methodname
+                ret.append(Route(
+                    url=replace_methodname(route.url, url_path),
+                    mapping=dict((httpmethod, methodname) for httpmethod in httpmethods),
+                    name=replace_methodname(route.name, url_path),
+                    initkwargs=initkwargs,
+                ))
+
+            return ret
+
         ret = []
         for route in self.routes:
             if isinstance(route, DynamicDetailRoute):
                 # Dynamic detail routes (@detail_route decorator)
-                for httpmethods, methodname in detail_routes:
-                    method_kwargs = getattr(viewset, methodname).kwargs
-                    url_path = method_kwargs.pop("url_path", None) or methodname
-                    initkwargs = route.initkwargs.copy()
-                    initkwargs.update(method_kwargs)
-                    ret.append(Route(
-                        url=replace_methodname(route.url, url_path),
-                        mapping=dict((httpmethod, methodname) for httpmethod in httpmethods),
-                        name=replace_methodname(route.name, url_path),
-                        initkwargs=initkwargs,
-                    ))
+                ret += _get_dynamic_routes(route, detail_routes)
             elif isinstance(route, DynamicListRoute):
                 # Dynamic list routes (@list_route decorator)
-                for httpmethods, methodname in list_routes:
-                    method_kwargs = getattr(viewset, methodname).kwargs
-                    url_path = method_kwargs.pop("url_path", None) or methodname
-                    initkwargs = route.initkwargs.copy()
-                    initkwargs.update(method_kwargs)
-                    ret.append(Route(
-                        url=replace_methodname(route.url, url_path),
-                        mapping=dict((httpmethod, methodname) for httpmethod in httpmethods),
-                        name=replace_methodname(route.name, url_path),
-                        initkwargs=initkwargs,
-                    ))
+                ret += _get_dynamic_routes(route, list_routes)
             else:
                 # Standard route
                 ret.append(route)
@@ -222,14 +219,15 @@ class SimpleRouter(BaseRouter):
 
         https://github.com/alanjds/drf-nested-routers
         """
-        base_regex = '(?P<{lookup_prefix}{lookup_field}>{lookup_value})'
+        base_regex = '(?P<{lookup_prefix}{lookup_url_kwarg}>{lookup_value})'
         # Use `pk` as default field, unset set.  Default regex should not
         # consume `.json` style suffixes and should break at '/' boundaries.
         lookup_field = getattr(viewset, 'lookup_field', 'pk')
+        lookup_url_kwarg = getattr(viewset, 'lookup_url_kwarg', None) or lookup_field
         lookup_value = getattr(viewset, 'lookup_value_regex', '[^/.]+')
         return base_regex.format(
             lookup_prefix=lookup_prefix,
-            lookup_field=lookup_field,
+            lookup_url_kwarg=lookup_url_kwarg,
             lookup_value=lookup_value
         )
 
@@ -286,13 +284,15 @@ class DefaultRouter(SimpleRouter):
 
             def get(self, request, *args, **kwargs):
                 ret = OrderedDict()
-                namespace = get_resolver_match(request).namespace
+                namespace = request.resolver_match.namespace
                 for key, url_name in api_root_dict.items():
                     if namespace:
                         url_name = namespace + ':' + url_name
                     try:
                         ret[key] = reverse(
                             url_name,
+                            args=args,
+                            kwargs=kwargs,
                             request=request,
                             format=kwargs.get('format', None)
                         )

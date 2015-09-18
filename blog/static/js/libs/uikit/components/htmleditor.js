@@ -1,19 +1,19 @@
-/*! UIkit 2.15.0 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
+/*! UIkit 2.22.0 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
 (function(addon) {
 
     var component;
 
-    if (jQuery && UIkit) {
-        component = addon(jQuery, UIkit);
+    if (window.UIkit) {
+        component = addon(UIkit);
     }
 
     if (typeof define == "function" && define.amd) {
         define("uikit-htmleditor", ["uikit"], function(){
-            return component || addon(jQuery, UIkit);
+            return component || addon(UIkit);
         });
     }
 
-})(function($, UI) {
+})(function(UI) {
 
     "use strict";
 
@@ -53,12 +53,12 @@
             // init code
             UI.ready(function(context) {
 
-                UI.$('textarea[data-@-htmleditor]', context).each(function() {
+                UI.$('textarea[data-uk-htmleditor]', context).each(function() {
 
-                    var editor = UI.$(this), obj;
+                    var editor = UI.$(this);
 
                     if (!editor.data('htmleditor')) {
-                        obj = UI.htmleditor(editor, UI.Utils.options(editor.attr('data-@-htmleditor')));
+                        UI.htmleditor(editor, UI.Utils.options(editor.attr('data-uk-htmleditor')));
                     }
                 });
             });
@@ -71,44 +71,47 @@
             this.CodeMirror = this.options.CodeMirror || CodeMirror;
             this.buttons    = {};
 
-            tpl = tpl.replace(/\{:lblPreview\}/g, this.options.lblPreview);
-            tpl = tpl.replace(/\{:lblCodeview\}/g, this.options.lblCodeview);
+            tpl = tpl.replace(/\{:lblPreview}/g, this.options.lblPreview);
+            tpl = tpl.replace(/\{:lblCodeview}/g, this.options.lblCodeview);
 
             this.htmleditor = UI.$(tpl);
-            this.content    = this.htmleditor.find('.@-htmleditor-content');
-            this.toolbar    = this.htmleditor.find('.@-htmleditor-toolbar');
-            this.preview    = this.htmleditor.find('.@-htmleditor-preview').children().eq(0);
-            this.code       = this.htmleditor.find('.@-htmleditor-code');
+            this.content    = this.htmleditor.find('.uk-htmleditor-content');
+            this.toolbar    = this.htmleditor.find('.uk-htmleditor-toolbar');
+            this.preview    = this.htmleditor.find('.uk-htmleditor-preview').children().eq(0);
+            this.code       = this.htmleditor.find('.uk-htmleditor-code');
 
             this.element.before(this.htmleditor).appendTo(this.code);
             this.editor = this.CodeMirror.fromTextArea(this.element[0], this.options.codemirror);
             this.editor.htmleditor = this;
             this.editor.on('change', UI.Utils.debounce(function() { $this.render(); }, 150));
-            this.editor.on('change', function() { $this.editor.save(); });
+            this.editor.on('change', function() {
+                $this.editor.save();
+                $this.element.trigger('input');
+            });
             this.code.find('.CodeMirror').css('height', this.options.height);
 
             // iframe mode?
             if (this.options.iframe) {
 
-                this.iframe = UI.$('<iframe class="@-htmleditor-iframe" frameborder="0" scrolling="auto" height="100" width="100%"></iframe>');
+                this.iframe = UI.$('<iframe class="uk-htmleditor-iframe" frameborder="0" scrolling="auto" height="100" width="100%"></iframe>');
                 this.preview.append(this.iframe);
 
                 // must open and close document object to start using it!
                 this.iframe[0].contentWindow.document.open();
                 this.iframe[0].contentWindow.document.close();
 
-                this.preview.container = $(this.iframe[0].contentWindow.document).find('body');
+                this.preview.container = UI.$(this.iframe[0].contentWindow.document).find('body');
 
                 // append custom stylesheet
                 if (typeof(this.options.iframe) === 'string') {
-                   this.preview.container.parent().append('<link rel="stylesheet" href="'+this.options.iframe+'">');
+                    this.preview.container.parent().append('<link rel="stylesheet" href="'+this.options.iframe+'">');
                 }
 
             } else {
                 this.preview.container = this.preview;
             }
 
-            UI.$win.on('resize', UI.Utils.debounce(function() { $this.fit(); }, 200));
+            UI.$win.on('resize load', UI.Utils.debounce(function() { $this.fit(); }, 200));
 
             var previewContainer = this.iframe ? this.preview.container:$this.preview.parent(),
                 codeContent      = this.code.find('.CodeMirror-sizer'),
@@ -117,25 +120,25 @@
                     if ($this.htmleditor.attr('data-mode') == 'tab') return;
 
                     // calc position
-                    var codeHeight       = codeContent.height() - codeScroll.height(),
-                        previewHeight    = previewContainer[0].scrollHeight - ($this.iframe ? $this.iframe.height() : previewContainer.height()),
-                        ratio            = previewHeight / codeHeight,
-                        previewPostition = codeScroll.scrollTop() * ratio;
+                    var codeHeight      = codeContent.height() - codeScroll.height(),
+                        previewHeight   = previewContainer[0].scrollHeight - ($this.iframe ? $this.iframe.height() : previewContainer.height()),
+                        ratio           = previewHeight / codeHeight,
+                        previewPosition = codeScroll.scrollTop() * ratio;
 
                     // apply new scroll
-                    previewContainer.scrollTop(previewPostition);
+                    previewContainer.scrollTop(previewPosition);
 
                 }, 10));
 
-            this.htmleditor.on('click', '.@-htmleditor-button-code, .@-htmleditor-button-preview', function(e) {
+            this.htmleditor.on('click', '.uk-htmleditor-button-code, .uk-htmleditor-button-preview', function(e) {
 
                 e.preventDefault();
 
                 if ($this.htmleditor.attr('data-mode') == 'tab') {
 
-                    $this.htmleditor.find('.@-htmleditor-button-code, .@-htmleditor-button-preview').removeClass('@-active').filter(this).addClass('@-active');
+                    $this.htmleditor.find('.uk-htmleditor-button-code, .uk-htmleditor-button-preview').removeClass('uk-active').filter(this).addClass('uk-active');
 
-                    $this.activetab = UI.$(this).hasClass('@-htmleditor-button-code') ? 'code' : 'preview';
+                    $this.activetab = UI.$(this).hasClass('uk-htmleditor-button-code') ? 'code' : 'preview';
                     $this.htmleditor.attr('data-active-tab', $this.activetab);
                     $this.editor.refresh();
                 }
@@ -171,10 +174,10 @@
             this.debouncedRedraw = UI.Utils.debounce(function () { $this.redraw(); }, 5);
 
             this.on('init.uk.component', function() {
-                $this.redraw();
+                $this.debouncedRedraw();
             });
 
-            this.element.attr('data-@-check-display', 1).on('display.uk.check', function(e) {
+            this.element.attr('data-uk-check-display', 1).on('display.uk.check', function(e) {
                 if (this.htmleditor.is(":visible")) this.fit();
             }.bind(this));
 
@@ -186,12 +189,12 @@
         },
 
         addButtons: function(buttons) {
-            $.extend(this.buttons, buttons);
+            UI.$.extend(this.buttons, buttons);
         },
 
         replaceInPreview: function(regexp, callback) {
 
-            var editor = this.editor, results = [], value = editor.getValue(), offset = -1;
+            var editor = this.editor, results = [], value = editor.getValue(), offset = -1, index = 0;
 
             this.currentvalue = this.currentvalue.replace(regexp, function() {
 
@@ -216,11 +219,13 @@
                     }
                 };
 
-                var result = callback(match);
+                var result = callback(match, index);
 
                 if (!result) {
                     return arguments[0];
                 }
+
+                index++;
 
                 results.push(match);
                 return result;
@@ -247,10 +252,10 @@
 
                 var title = $this.buttons[button].title ? $this.buttons[button].title : button;
 
-                bar.push('<li><a data-htmleditor-button="'+button+'" title="'+title+'" data-@-tooltip>'+$this.buttons[button].label+'</a></li>');
+                bar.push('<li><a data-htmleditor-button="'+button+'" title="'+title+'" data-uk-tooltip>'+$this.buttons[button].label+'</a></li>');
             });
 
-            this.toolbar.html(UI.prefix(bar.join('\n')));
+            this.toolbar.html(bar.join('\n'));
         },
 
         fit: function() {
@@ -267,9 +272,9 @@
                     this.htmleditor.attr('data-active-tab', this.activetab);
                 }
 
-                this.htmleditor.find('.@-htmleditor-button-code, .@-htmleditor-button-preview').removeClass('@-active')
-                    .filter(this.activetab == 'code' ? '.@-htmleditor-button-code' : '.@-htmleditor-button-preview')
-                    .addClass('@-active');
+                this.htmleditor.find('.uk-htmleditor-button-code, .uk-htmleditor-button-preview').removeClass('uk-active')
+                    .filter(this.activetab == 'code' ? '.uk-htmleditor-button-code' : '.uk-htmleditor-button-preview')
+                    .addClass('uk-active');
             }
 
             this.editor.refresh();
@@ -315,7 +320,7 @@
 
         addShortcut: function(name, callback) {
             var map = {};
-            if (!$.isArray(name)) {
+            if (!UI.$.isArray(name)) {
                 name = [name];
             }
 
@@ -380,20 +385,20 @@
 
 
     UI.components.htmleditor.template = [
-        '<div class="@-htmleditor @-clearfix" data-mode="split">',
-            '<div class="@-htmleditor-navbar">',
-                '<ul class="@-htmleditor-navbar-nav @-htmleditor-toolbar"></ul>',
-                '<div class="@-htmleditor-navbar-flip">',
-                    '<ul class="@-htmleditor-navbar-nav">',
-                        '<li class="@-htmleditor-button-code"><a>{:lblCodeview}</a></li>',
-                        '<li class="@-htmleditor-button-preview"><a>{:lblPreview}</a></li>',
-                        '<li><a data-htmleditor-button="fullscreen"><i class="@-icon-expand"></i></a></li>',
+        '<div class="uk-htmleditor uk-clearfix" data-mode="split">',
+            '<div class="uk-htmleditor-navbar">',
+                '<ul class="uk-htmleditor-navbar-nav uk-htmleditor-toolbar"></ul>',
+                '<div class="uk-htmleditor-navbar-flip">',
+                    '<ul class="uk-htmleditor-navbar-nav">',
+                        '<li class="uk-htmleditor-button-code"><a>{:lblCodeview}</a></li>',
+                        '<li class="uk-htmleditor-button-preview"><a>{:lblPreview}</a></li>',
+                        '<li><a data-htmleditor-button="fullscreen"><i class="uk-icon-expand"></i></a></li>',
                     '</ul>',
                 '</div>',
             '</div>',
-            '<div class="@-htmleditor-content">',
-                '<div class="@-htmleditor-code"></div>',
-                '<div class="@-htmleditor-preview"><div></div></div>',
+            '<div class="uk-htmleditor-content">',
+                '<div class="uk-htmleditor-code"></div>',
+                '<div class="uk-htmleditor-preview"><div></div></div>',
             '</div>',
         '</div>'
     ].join('');
@@ -406,40 +411,40 @@
             editor.addButtons({
 
                 fullscreen: {
-                    title  : '全屏',
-                    label  : '<i class="@-icon-expand"></i>'
+                    title  : 'Fullscreen',
+                    label  : '<i class="uk-icon-expand"></i>'
                 },
                 bold : {
-                    title  : '加粗',
-                    label  : '<i class="@-icon-bold"></i>'
+                    title  : 'Bold',
+                    label  : '<i class="uk-icon-bold"></i>'
                 },
                 italic : {
-                    title  : '斜体',
-                    label  : '<i class="@-icon-italic"></i>'
+                    title  : 'Italic',
+                    label  : '<i class="uk-icon-italic"></i>'
                 },
                 strike : {
-                    title  : '删除的文本',
-                    label  : '<i class="@-icon-strikethrough"></i>'
+                    title  : 'Strikethrough',
+                    label  : '<i class="uk-icon-strikethrough"></i>'
                 },
                 blockquote : {
-                    title  : '引用',
-                    label  : '<i class="@-icon-quote-right"></i>'
+                    title  : 'Blockquote',
+                    label  : '<i class="uk-icon-quote-right"></i>'
                 },
                 link : {
-                    title  : '链接',
-                    label  : '<i class="@-icon-link"></i>'
+                    title  : 'Link',
+                    label  : '<i class="uk-icon-link"></i>'
                 },
                 image : {
-                    title  : '图片',
-                    label  : '<i class="@-icon-picture-o"></i>'
+                    title  : 'Image',
+                    label  : '<i class="uk-icon-picture-o"></i>'
                 },
                 listUl : {
-                    title  : '无序列表',
-                    label  : '<i class="@-icon-list-ul"></i>'
+                    title  : 'Unordered List',
+                    label  : '<i class="uk-icon-list-ul"></i>'
                 },
                 listOl : {
-                    title  : '有序列表',
-                    label  : '<i class="@-icon-list-ol"></i>'
+                    title  : 'Ordered List',
+                    label  : '<i class="uk-icon-list-ol"></i>'
                 }
 
             });
@@ -465,7 +470,7 @@
                     cm.setCursor({ line: posend.line, ch: cm.getLine(posend.line).length });
                     cm.focus();
                 }
-            }
+            };
 
             editor.on('action.listUl', function() {
                 listfn();
@@ -476,11 +481,11 @@
             });
 
             editor.htmleditor.on('click', 'a[data-htmleditor-button="fullscreen"]', function() {
-                editor.htmleditor.toggleClass('@-htmleditor-fullscreen');
+                editor.htmleditor.toggleClass('uk-htmleditor-fullscreen');
 
                 var wrap = editor.editor.getWrapperElement();
 
-                if (editor.htmleditor.hasClass('@-htmleditor-fullscreen')) {
+                if (editor.htmleditor.hasClass('uk-htmleditor-fullscreen')) {
 
                     editor.editor.state.fullScreenRestore = {scrollTop: window.pageYOffset, scrollLeft: window.pageXOffset, width: wrap.style.width, height: wrap.style.height};
                     wrap.style.width  = '';
@@ -518,14 +523,12 @@
 
         init: function(editor) {
 
-            var parser = editor.options.marked || marked;
+            var parser = editor.options.mdparser || marked || null;
 
             if (!parser) return;
 
-            parser.setOptions(editor.options.markedOptions);
-
             if (editor.options.markdown) {
-                enableMarkdown()
+                enableMarkdown();
             }
 
             addAction('bold', '**$1**');
@@ -594,15 +597,15 @@
                 }
             });
 
-            $.extend(editor, {
+            UI.$.extend(editor, {
 
                 enableMarkdown: function() {
-                    enableMarkdown()
+                    enableMarkdown();
                     this.render();
                 },
                 disableMarkdown: function() {
                     this.editor.setOption('mode', 'htmlmixed');
-                    this.htmleditor.find('.@-htmleditor-button-code a').html(this.options.lblCodeview);
+                    this.htmleditor.find('.uk-htmleditor-button-code a').html(this.options.lblCodeview);
                     this.render();
                 }
 
@@ -616,7 +619,7 @@
 
             function enableMarkdown() {
                 editor.editor.setOption('mode', 'gfm');
-                editor.htmleditor.find('.@-htmleditor-button-code a').html(editor.options.lblMarkedview);
+                editor.htmleditor.find('.uk-htmleditor-button-code a').html(editor.options.lblMarkedview);
             }
 
             function addAction(name, replace, mode) {

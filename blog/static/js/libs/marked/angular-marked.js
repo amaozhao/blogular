@@ -6,9 +6,12 @@
 
 /* jshint undef: true, unused: true */
 /* global angular:true */
+/* global marked:true */
+/* global module */
+/* global require */
 
 (function () {
-	'use strict';
+  'use strict';
 
   /**
    * @ngdoc overview
@@ -31,19 +34,20 @@
 
       Convert markdown to html at run time.  For example:
 
-      <example module="hc.marked">
-        <file name=".html">
+      <example module="app">
+        <file name="example.html">
           <form ng-controller="MainController">
             Markdown:<br />
-            <textarea ng-model="my_markdown" cols="60" rows="5" class="span8" /><br />
+            <textarea ng-model="my_markdown" cols="60" rows="5" class="span8"></textarea><br />
             Output:<br />
             <div marked="my_markdown" />
           </form>
         </file>
-        <file  name=".js">
+        <file  name="example.js">
           function MainController($scope) {
             $scope.my_markdown = "*This* **is** [markdown](https://daringfireball.net/projects/markdown/)";
           }
+          angular.module('app', ['hc.marked']).controller('MainController', MainController);
         </file>
       </example>
 
@@ -70,6 +74,10 @@
       With that you're ready to get started!
      */
 
+  if (typeof module !== 'undefined' && typeof exports === 'object') {
+    module.exports = 'hc.marked';
+  }
+
   angular.module('hc.marked', [])
 
     /**
@@ -77,19 +85,20 @@
     * @name hc.marked.service:marked
     * @requires $window
     * @description
-    * A reference to the [marked](https://github.com/chjj/marked) parser.  Same as `$window.marked`.
+    * A reference to the [marked](https://github.com/chjj/marked) parser.
     *
     * @example
-    <example module="hc.marked">
-      <file name=".html">
+    <example module="app">
+      <file name="example.html">
         <div ng-controller="MainController">
           html: {{html}}
         </div>
       </file>
-      <file  name=".js">
+      <file  name="example.js">
         function MainController($scope, marked) {
           $scope.html = marked('#TEST');
         }
+        angular.module('app', ['hc.marked']).controller('MainController', MainController);
       </file>
     </example>
    **/
@@ -100,45 +109,78 @@
    * @description
    * Use `markedProvider` to change the default behavior of the {@link hc.marked.service:marked marked} service.
    *
-	 * @example
+   * @example
 
-		## Example using [google-code-prettify syntax highlighter](https://code.google.com/p/google-code-prettify/) (must include google-code-prettify.js script).  Also works with [highlight.js Javascript syntax highlighter](http://highlightjs.org/).
+    ## Example using [google-code-prettify syntax highlighter](https://code.google.com/p/google-code-prettify/) (must include google-code-prettify.js script).  Also works with [highlight.js Javascript syntax highlighter](http://highlightjs.org/).
 
-		<example module="myApp">
-		<file name=".js">
-		angular.module('myApp', ['hc.marked'])
-			.config(['markedProvider', function(markedProvider) {
-				markedProvider.setOptions({
-					gfm: true,
-					tables: true,
-					highlight: function (code) {
-						return prettyPrintOne(code);
-					}
-				});
-			}]);
-		</file>
-		<file name=".html">
-			<marked>
-			```js
-			angular.module('myApp', ['hc.marked'])
-				.config(['markedProvider', function(markedProvider) {
-					markedProvider.setOptions({
-						gfm: true,
-						tables: true,
-						highlight: function (code) {
-							return prettyPrintOne(code);
-						}
-					});
-				}]);
-			```
-			</marked>
-		</file>
-		</example>
+    <example module="myAppA">
+      <file name="exampleA.js">
+      angular.module('myAppA', ['hc.marked'])
+        .config(['markedProvider', function(markedProvider) {
+          markedProvider.setOptions({
+            gfm: true,
+            tables: true,
+            highlight: function (code) {
+              return prettyPrintOne(code);
+            }
+          });
+        }]);
+      </file>
+      <file name="exampleA.html">
+        <marked>
+        ```js
+        angular.module('myAppA', ['hc.marked'])
+          .config(['markedProvider', function(markedProvider) {
+            markedProvider.setOptions({
+              gfm: true,
+              tables: true,
+              highlight: function (code) {
+                return prettyPrintOne(code);
+              }
+            });
+          }]);
+        ```
+        </marked>
+      </file>
+    </example>
+
+    ## Example overriding the way custom markdown links are displayed
+
+    <example module="myAppB">
+      <file name="exampleB.js">
+      angular.module('myAppB', ['hc.marked'])
+        .config(['markedProvider', function(markedProvider) {
+          markedProvider.setRenderer({
+            link: function(href, title, text) {
+              return "<a href='" + href + "'" + (title ? " title='" + title + "'" : '') + " target='_blank'>" + text + "</a>";
+            }
+          });
+        }]);
+      </file>
+      <file name="exampleB.html">
+        <marked>
+          This is [an example](http://example.com/ "Title") inline link.
+          [This link](http://example.net/) has no title attribute.
+        </marked>
+      </file>
+    </example>
   **/
 
   .provider('marked', function () {
 
     var self = this;
+
+    /**
+     * @ngdoc method
+     * @name markedProvider#setRenderer
+     * @methodOf hc.marked.service:markedProvider
+     *
+     * @param {object} opts Default renderer options for [marked](https://github.com/chjj/marked#overriding-renderer-methods).
+     */
+
+    self.setRenderer = function (opts) {
+      this.renderer = opts;
+    };
 
     /**
      * @ngdoc method
@@ -152,10 +194,39 @@
       this.defaults = opts;
     };
 
-    self.$get = ['$window',function ($window) {
-      var m = $window.marked;
+    self.$get = ['$window', '$log', function ($window, $log) {
 
-      self.setOptions = m.setOptions;
+      var m =  (function() {
+
+        if (typeof module !== 'undefined' && typeof exports === 'object') {
+          return require('marked');
+        } else {
+          return $window.marked || marked;
+        }
+
+      })();
+
+      if (angular.isUndefined(m)) {
+        $log.error('angular-marked Error: marked not loaded.  See installation instructions.');
+        return;
+      }
+
+      // override rendered markdown html
+      // with custom definitions if defined
+      if (self.renderer) {
+        var r = new m.Renderer();
+        var o = Object.keys(self.renderer),
+            l = o.length;
+
+        while (l--) {
+          r[o[l]] = self.renderer[o[l]];
+        }
+
+        // add the new renderer to the options if need be
+        self.defaults = self.defaults || {};
+        self.defaults.renderer = r;
+      }
+
       m.setOptions(self.defaults);
 
       return m;
@@ -163,10 +234,10 @@
 
   })
 
-  // TODO: filter tests */
+  // TODO: filter and tests */
   //app.filter('marked', ['marked', function(marked) {
-	//  return marked;
-	//}]);
+  //  return marked;
+  //}]);
 
   /**
    * @ngdoc directive
@@ -177,8 +248,10 @@
    * @description
    * Compiles source test into HTML.
    *
-   * @param {expression} marked The source text to be compiled.  If blank uses content as the source.
+   * @param {expression=} marked The source text to be compiled.  If blank uses content as the source.
    * @param {expression=} opts Hash of options that override defaults.
+   * @param {string=} src Expression evaluating to URL. If the source is a string constant,
+ *                 make sure you wrap it in **single** quotes, e.g. `src="'myPartialTemplate.html'"`.
    *
    * @example
 
@@ -187,18 +260,18 @@
       <example module="hc.marked">
         <file name="exampleA.html">
          * <marked>
-         * ### Markdown directive
+         *   ### Markdown directive
          *
-         * *It works!*
+         *   *It works!*
          *
-         * *This* **is** [markdown](https://daringfireball.net/projects/markdown/) in the view.
+         *   *This* **is** [markdown](https://daringfireball.net/projects/markdown/) in the view.
          * </marked>
         </file>
       </example>
 
      ## Bind to a scope variable
 
-      <example module="hc.marked">
+      <example module="app">
         <file name="exampleB.html">
           <form ng-controller="MainController">
             Markdown:<br />
@@ -209,9 +282,10 @@
         </file>
         <file  name="exampleB.js">
           * function MainController($scope) {
-          *   $scope.my_markdown = '*This* **is** [markdown](https://daringfireball.net/projects/markdown/)';
-					*   $scope.my_markdown += ' in a scope variable';
+          *     $scope.my_markdown = '*This* **is** [markdown](https://daringfireball.net/projects/markdown/)';
+          *     $scope.my_markdown += ' in a scope variable';
           * }
+          * angular.module('app', ['hc.marked']).controller('MainController', MainController);
         </file>
       </example>
 
@@ -219,31 +293,64 @@
 
        <example module="hc.marked">
          <file name="exampleC.html">
-           <div marked ng-include="'include.html'" />
+           <div marked src="'include.html'" />
          </file>
-				 * <file name="include.html">
-				 * *This* **is** [markdown](https://daringfireball.net/projects/markdown/) in a include file.
-				 * </file>
+         * <file name="include.html">
+         * *This* **is** [markdown](https://daringfireball.net/projects/markdown/) in a include file.
+         * </file>
        </example>
    */
 
-  .directive('marked', ['marked', function (marked) {
+  .directive('marked', ['marked', '$templateRequest', function (marked, $templateRequest) {
     return {
       restrict: 'AE',
       replace: true,
       scope: {
         opts: '=',
-        marked: '='
+        marked: '=',
+        src: '='
       },
       link: function (scope, element, attrs) {
         set(scope.marked || element.text() || '');
 
-        function set(val) {
-          element.html(marked(val || '', scope.opts || null));
-        }
-
         if (attrs.marked) {
           scope.$watch('marked', set);
+        }
+
+        if (attrs.src) {
+          scope.$watch('src', function(src) {
+            $templateRequest(src, true).then(function(response) {
+              set(response);
+            });
+          });
+        }
+
+        function unindent(text) {
+          if (!text) return text;
+
+          var lines  = text
+            .replace(/\t/g, '  ')
+            .split(/\r?\n/);
+
+          var i, l, min = null, line, len = lines.length;
+          for (i = 0; i < len; i++) {
+            line = lines[i];
+            l = line.match(/^(\s*)/)[0].length;
+            if (l === line.length) { continue; }
+            min = (l < min || min === null) ? l : min;
+          }
+
+          if (min !== null && min > 0) {
+            for (i = 0; i < len; i++) {
+              lines[i] = lines[i].substr(min);
+            }
+          }
+          return lines.join('\n');
+        }
+
+        function set(text) {
+          text = unindent(text || '');
+          element.html(marked(text, scope.opts || null));
         }
 
       }
