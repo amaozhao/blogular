@@ -16,14 +16,14 @@ class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
     permission_classes = (IsOwnerOrReadOnly,)
     paginate_by = 20
-    
+
     def perform_create(self, serializer):
         entry_id = int(self.kwargs['entry'])
         serializer.save(
             author=self.request.user,
-            entry = Entry.objects.get(id=entry_id)
+            entry=Entry.objects.get(id=entry_id)
         )
-        
+
     def get_queryset(self):
         entry_id = int(self.kwargs['entry'])
         return Comment.objects.filter(entry=entry_id)

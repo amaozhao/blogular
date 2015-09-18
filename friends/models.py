@@ -46,7 +46,8 @@ class FriendShip(models.Model):
 @python_2_unicode_compatible
 class FollowingTag(models.Model):
     author = models.ForeignKey(User, related_name='followingtags')
-    tags = models.ManyToManyField(Tag, related_name='tags', blank=True, null=True)
-    
+    tags = models.ManyToManyField(
+        Tag, related_name='tags', blank=True)
+
     def __str__(self):
         return "%s" % self.id

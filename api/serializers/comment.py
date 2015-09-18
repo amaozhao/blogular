@@ -13,7 +13,7 @@ from api.serializers.user import UserSerializer
 class CommentSerializer(serializers.ModelSerializer):
     author = UserSerializer(read_only=True)
     entry = serializers.IntegerField(source='id', required=False)
-    
+
     class Meta:
         model = Comment
         depth = 1

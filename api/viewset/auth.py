@@ -63,7 +63,8 @@ class SignInView(View):
         else:
             message = {
                 'status': 403,
-                'message': _('This user is not registered. Please register first!')
+                'message': _(
+                    'This user is not registered. Please register first!')
             }
             print 110
             return JsonResponse(message, status=403)

@@ -19,7 +19,8 @@ from api.viewset.friendship import FollowingViewSet, FollowedViewSet
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet, base_name='users')
-router.register(r'comments/(?P<entry>\d+)', CommentViewSet, base_name='comments')
+router.register(
+    r'comments/(?P<entry>\d+)', CommentViewSet, base_name='comments')
 router.register(r'find', FindViewSet, base_name='find')
 router.register(r'entries', EntryViewSet, base_name='entries')
 router.register(r'following', FollowingViewSet, base_name='following')

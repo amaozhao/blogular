@@ -103,7 +103,7 @@ class Comment(models.Model):
         db_index=True,
         auto_now=True
     )
-    
+
     @property
     def html(self):
         return markdown(
@@ -116,9 +116,9 @@ class Comment(models.Model):
 
     def __str__(self):
         return '%s-%s' % (self.entry.id, self.id)
-    
+
     class Meta:
-        ordering = ['-created',]
+        ordering = ['-created', ]
         verbose_name = _('comment')
         verbose_name_plural = _('comments')
         index_together = [
