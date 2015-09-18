@@ -3,7 +3,7 @@
 angular.module('blog.nav.controllers', [])
   .controller('HeaderCtrl', ['$scope', '$rootScope', '$http', '$location',
   function($scope, $rootScope, $http, $location) {
-    $scope.auth_url = '/api/auth-user/';
+    $scope.auth_url = '/rest-auth/login/';
     $http.get($scope.auth_url).success(function(data, status, header, config){
       if(data && data.username){
         $rootScope.authuser = data;
@@ -15,7 +15,7 @@ angular.module('blog.nav.controllers', [])
     };
 
     $scope.signout = function(){
-      $http.get('/api/auth/signout/').success(function(data, status, header, config){
+      $http.get('/rest-auth/logout/').success(function(data, status, header, config){
         $rootScope.authuser = null;
       }).error(function(data, status, header, config) {});
     };
