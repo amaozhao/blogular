@@ -5,10 +5,10 @@ Created on 2014年12月31日
 @author: amaozhao
 '''
 
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from blog.views import Home
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(r'^$', Home.as_view(), name='home'),
-)
+    url(r'^[a-zA-Z]*', Home.as_view(), name='home'),
+]

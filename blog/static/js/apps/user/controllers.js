@@ -14,10 +14,12 @@ angular.module('blog.user.controllers', [])
     $scope.message = {};
     $rootScope.title = '用户登陆';
     $scope.signin = function(){
-      $scope.url = '/api/auth/signin/';
+      $scope.url = '/rest-auth/login/';
       $http.post($scope.url, $scope.user).success(function(data, status, header, config){
-        $rootScope.authuser = data.user;
-        $location.path('/');
+        $http.get('/rest-auth/user/').success(function(data, status, header, config) {
+          $rootScope.authuser = data;
+          $location.path('/');
+        }).error(function(data, status, header, config) {});
       }).error(function(data, status, header, config) {
         $scope.message = data;
       });

@@ -5,13 +5,13 @@ Created on 2015年1月9日
 @author: amaozhao
 '''
 from friends.models import FriendShip
-from api.serializers.user import UserSerializer
+from rest_auth.serializers import UserDetailsSerializer
 from rest_framework import serializers
 
 
 class FriendshipSerializer(serializers.ModelSerializer):
-    to_user = UserSerializer()
-    from_user = UserSerializer()
+    to_user = UserDetailsSerializer()
+    from_user = UserDetailsSerializer()
 
     class Meta:
         model = FriendShip

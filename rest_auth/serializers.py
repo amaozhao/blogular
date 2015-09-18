@@ -47,7 +47,8 @@ class LoginSerializer(serializers.Serializer):
                 elif username and password:
                     user = authenticate(username=username, password=password)
                 else:
-                    msg = _('Must include either "username" or "email" and "password".')
+                    msg = _(
+                        'Must include either "username" or "email" and "password".')
                     raise exceptions.ValidationError(msg)
 
         elif username and password:
@@ -72,13 +73,15 @@ class LoginSerializer(serializers.Serializer):
             if app_settings.EMAIL_VERIFICATION == app_settings.EmailVerificationMethod.MANDATORY:
                 email_address = user.emailaddress_set.get(email=user.email)
                 if not email_address.verified:
-                    raise serializers.ValidationError('E-mail is not verified.')
+                    raise serializers.ValidationError(
+                        'E-mail is not verified.')
 
         attrs['user'] = user
         return attrs
 
 
 class TokenSerializer(serializers.ModelSerializer):
+
     """
     Serializer for Token model.
     """
@@ -95,7 +98,7 @@ class UserDetailsSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = get_user_model()
-        fields = ('username', 'email', 'first_name', 'last_name')
+        fields = ('id', 'username', 'email')
         read_only_fields = ('email', )
 
 
@@ -111,7 +114,8 @@ class PasswordResetSerializer(serializers.Serializer):
 
     def validate_email(self, value):
         # Create PasswordResetForm with the serializer
-        self.reset_form = self.password_reset_form_class(data=self.initial_data)
+        self.reset_form = self.password_reset_form_class(
+            data=self.initial_data)
         if not self.reset_form.is_valid():
             raise serializers.ValidationError('Error')
         return value
@@ -128,6 +132,7 @@ class PasswordResetSerializer(serializers.Serializer):
 
 
 class PasswordResetConfirmSerializer(serializers.Serializer):
+
     """
     Serializer for requesting a password reset e-mail.
     """

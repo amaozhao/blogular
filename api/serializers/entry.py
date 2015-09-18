@@ -7,12 +7,12 @@ Created on 2014年12月31日
 
 from blog.models import Entry
 from rest_framework import serializers
-from api.serializers.user import UserSerializer
 from api.serializers.tag import BaseTagSerializer
+from rest_auth.serializers import UserDetailsSerializer
 
 
 class EntrySerializer(serializers.ModelSerializer):
-    author = UserSerializer(read_only=True)
+    author = UserDetailsSerializer(read_only=True)
     tags = BaseTagSerializer(many=True, read_only=True)
 
     def create(self, validated_data):
