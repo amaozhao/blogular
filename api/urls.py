@@ -8,9 +8,9 @@ Created on 2014年12月31日
 from django.conf.urls import include, url
 from rest_framework import routers
 
-from api.viewset.user import UserViewSet
 from api.viewset.entry import (
-    EntryViewSet, RecentEntryView, FindViewSet
+    EntryViewSet, RecentEntryView,
+    UserEntryView, FindViewSet
 )
 from api.viewset.comment import CommentViewSet
 from api.viewset.tag import TagList, TagDetail, FollowingTagList
@@ -29,5 +29,6 @@ urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^tags/$', TagList.as_view()),
     url(r'^tags/(?P<id>\d+)/$', TagDetail.as_view()),
+    url(r'^users/(?P<id>\d+)/$', UserEntryView.as_view()),
     url(r'^recententries/$', RecentEntryView.as_view()),
 ]

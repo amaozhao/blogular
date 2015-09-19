@@ -10,7 +10,8 @@ from rest_framework.authtoken.models import Token
 from rest_framework.generics import RetrieveUpdateAPIView
 
 from .app_settings import (
-    TokenSerializer, UserDetailsSerializer, LoginSerializer,
+    # TokenSerializer,
+    UserDetailsSerializer, LoginSerializer,
     PasswordResetSerializer, PasswordResetConfirmSerializer,
     PasswordChangeSerializer
 )
@@ -30,7 +31,7 @@ class LoginView(GenericAPIView):
     permission_classes = (AllowAny,)
     serializer_class = LoginSerializer
     token_model = Token
-    response_serializer = TokenSerializer
+    response_serializer = UserDetailsSerializer
 
     def login(self):
         self.user = self.serializer.validated_data['user']
@@ -41,7 +42,7 @@ class LoginView(GenericAPIView):
 
     def get_response(self):
         return Response(
-            self.response_serializer(self.token).data, status=status.HTTP_200_OK
+            self.response_serializer(self.user).data, status=status.HTTP_200_OK
         )
 
     def get_error_response(self):
@@ -127,7 +128,8 @@ class PasswordResetView(GenericAPIView):
 class PasswordResetConfirmView(GenericAPIView):
 
     """
-    Password reset e-mail link is confirmed, therefore this resets the user's password.
+    Password reset e-mail link is confirmed,
+    therefore this resets the user's password.
 
     Accepts the following POST parameters: new_password1, new_password2
     Accepts the following Django URL arguments: token, uid
@@ -144,7 +146,8 @@ class PasswordResetConfirmView(GenericAPIView):
                 serializer.errors, status=status.HTTP_400_BAD_REQUEST
             )
         serializer.save()
-        return Response({"success": "Password has been reset with the new password."})
+        return Response(
+            {"success": "Password has been reset with the new password."})
 
 
 class PasswordChangeView(GenericAPIView):

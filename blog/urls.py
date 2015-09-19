@@ -10,5 +10,5 @@ from blog.views import Home
 
 urlpatterns = [
     url(r'^$', Home.as_view(), name='home'),
-    url(r'^[a-zA-Z]*', Home.as_view(), name='home'),
+    url(r'^[a-zA-Z]', Home.as_view(), name='home'),
 ]

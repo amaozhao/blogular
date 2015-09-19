@@ -8,9 +8,7 @@ angular.module('blog.nav.controllers', [])
       if(data && data.username){
         $rootScope.authuser = data;
       }
-    }).error(function(data, status, header, config) {
-      console.log(status)
-    });
+    }).error(function(data, status, header, config) {});
 
     $scope.isActive = function(route) {
       return route === $location.path();

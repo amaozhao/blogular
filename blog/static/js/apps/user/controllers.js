@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('blog.user.controllers', [])
-  .controller('UserListCtrl', ['$scope', '$rootScope', '$http', '$location', '$routeParams',
-    function($scope, $rootScope, $http, $location, $routeParams) {
-    $scope.url = '/api/entries/';
+  .controller('UserListCtrl', ['$scope', '$rootScope', '$http', '$routeParams',
+    function($scope, $rootScope, $http, $routeParams) {
+    $scope.url = '/api/users/' + $routeParams.id + '/';
     $http.get($scope.url).success(function(data, status, header, config){
       $scope.data = data;
       $rootScope.title = '用户';
@@ -16,10 +16,8 @@ angular.module('blog.user.controllers', [])
     $scope.signin = function(){
       $scope.url = '/rest-auth/login/';
       $http.post($scope.url, $scope.user).success(function(data, status, header, config){
-        $http.get('/rest-auth/user/').success(function(data, status, header, config) {
-          $rootScope.authuser = data;
-          $location.path('/');
-        }).error(function(data, status, header, config) {});
+        $rootScope.authuser = data;
+        $location.path('/');
       }).error(function(data, status, header, config) {
         $scope.message = data;
       });
