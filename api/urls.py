@@ -12,7 +12,7 @@ from api.viewset.entry import (
     EntryViewSet, RecentEntryView,
     UserEntryView, FindViewSet
 )
-from api.viewset.comment import CommentViewSet
+from api.viewset.comment import CommentViewSet, RecentCommentView
 from api.viewset.tag import TagList, TagDetail, FollowingTagList
 from api.viewset.friendship import FollowingViewSet, FollowedViewSet
 
@@ -31,4 +31,5 @@ urlpatterns = [
     url(r'^tags/(?P<id>\d+)/$', TagDetail.as_view()),
     url(r'^users/(?P<id>\d+)/$', UserEntryView.as_view()),
     url(r'^recententries/$', RecentEntryView.as_view()),
+    url(r'^recentcomments/$', RecentCommentView.as_view()),
 ]

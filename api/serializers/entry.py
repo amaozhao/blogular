@@ -31,3 +31,11 @@ class EntrySerializer(serializers.ModelSerializer):
     class Meta:
         model = Entry
         depth = 1
+
+
+class CommentEntrySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Entry
+        depth = 1
+        fields = ['id', 'title', ]

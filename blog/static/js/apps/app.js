@@ -10,6 +10,7 @@ var blog = angular.module('blog', [
   'angularMoment',
   'angular-loading-bar',
   'selectize',
+  'ngHolder',
   'blog.user.controllers',
   'blog.tag.controllers',
   'blog.nav.controllers',

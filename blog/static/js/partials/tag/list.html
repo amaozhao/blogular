@@ -3,7 +3,7 @@
     <div class="col-md-2 col-sm-3" ng-repeat="tag in data.results">
       <div class="thumbnail">
         <a ng-href="/tags/{{ tag.id }}">
-          <img class="img-circle" ng-src="" alt="{{ tag.name }}" />
+          <h3 class="text-center">{{ tag.name }}</h3>
         </a>
         <div class="caption text-center">
           <a ng-click="add(tag)" class="btn btn-primary btn-sm" ng-if="!tag.added">订阅</a>

@@ -14,7 +14,7 @@
   <ul class="list-group">
     <li class="list-group-item" ng-repeat="entry in recententries">
       <a ng-href="/posts/{{ entry.id }}">{{ entry.title }}</a>
-      <span  am-time-ago="entry.created" class="badge"></span>
+      <span am-time-ago="entry.created" class="badge"></span>
     </li>
   </ul>
 </div>
@@ -24,6 +24,21 @@
     <h3 class="panel-title">最新评论</h3>
   </div>
   <div class="panel-body">
-    关于本网站的详细介绍,用法等相关内容.
+    <div class="media" ng-repeat="comment in recentcomments">
+      <a class="media-left" ng-href="/users/{{ comment.author.id }}/">
+        <img ng-src="https://avatars.githubusercontent.com/{{comment.author.username}}?v=3&s=32" class="img-circle" height="48" width="48">
+      </a>
+      <div class="media-body">
+        <h5 class="media-heading">
+          <strong>{{comment.author.username}}</strong>评论于
+          <a ng-href="/posts/{{ comment.entry.id }}/">
+            {{ comment.entry.title }}
+          </a>
+        </h5>
+        <small><time class="timeago" am-time-ago="comment.updated"></time></small>
+        <p ng-bind-html="comment.excerpt" style="overflow: auto;"></p>
+        
+      </div>
+    </div>
   </div>
 </div>

@@ -93,6 +93,11 @@ class Comment(models.Model):
         verbose_name=_('entry')
     )
     content = models.TextField(_('content'))
+    excerpt = models.TextField(
+        _('excerpt'),
+        blank=True,
+        editable=False
+    )
     created = models.DateTimeField(
         _('created date'),
         db_index=True,
@@ -117,8 +122,12 @@ class Comment(models.Model):
     def __str__(self):
         return '%s-%s' % (self.entry.id, self.id)
 
+    def save(self, *args, **kwargs):
+        self.excerpt = Truncator(self.html).words(20, html=True)
+        super(Comment, self).save(*args, **kwargs)
+
     class Meta:
-        ordering = ['-created', ]
+        ordering = ['-updated', '-created', ]
         verbose_name = _('comment')
         verbose_name_plural = _('comments')
         index_together = [
