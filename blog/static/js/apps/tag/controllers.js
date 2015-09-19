@@ -24,7 +24,6 @@ angular.module('blog.tag.controllers', [])
   .controller('TagDetailCtrl', ['$scope', '$rootScope', '$http', '$location', '$routeParams',
     function($scope, $rootScope, $http, $location, $routeParams) {
     $scope.url = '/api/tags/' + $routeParams.id + '/';
-    console.log($routeParams.id)
     $http.get($scope.url).success(function(data, status, header, config){
       $scope.data = data;
       $rootScope.title = '标签';

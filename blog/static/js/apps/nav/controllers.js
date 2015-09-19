@@ -7,7 +7,7 @@ angular.module('blog.nav.controllers', [])
     $http.get($scope.auth_url).success(function(data, status, header, config){
       if(data && data.username){
         $rootScope.authuser = data;
-      }
+      };
     }).error(function(data, status, header, config) {});
 
     $scope.isActive = function(route) {

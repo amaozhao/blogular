@@ -6,7 +6,7 @@ module.exports = function(grunt){
         uglify: {
             options: {
                 banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n',
-                mangle: true, //不混淆变量名
+                mangle: false,
                 preserveComments: false, //不删除注释，还可以为 false（删除全部注释），some（保留@preserve @license @cc_on等注释）
             },
             build: {
@@ -49,8 +49,8 @@ module.exports = function(grunt){
     });
 
     // 加载提供"uglify"任务的插件
-    grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
 
     // 默认任务
     grunt.registerTask('default', ['concat:dist', 'uglify']);
