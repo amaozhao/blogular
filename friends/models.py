@@ -51,3 +51,7 @@ class FollowingTag(models.Model):
 
     def __str__(self):
         return "%s" % self.id
+
+    class Meta:
+        verbose_name = _('FollowingTag')
+        verbose_name_plural = _('FollowingTag')
