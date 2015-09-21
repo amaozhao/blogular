@@ -17,14 +17,15 @@ class EntrySerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         instance = super(EntrySerializer, self).create(validated_data)
-        tags = self._context['request'].data['tags']
-        instance.tags.add(*tags)
+        tags = self._context['request'].data.get('tags', [])
+        if tags:
+            instance.tags.add(*tags)
         return instance
 
     def update(self, instance, validated_data):
         instance = super(EntrySerializer, self).update(
             instance, validated_data)
-        tags = self._context['request'].data['tags']
+        tags = self._context['request'].data.get('tags', [])
         instance.tags.set(*tags)
         return instance
 

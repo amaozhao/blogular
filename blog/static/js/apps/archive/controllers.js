@@ -4,14 +4,13 @@ angular.module('blog.archive.controllers', [])
   .controller('ArchiveListCtrl', ['$scope', '$rootScope', '$http', '$location', '$routeParams',
   function($scope, $rootScope, $http, $location, $routeParams){
     $scope.url = '/api/archives/' + $routeParams.year + '/' + $routeParams.month + '/';
-    console.log($scope.url);
     $rootScope.title = '日志归档 - ' + $routeParams.year + ' - ' + $routeParams.month;
     $http.get($scope.url).success(function(data, status, header, config){
       $scope.data = data;
     }).error(function(data, status, header, config) {});
 
     $scope.delete = function(entry) {
-      $http.delete($scope.url + entry.id + '/').success(function(data, status, header, config){
+      $http.delete('/api/entries/' + entry.id + '/').success(function(data, status, header, config){
         $scope.data.results.splice($scope.data.results.indexOf(entry), 1);
       }).error(function(data, status, header, config){});
     };
