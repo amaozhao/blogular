@@ -9,12 +9,13 @@ from django.conf.urls import include, url
 from rest_framework import routers
 
 from api.viewset.entry import (
-    EntryViewSet, RecentEntryView,
+    EntryViewSet, RecentEntryView, ArchiveEntryView,
     UserEntryView, FindViewSet
 )
 from api.viewset.comment import CommentViewSet, RecentCommentView
 from api.viewset.tag import TagList, TagDetail, FollowingTagList
 from api.viewset.friendship import FollowingViewSet, FollowedViewSet
+from api.viewset.archive import ArchiveView
 
 router = routers.DefaultRouter()
 router.register(
@@ -32,4 +33,7 @@ urlpatterns = [
     url(r'^users/(?P<id>\d+)/$', UserEntryView.as_view()),
     url(r'^recententries/$', RecentEntryView.as_view()),
     url(r'^recentcomments/$', RecentCommentView.as_view()),
+    url(r'^archives/$', ArchiveView.as_view()),
+    url(r'^archives/(?P<year>[0-9]{4})/(?P<month>[0-9]{1,2})/$',
+        ArchiveEntryView.as_view()),
 ]

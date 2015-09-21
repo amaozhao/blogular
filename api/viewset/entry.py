@@ -37,6 +37,25 @@ class RecentEntryView(ListAPIView):
         return Response({}, status=403)
 
 
+class ArchiveEntryView(ListAPIView):
+    queryset = Entry.objects.filter(status=2)
+    model = Entry
+    serializer_class = EntrySerializer
+    permission_classes = (ReadOnly,)
+    paginate_by = 20
+
+    def get_queryset(self):
+        queryset = super(ArchiveEntryView, self).get_queryset()
+        year = self.kwargs.get('year', None)
+        month = self.kwargs.get('month', None)
+        if year and month:
+            return queryset.filter(created__year=year, created__month=month)
+        return queryset
+
+    def post(self, request, *args, **kwargs):
+        return Response({}, status=403)
+
+
 class UserEntryView(ListAPIView):
     model = Entry
     serializer_class = EntrySerializer

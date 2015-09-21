@@ -15,6 +15,7 @@ var blog = angular.module('blog', [
   'blog.tag.controllers',
   'blog.nav.controllers',
   'blog.post.controllers',
+  'blog.archive.controllers',
   'blog.comment.controllers',
   'blog.friendship.controllers'
 ]);
@@ -33,6 +34,9 @@ blog.config(['$routeProvider', '$locationProvider', '$httpProvider', 'markedProv
   }).when('/post/:id', {
     templateUrl: '/static/js/partials/post/edit.html',
     controller: 'PostEditCtrl'
+  }).when('/archive/:year/:month', {
+    templateUrl: '/static/js/partials/post/list.html',
+    controller: 'ArchiveListCtrl'
   }).when('/tags', {
     templateUrl: '/static/js/partials/tag/list.html',
     controller: 'TagListCtrl'

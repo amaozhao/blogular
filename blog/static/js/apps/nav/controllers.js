@@ -30,4 +30,8 @@ angular.module('blog.nav.controllers', [])
     $http.get($scope.recentcomments_url).success(function(data, status, header, config){
       $scope.recentcomments = data;
     }).error(function(data, status, header, config){});
+    $scope.archives_url = '/api/archives/';
+    $http.get($scope.archives_url).success(function(data, status, header, config){
+      $scope.archives = data;
+    }).error(function(data, status, header, config){});
   }]);
