@@ -46,12 +46,51 @@ module.exports = function(grunt){
                 }
             }
         },
+        uncss: {
+          dist: {
+            files: {
+              '../css/site.css': [
+                'http://127.0.0.1:8000/',
+                'http://127.0.0.1:8000/posts/2',
+                'http://127.0.0.1:8000/post/2',
+                'http://127.0.0.1:8000/signin'
+              ]
+            }
+          }
+        },
+        cssmin: {
+            options: {
+                shorthandCompacting: false,
+                roundingPrecision: -1
+            },
+            target: {
+                files: {
+                    '../css/site.min.css': [
+                        '../css/loading-bar.min.css',
+                        '../css/pygments/vs.css',
+                        '../css/highlight/vs.css',
+                        '../css/codemirror.css',
+                        '../css/uikit/htmleditor.min.css',
+                        '../css/selectize/selectize.bootstrap3.css',
+                        '../css/bootstrap-theme.css',
+                        '../css/site.css'
+                    ]
+                }
+            }
+        },
     });
 
     // 加载提供"uglify"任务的插件
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-uncss');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
 
     // 默认任务
-    grunt.registerTask('default', ['concat:dist', 'uglify']);
+    grunt.registerTask('default', [
+        'concat:dist', 
+        'uglify',
+        'uncss',
+        'cssmin'
+    ]);
 }
