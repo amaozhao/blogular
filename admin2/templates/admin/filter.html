@@ -1,0 +1,11 @@
+{% load i18n %}
+<div class="callout callout-success">
+  <h4>{% blocktrans with filter_title=title %} By {{ filter_title }} {% endblocktrans %}</h4>
+  <ul class="list-unstyled">
+    {% for choice in choices %}
+    <li class="{% if choice.selected %}selected{% endif %}">
+      <a href="{{ choice.query_string|iriencode }}">{{ choice.display }}</a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>

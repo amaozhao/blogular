@@ -1,0 +1,25 @@
+{% extends "admin/base_site.html" %}
+{% load admin_static i18n %}{% load firstof from future %}
+{% load admin_tags %}
+
+{% block breadcrumbs %}
+<ol class="breadcrumb">
+  <li><a href="{% url 'admin:index' %}">{% trans 'Home' %}</a></li>
+  <li class="active">{% trans 'Server error' %}</li>
+</ol>
+{% endblock %}
+
+{% block title %}{% trans 'Server error (500)' %}{% endblock %}
+
+{% block content %}
+<div class="error-page">
+  <h2 class="headline text-info"> {% trans 'Server Error <em>(500)</em>' %}</h2>
+  <div class="error-content">
+    <h3><i class="fa fa-warning text-yellow"></i> {% trans 'Server Error <em>(500)</em>' %}</h3>
+    <p>
+      {% trans "There's been an error. It's been reported to the site administrators via email and should be fixed shortly. Thanks for your patience." %}
+      <a href="{% url 'admin:index' %}">{{ site_header|default:_('Django administration') }}</a>
+    </p>
+  </div>
+</div>
+{% endblock %}

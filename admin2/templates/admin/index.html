@@ -1,0 +1,139 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{% static "admin/css/dashboard.css" %}" />
+{% endblock %}
+
+{% block coltype %}colMS{% endblock %}
+
+{% block bodyclass %}{{ block.super }} dashboard{% endblock %}
+
+{% if not is_popup %}
+{% block breadcrumbs %}
+<ol class="breadcrumb">
+  <li><a href="{% url 'admin:index' %}">{% trans 'Home' %}</a></li>
+</ol>
+{% endblock %}
+{% endif %}
+
+{% block content %}
+{% if app_list %}
+  <div class="col-xs-7">
+    <div class="box">
+      <div class="box-header">
+        <h3 class="box-title">
+          {% if title %}
+          {{ title }}
+          {% else %}
+          {{ site_header}}
+          {% endif %}
+        </h3>
+      </div>
+      <div class="box-body table-responsive">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th class="title-head-apps col-lg-3 col-md-3 text-center">
+                {% trans "Apps" %}
+              </th>
+              <th class="search-apps-models col-lg-4 col-md-4">
+              </th>
+              <th class="title-head-actions col-lg-5 col-md-5 text-center">{% trans "Action" %}</th>
+            </tr>
+          </thead>
+          <tbody class="list">
+            {% for app in app_list %}
+              {% for model in app.models %}
+              <tr class="app-{{ app.app_label }}{{ rowcolors }}">
+                {% if forloop.first %}
+                <td rowspan="{{ app.models|length }}" class="app-name {% if forloop.parentloop.last %}last-app{% endif %}">
+                  <a href="{{ app.app_url }}" class="section" title="{% blocktrans with name=app.name %}Models in the {{ name }} application{% endblocktrans %}">{{ app.name }}</a>
+                </td>
+                {% endif %}
+
+                <td class="model-name model-{{ model.object_name|lower }}">
+                  {% if forloop.first %}
+                  <a href="{{ app.app_url }}" class="extra-app-name hide" title="{% blocktrans with name=app.name %}Models in the {{ name }} application{% endblocktrans %}">{{ app.name }}</a>
+                  {% endif %}
+                  <a href="{% if model.admin_url %}{{ model.admin_url }}{% else %}#{% endif %}" title="{{ app.name }} &raquo; {{ model.name }}" {% if not model.admin_url %}class="disabled"{% endif %}>{{ model.name }}</a>
+                </td>
+
+                <td class="model-{{ model.object_name|lower }} actions">
+                  <div class="btn-group btn-group-justified btn-group-actions">
+                    <a href="{% if model.add_url %}{{ model.add_url }}{% endif %}" class="btn btn-primary {% if not model.add_url %}disabled{% endif %}" title="{% trans 'Add' %}"><span class="glyphicon glyphicon-plus"></span> {% trans 'Add' %}</a>
+                    <a href="{% if model.admin_url %}{{ model.admin_url }}{% endif %}" class="btn bg-success {% if not model.admin_url %}disabled{% endif %}" title="{% trans 'Change' %}"><span class="glyphicon glyphicon-pencil"></span> {% trans 'Change' %}</a>
+                  </div>
+                </td>
+              </tr>
+              {% endfor %}
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+{% else %}
+  <p>{% trans "You don't have permission to edit anything." %}</p>
+{% endif %}
+{% endblock %}
+
+{% block sidebar %}
+{% if app_list %}
+  <div class="col-xs-5">
+    <div class="box">
+      <div class="box-header">
+        <h3 class="box-title">
+          {% trans 'Recent Actions' %} <small>({% trans 'My Actions' %})</small>
+        </h3>
+      </div>
+      <div class="box-body">
+        {% load log %}
+        {% get_admin_log 10 as admin_log for_user user %}
+        {% if not admin_log %}
+        <p class="none-available">{% trans 'None available' %}</p>
+        {% else %}
+          <ul class="timeline">
+            {% for entry in admin_log %}
+            <li>
+              {% if entry.is_addition %}
+                <i class="glyphicon glyphicon-plus bg-green"></i>
+              {% elif entry.is_change %}
+                <i class="glyphicon glyphicon-pencil bg-blue"></i>
+              {% elif entry.is_deletion %}
+                <i class="glyphicon glyphicon-trash bg-red"></i>
+              {% else %}
+                <i class="glyphicon glyphicon-bell"></i>
+              {% endif %}
+              <div class="timeline-item">
+                <span class="time"><i class="fa fa-clock-o"></i> {{ entry.action_time }}</span>
+                <h3 class="timeline-header">
+                  {% if entry.content_type %}
+                  {% filter capfirst %}{% trans entry.content_type.name %}{% endfilter %}
+                  {% else %}
+                  {% trans 'Unknown content' %}
+                  {% endif %}
+                </h3>
+                <div class="timeline-body">
+                  {% if entry.is_deletion or not entry.get_admin_url %}
+                  {{ entry.object_repr }}
+                  {% else %}
+                  <a href="{{ admin_root_url }}{{ entry.get_admin_url }}">{{ entry.object_repr }}</a>
+                  {% endif %}
+                </div>
+              </div>
+            </li>
+            {% endfor %}
+            <li>
+              <i class="fa fa-clock-o"></i>
+            </li>
+          </ul>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% else %}
+  <p>{% trans "You don't have permission to edit anything." %}</p>
+{% endif %}
+{% endblock %}

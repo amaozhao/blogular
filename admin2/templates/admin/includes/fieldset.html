@@ -1,0 +1,32 @@
+{% load admin_tags %}
+
+<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    {% if fieldset.name %}
+      <div class="panel-heading" role="tab" id="heading-{{loop}}">
+        <h4 class="panel-title">
+          <a data-toggle="collapse" data-parent="#accordion" href="#collapse-{{loop}}" aria-expanded="true" aria-controls="collapse-{{loop}}">
+            {{ fieldset.name }}
+          </a>
+        </h4>
+      </div>
+    {% endif %}
+    <div id="collapse-{{loop}}" class="panel-collapse collapse {%if fieldset.classes == 'collapse collapse-closed'%}{%else%}in{% endif %}" role="tabpanel" aria-labelledby="heading-{{loop}}">
+      <div class="panel-body">
+        {% for line in fieldset %}
+          {% if not line.fields|length_is:'1' %}
+            <div class="field-boxes row">
+              {% for field in line %}
+              {% include "admin/includes/field.html" with line=line css_field_box=line|class_for_field_boxes %}
+              {% endfor %}
+            </div>
+          {% else %}
+            {% for field in line %}
+              {% include "admin/includes/field.html" with line=line %}
+            {% endfor %}
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>

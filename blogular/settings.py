@@ -29,6 +29,7 @@ SITE_ID = 1
 # Application definition
 
 INSTALLED_APPS = (
+    'admin2',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

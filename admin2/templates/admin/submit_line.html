@@ -1,0 +1,48 @@
+{% load i18n admin_urls %}
+
+
+{% if show_save %}
+<li>
+  <button type="submit" title="{% trans 'Save' %}" class="btn btn-primary navbar-btn" name="_save">
+    <span class="glyphicon glyphicon-floppy-disk"></span>
+    <span class="text">{% trans 'Save' %}</span>
+  </button>
+</li>
+{% endif %}
+
+{% if show_save_as_new %}
+<li>
+  <button type="submit" class="btn btn-primary navbar-btn" title="{% trans 'Save as new' %}" name="_saveasnew">
+    <span class="glyphicon glyphicon-plus"></span>
+    <span class="text">{% trans 'Save as new' %}</span>
+  </button>
+</li>
+{%endif%}
+
+{% if show_save_and_add_another %}
+<li>
+  <button type="submit" class="btn btn-success navbar-btn" title="{% trans 'Save and add another' %}" name="_addanother">
+    <span class="glyphicon glyphicon-plus"></span>
+    <span class="text">{% trans 'Save and add another' %}</span>
+  </button>
+</li>
+{% endif %}
+
+{% if show_save_and_continue %}
+<li>
+  <button type="submit" class="btn btn-default navbar-btn" title="{% trans 'Save and continue editing' %}" name="_continue">
+    <span class="glyphicon glyphicon-pencil"></span>
+    <span class="text">{% trans 'Save and continue editing' %}</span>
+  </button>
+</li>
+{% endif %}
+
+{% if show_delete_link %}
+  {% url opts|admin_urlname:'delete' original.pk|admin_urlquote as delete_url %}
+  <li>
+    <a title="{% trans "Delete" %}" class="text-red" href="{% add_preserved_filters delete_url %}">
+      <span class="glyphicon glyphicon-trash"></span>
+      <span class="text">{% trans "Delete" %}</span>
+    </a>
+  </li>
+{% endif %}

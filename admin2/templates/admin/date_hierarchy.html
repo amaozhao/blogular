@@ -1,0 +1,14 @@
+{% if show %}
+<div class="dropdown">
+  <button class="btn btn-default dropdown-toggle btn-block" data-toggle="dropdown">
+    {% if back %}{{ back.title }}{% endif %}
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu">
+    {% if back %}<li class="date-back"><a href="{{ back.link }}">{{ back.title }}</a></li>{% endif %}
+    {% for choice in choices %}
+      <li><a href="{% if choice.link %}{{ choice.link }}{% else %}#{% endif %}">{{ choice.title }}</a></li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
