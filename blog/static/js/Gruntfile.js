@@ -73,6 +73,7 @@ module.exports = function(grunt){
                         '../css/uikit/htmleditor.min.css',
                         '../css/selectize/selectize.bootstrap3.css',
                         '../css/bootstrap-theme.css',
+                        '../css/dropdown.css',
                         '../css/site.css'
                     ]
                 }

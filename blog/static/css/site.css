@@ -1,2486 +1,281 @@
-/*** uncss> filename: http://127.0.0.1:8000/static/css/uikit.css ***/
-
-/*! UIkit 2.15.0 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
-
-/* ========================================================================
-   Component: Base
- ========================================================================== */
-
-/*
- * 1. Normalizes default `font-family` and sets `font-size` here to support `rem` units
- * 2. Prevents iOS text size adjust after orientation change, without disabling user zoom
- * 3. Style
- */
-
-html {
-  /* 1 */
-  font: normal 14px / 20px "Helvetica Neue", Helvetica, Arial, sans-serif;
-  /* 2 */
-  -webkit-text-size-adjust: 100%;
-  -ms-text-size-adjust: 100%;
-  /* 3 */
-  background: #ffffff;
-  color: #444444;
-}
-
-/*
- * Removes default margin.
- */
-
-body {
-  margin: 0;
-}
-
-/* Links
- ========================================================================== */
-
-/*
- * Remove the gray background color from active links in IE 10.
- */
-
-a {
-  background: transparent;
-}
-
-/*
- * Improves readability when focused and also mouse hovered in all browsers.
- */
-
-a:active,
-a:hover {
-  outline: 0;
-}
-
-/*
- * Style
- */
-
-a {
-  color: #0077dd;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-a:hover {
-  color: #005599;
-  text-decoration: underline;
-}
-
-/* Text-level semantics
- ========================================================================== */
-
-/*
- * Addresses styling not present in Chrome, Safari, Opera and IE 8/9/10.
- */
-
-/*
- * Addresses style set to `bolder` in Firefox
- */
+/*** uncss> filename: http://127.0.0.1:8000/static/css/site.min.css ***/
 
 strong {
-  font-weight: bold;
+  font-weight: 700;
 }
 
-/*
- * 1. Address odd `em`-unit font size rendering in all browsers.
- * 2. Consolas has a better baseline in running text compared to `Courier`
- */
-
-/*
- * Emphasize
- */
-
-/*
- * Insert
- */
-
-/*
- * Mark
- * Note: Addresses styling not present in IE 8/9.
- */
-
-/*
- * Quote
- */
-
-/*
- * Addresses inconsistent and variable font size in all browsers.
- */
-
-small {
-  font-size: 80%;
-}
-
-/*
- * Prevents `sub` and `sup` affecting `line-height` in all browsers.
- */
-
-/* Images
- ========================================================================== */
-
-/*
- * 1. Responsiveness: Sets a maximum width relative to the parent and auto scales the height
- * 2. Corrects `max-width` behavior if padding and border are used
- * 3. Remove border when inside `a` element in IE 8/9/10.
- * 4. Remove the gap between images and the bottom of their containers
- */
-
+.badge,
+.btn,
 img {
-  height: auto;
-  /* 2 */
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  /* 3 */
-  border: 0;
-  /* 4 */
   vertical-align: middle;
 }
 
-/*
- * Preserve original image dimensions
- */
+.container:after,
+.form-horizontal .form-group:after,
+.nav:after,
+.navbar-collapse:after,
+.navbar-header:after,
+.navbar:after,
+.pager:after,
+.panel-body:after,
+.row:after,
+.uk-htmleditor-content:after,
+.uk-htmleditor-navbar:after {
+  clear: both;
+}
 
-/*
- * Correct overflow not hidden in IE 9/10/11.
- */
+.CodeMirror pre,
+html {
+  -webkit-tap-highlight-color: transparent;
+}
 
-/* Block elements
- ========================================================================== */
+.nav,
+.pager {
+  list-style: none;
+}
 
-/*
- * Reset margin
- */
+.hljs-tag .hljs-value,
+.hljs-title {
+  color: #a31515;
+}
 
-/*
- * Margins
- */
+.badge,
+.btn,
+.pager,
+.text-center,
+footer {
+  text-align: center;
+}
+
+[data-mode=split] .uk-htmleditor-button-code,
+[data-mode=split] .uk-htmleditor-button-preview {
+  display: none;
+}
+
+.CodeMirror-gutters,
+.CodeMirror-scroll,
+.CodeMirror-sizer {
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+
+/*! UIkit 2.15.0 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
+
+[data-mode=split] .uk-htmleditor-code,
+[data-mode=split] .uk-htmleditor-preview {
+  float: left;
+  width: 50%;
+}
+
+[data-mode=split] .uk-htmleditor-code {
+  border-right: 1px solid #eee;
+}
+
+.selectize-input {
+  background: #fff;
+  cursor: text;
+  display: inline-block;
+}
+
+.selectize-dropdown [data-selectable] {
+  padding: 3px 12px;
+}
+
+.btn,
+.uk-button:not(:disabled),
+.uk-form input[type=checkbox]:not(:disabled),
+.uk-form input[type=radio]:not(:disabled),
+a,
+button {
+  cursor: pointer;
+}
+
+.selectize-dropdown {
+  height: auto;
+  padding: 0;
+  margin: 2px 0 0;
+  z-index: 1000;
+  background: #fff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0,0,0,.15);
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+  box-shadow: 0 6px 12px rgba(0,0,0,.175);
+}
+
+pre,
+textarea {
+  overflow: auto;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+body,
+h5 {
+  font-size: 14px;
+}
+
+a,
+pre code {
+  background-color: transparent;
+}
+
+/*! UIkit 2.15.0 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
+
+html {
+  font: 400 14px/20px "Helvetica Neue",Helvetica,Arial,sans-serif;
+  background: #fff;
+  color: #444;
+  font-family: sans-serif;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  font-size: 10px;
+}
+
+a {
+  background: 0 0;
+}
+
+img {
+  height: auto;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  border: 0;
+}
 
 p,
-ul,
-pre {
-  margin: 0 0 15px 0;
+pre,
+ul {
+  margin: 0 0 15px;
 }
 
-* + p,
-* + ul,
-* + pre {
+*+p,
+*+pre,
+*+ul {
   margin-top: 15px;
 }
-
-/* Headings
- ========================================================================== */
 
 h1,
 h3,
 h4,
 h5,
 h6 {
-  margin: 0 0 15px 0;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: normal;
-  color: #444444;
+  margin: 0 0 15px;
   text-transform: none;
 }
 
-/*
- * Margins
- */
-
-* + h3,
-* + h5,
-* + h6 {
+*+h3,
+*+h5,
+*+h6 {
   margin-top: 25px;
 }
-
-/*
- * Sizes
- */
-
-h1 {
-  font-size: 36px;
-  line-height: 42px;
-}
-
-h3 {
-  font-size: 18px;
-  line-height: 24px;
-}
-
-h4 {
-  font-size: 16px;
-  line-height: 22px;
-}
-
-h5 {
-  font-size: 14px;
-  line-height: 20px;
-}
-
-h6 {
-  font-size: 12px;
-  line-height: 18px;
-}
-
-/* Lists
- ========================================================================== */
 
 ul {
   padding-left: 30px;
 }
 
-/*
- * Reset margin for nested lists
- */
-
-/* Description lists
- ========================================================================== */
-
-/* Horizontal rules
- ========================================================================== */
-
-/*
- * 1. Address differences between Firefox and other browsers.
- * 2. Style
- */
-
-/* Address
- ========================================================================== */
-
-/* Blockquotes
- ========================================================================== */
-
-/* Preformatted text
- ========================================================================== */
-
-/*
- * 1. Contain overflow in all browsers.
- */
-
 pre {
-  padding: 10px;
   background: #f5f5f5;
-  font: 12px / 18px Consolas, monospace, serif;
-  color: #444444;
+  font: 12px/18px Consolas,monospace,serif;
   -moz-tab-size: 4;
   tab-size: 4;
-  /* 1 */
-  overflow: auto;
 }
 
-/* Selection pseudo-element
- ========================================================================== */
-
 ::-moz-selection {
-  background: #3399ff;
-  color: #ffffff;
+  background: #39f;
+  color: #fff;
   text-shadow: none;
 }
 
 ::selection {
-  background: #3399ff;
-  color: #ffffff;
+  background: #39f;
+  color: #fff;
   text-shadow: none;
 }
 
-/* HTML5 elements
- ========================================================================== */
-
-/*
- * Corrects `block` display not defined in IE 8/9.
- */
-
-footer,
-nav {
-  display: block;
-}
-
-/*
- * Addresses inconsistent vertical alignment of `progress` in Chrome, Firefox and Opera.
- */
-
-/*
- * Prevent displaying `audio` without controls in Chrome, Safari and Opera
- */
-
-/*
- * Address `[hidden]` styling not present in IE 8/9.
- * Hide the `template` element in IE and Safari
- */
-
-/* Iframe
- ========================================================================== */
-
-/* Fix viewport for IE10 snap mode
- ========================================================================== */
-
-@media screen and (max-width: 400px) {
+@media screen and (max-width:400px) {
   @-ms-viewport {
     width: device-width;
   }
 }
-
-/* ========================================================================
-   Component: Grid
- ========================================================================== */
-
-/*
- * 1. Needed for the gutter
- * 2. Makes grid more robust so that it can be used with other block elements like lists
- */
-
-/*
- * DEPRECATED
- * Micro clearfix
- * Can't use `table` because it creates a 1px gap when it becomes a flex item, only in Webkit
- */
-
-/*
- * Grid cell
- * 1. Space is allocated solely based on content dimensions
- * 2. Makes grid more robust so that it can be used with other block elements
- * 3. Create horizontal gutter
- * 4. DEPRECATED Using `float` to support IE9
- */
-
-/*
- * Remove margin from the last-child
- */
-
-/* Grid gutter
- ========================================================================== */
-
-/*
- * Vertical gutter
- */
-
-/*
- * This class is set by JavaScript and applies a vertical gutter if the columns stack or float into the next row
- * Higher specificity to override margin
- */
-
-/*
- * Vertical gutter for panels
- */
-
-/*
- * Larger gutter for large screens
- */
-
-/* Large screen and bigger */
-
-@media (min-width: 1220px) {
-  /* Horizontal gutter */
-
-  /* Vertical gutter */
-
-  /* Vertical gutter for panels */
-}
-
-/*
- * Small gutter
- * Higher specificity to override large gutter
- */
-
-/* Modifier: `uk-grid-divider`
- ========================================================================== */
-
-/*
- * Horizontal divider
- * Does not work with `uk-push-*`, `uk-pull-*` and not if the columns float into the next row
- */
-
-/* Tablet and bigger */
-
-/* Desktop and bigger */
-
-/* Large screen and bigger */
-
-@media (min-width: 1220px) {
-  /*
-     * Large gutter
-     */
-}
-
-/*
- * Vertical divider
- */
-
-/* Match panels in grids
- ========================================================================== */
-
-/*
- * 1. Behave like a block element
- */
-
-/* Even grid cell widths
- ========================================================================== */
-
-/* Phone landscape and bigger */
-
-/* Tablet and bigger */
-
-/* Desktop and bigger */
-
-/* Large screen and bigger */
-
-/* Sub-objects: `uk-width-*`
- ========================================================================== */
-
-/*
- * Widths
- */
-
-/* Whole */
-
-/* Halves */
-
-/* Thirds */
-
-/* Quarters */
-
-/* Fifths */
-
-/* Sixths */
-
-/* Tenths */
-
-/* Phone landscape and bigger */
-
-@media (min-width: 480px) {
-  /* Whole */
-
-  /* Halves */
-
-  /* Thirds */
-
-  /* Quarters */
-
-  /* Fifths */
-
-  /* Sixths */
-
-  /* Tenths */
-}
-
-/* Tablet and bigger */
-
-@media (min-width: 768px) {
-  /* Whole */
-
-  /* Halves */
-
-  /* Thirds */
-
-  /* Quarters */
-
-  /* Fifths */
-
-  /* Sixths */
-
-  /* Tenths */
-}
-
-/* Desktop and bigger */
-
-@media (min-width: 960px) {
-  /* Whole */
-
-  /* Halves */
-
-  /* Thirds */
-
-  /* Quarters */
-
-  /* Fifths */
-
-  /* Sixths */
-
-  /* Tenths */
-}
-
-/* Sub-object: `uk-push-*` and `uk-pull-*`
- ========================================================================== */
-
-/*
- * Source ordering
- * Works only with `uk-width-medium-*`
- */
-
-/* Tablet and bigger */
-
-@media (min-width: 768px) {
-  /*
-     * Push
-     */
-
-  /* Halves */
-
-  /* Thirds */
-
-  /* Quarters */
-
-  /* Fifths */
-
-  /* Sixths */
-
-  /* Tenths */
-
-  /*
-     * Pull
-     */
-
-  /* Halves */
-
-  /* Thirds */
-
-  /* Quarters */
-
-  /* Fifths */
-
-  /* Sixths */
-
-  /* Tenths */
-}
-
-/* ========================================================================
-   Component: Panel
- ========================================================================== */
-
-/*
- * 1. Needed for `a` elements
- * 2. Create position context for badges
- */
-
-/*
- * Allow panels to be anchors
- */
-
-/*
- * Micro clearfix to make panels more robust
- */
-
-/*
- * Remove margin from the last-child if not `uk-widget-title`
- */
-
-/* Sub-object: `uk-panel-title`
- ========================================================================== */
-
-/* Sub-object: `uk-panel-badge`
- ========================================================================== */
-
-/* Modifier: `uk-panel-box`
- ========================================================================== */
-
-/*
- * Nav in panel
- */
-
-/*
- * Sub-modifier: `uk-panel-box-primary`
- */
-
-/*
- * Sub-modifier: `uk-panel-box-secondary`
- */
-
-/* Modifier: `uk-panel-hover`
- ========================================================================== */
-
-/* Modifier: `uk-panel-header`
- ========================================================================== */
-
-/* Modifier: `uk-panel-space`
- ========================================================================== */
-
-/* Modifier: `uk-panel-divider`
- ========================================================================== */
-
-/* Large screen and bigger */
-
-/* ========================================================================
-   Component: Article
- ========================================================================== */
-
-/*
- * Micro clearfix to make articles more robust
- */
-
-/*
- * Remove margin from the last-child
- */
-
-/*
- * Vertical gutter for articles
- */
-
-/* Sub-object `uk-article-title`
- ========================================================================== */
-
-/* Sub-object `uk-article-meta`
- ========================================================================== */
-
-/* Sub-object `uk-article-lead`
- ========================================================================== */
-
-/* Sub-object `uk-article-divider`
- ========================================================================== */
-
-/* ========================================================================
-   Component: Comment
- ========================================================================== */
-
-/* Sub-object `uk-comment-header`
- ========================================================================== */
-
-/*
- * Micro clearfix
- */
-
-/* Sub-object `uk-comment-avatar`
- ========================================================================== */
-
-/* Sub-object `uk-comment-title`
- ========================================================================== */
-
-/* Sub-object `uk-comment-meta`
- ========================================================================== */
-
-/* Sub-object `uk-comment-body`
- ========================================================================== */
-
-/*
- * Remove margin from the last-child
- */
-
-/* Sub-object `uk-comment-list`
- ========================================================================== */
-
-/* Tablet and bigger */
-
-/* Modifier `uk-comment-primary`
- ========================================================================== */
-
-/* ========================================================================
-   Component: Nav
- ========================================================================== */
-
-/*
- * Items
- */
-
-/*
- * Nested items
- */
-
-/*
- * Item subtitle
- */
-
-/* Sub-object: `uk-nav-header`
- ========================================================================== */
-
-/* Sub-object: `uk-nav-divider`
- ========================================================================== */
-
-/* Sub-object: `uk-nav-sub`
- ========================================================================== */
-
-/*
- * `ul` needed for higher specificity to override padding
- */
-
-/* Modifier: `uk-nav-parent-icon`
- ========================================================================== */
-
-/* Modifier `uk-nav-side`
- ========================================================================== */
-
-/*
- * Items
- */
-
-/*
- * Hover
- * 1. Apply hover style also to focus state
- * 2. Remove default focus style
- */
-
-/* Active */
-
-/*
- * Sub-object: `uk-nav-header`
- */
-
-/*
- * Sub-object: `uk-nav-divider`
- */
-
-/*
- * Nested items
- */
-
-/* Modifier `uk-nav-dropdown`
- ========================================================================== */
-
-/*
- * Items
- */
-
-/*
- * Hover
- * 1. Apply hover style also to focus state
- * 2. Remove default focus style
- */
-
-/*
- * Sub-object: `uk-nav-header`
- */
-
-/*
- * Sub-object: `uk-nav-divider`
- */
-
-/*
- * Nested items
- */
-
-/* Modifier `uk-nav-navbar`
- ========================================================================== */
-
-/*
- * Items
- */
-
-/*
- * Hover
- * 1. Apply hover style also to focus state
- * 2. Remove default focus style
- */
-
-/*
- * Sub-object: `uk-nav-header`
- */
-
-/*
- * Sub-object: `uk-nav-divider`
- */
-
-/*
- * Nested items
- */
-
-/* Modifier `uk-nav-offcanvas`
- ========================================================================== */
-
-/*
- * Items
- */
-
-/*
- * Hover
- * No hover on touch devices because it behaves buggy in fixed offcanvas
- * 1. Apply hover style also to focus state
- * 2. Remove default focus style
- */
-
-/*
- * Active
- * `html .uk-nav` needed for higher specificity to override hover
- */
-
-/*
- * Sub-object: `uk-nav-header`
- */
-
-/*
- * Sub-object: `uk-nav-divider`
- */
-
-/*
- * Nested items
- * No hover on touch devices because it behaves buggy in fixed offcanvas
- */
-
-/* ========================================================================
-   Component: Navbar
- ========================================================================== */
-
-/*
- * Micro clearfix
- */
-
-/* Sub-object: `uk-navbar-nav`
- ========================================================================== */
-
-/*
- * 1. Create position context for dropdowns
- */
-
-/*
- * 1. Dimensions
- * 2. Style
- */
-
-/* Appear not as link */
-
-/*
- * Hover
- * 1. Apply hover style also to focus state
- * 2. Also apply if dropdown is opened
- * 3. Remove default focus style
- */
-
-/* OnClick */
-
-/* Active */
-
-/* Sub-objects: `uk-navbar-nav-subtitle`
- ========================================================================== */
-
-/* Sub-objects: `uk-navbar-content`, `uk-navbar-brand`, `uk-navbar-toggle`
- ========================================================================== */
-
-/*
- * Imitate navbar items
- */
-
-/*
- * Helper to center all child elements vertically
- */
-
-/* Sub-objects: `uk-navbar-content`
- ========================================================================== */
-
-/*
- * Better sibling spacing
- */
-
-/*
- * Link colors
- */
-
-/* Sub-objects: `uk-navbar-brand`
- ========================================================================== */
-
-/*
- * 1. Apply hover style also to focus state
- * 2. Remove default focus style
- */
-
-/* Sub-object: `uk-navbar-toggle`
- ========================================================================== */
-
-/*
- * 1. Apply hover style also to focus state
- * 2. Remove default focus style
- */
-
-/*
- * 1. Center icon vertically
- */
-
-/* Sub-object: `uk-navbar-center`
- ========================================================================== */
-
-/*
- * The element with this class needs to be last child in the navbar
- * 1. This hack is needed because other float elements shift centered text
- */
-
-/* Sub-object: `uk-navbar-flip`
- ========================================================================== */
-
-/* ========================================================================
-   Component: Subnav
- ========================================================================== */
-
-/*
- * 1. Remove default list style
- * 2. Remove whitespace between child elements when using `inline-block`
- */
-
-/* Items
- ========================================================================== */
-
-/*
- * 1. Create position context for dropdowns
- * 2. Reset whitespace hack
- */
-
-/*
- * Items
- */
-
-/*
- * Active
- */
-
-/*
- * Disabled
- */
-
-/* Modifier: 'subnav-line'
- ========================================================================== */
-
-/* Modifier: 'subnav-pill'
- ========================================================================== */
-
-/*
- * Hover
- * 1. Apply hover style also to focus state
- * 2. Remove default focus style
- */
-
-/*
- * Active
- * `li` needed for higher specificity to override hover
- */
-
-/* ========================================================================
-   Component: Breadcrumb
- ========================================================================== */
-
-/*
- * 1. Remove default list style
- * 2. Remove whitespace between child elements when using `inline-block`
- */
-
-/* Items
- ========================================================================== */
-
-/*
- * Reset whitespace hack
- */
-
-/*
- * Disabled
- */
-
-/* ========================================================================
-   Component: Pagination
- ========================================================================== */
-
-/*
- * 1. Remove default list style
- * 2. Center pagination by default
- * 3. Remove whitespace between child elements when using `inline-block`
- */
-
-/*
- * Micro clearfix
- * Needed if `uk-pagination-previous` or `uk-pagination-next` sub-objects are used
- */
-
-/* Items
- ========================================================================== */
-
-/*
- * 1. Reset whitespace hack
- * 2. Remove the gap at the bottom of it container
- */
-
-/*
- * 1. Makes pagination more robust against different box-sizing use
- * 2. Reset text-align to center if alignment modifier is used
- */
-
-/*
- * Links
- */
-
-/*
- * Hover
- * 1. Apply hover style also to focus state
- * 2. Remove default focus style
- */
-
-/* OnClick */
-
-/*
- * Active
- */
-
-/*
- * Disabled
- */
-
-/* Previous and next navigation
- ========================================================================== */
-
-/* Alignment modifiers
- ========================================================================== */
-
-/* ========================================================================
-   Component: Tab
- ========================================================================== */
-
-/*
- * Micro clearfix on the deepest container
- */
-
-/*
- * Items
- * 1. Create position context for dropdowns
- */
-
-/*
- * Hover
- * 1. Apply hover style also to focus state
- * 2. Also apply if dropdown is opened
- * 3. Remove default focus style
- */
-
-/* Active */
-
-/* Disabled */
-
-/* Modifier: 'tab-flip'
- ========================================================================== */
-
-/* Modifier: 'tab-responsive'
- ========================================================================== */
-
-/*
- * Icon
- */
-
-/* Modifier: 'tab-center'
- ========================================================================== */
-
-/*
- * 1. Using `right` to prevent vertical scrollbar caused by centering if to many tabs
- */
-
-/* Modifier: 'tab-bottom'
- ========================================================================== */
-
-/* Modifier: 'tab-grid'
- ========================================================================== */
-
-/*
- * 1. Create position context to prevent hidden border because of negative `z-index`
- */
-
-/*
- * If `uk-tab-bottom`
- */
-
-/* Modifier: 'tab-left', 'tab-right'
- ========================================================================== */
-
-/* Tablet and bigger */
-
-@media (min-width: 768px) {
-  /*
-     * Modifier: 'tab-left'
-     */
-
-  /*
-     * Modifier: 'tab-right'
-     */
-}
-
-/* ========================================================================
-   Component: List
- ========================================================================== */
-
-/*
- * Micro clearfix to make list more robust
- */
-
-/*
- * Remove margin from the last-child
- */
-
-/*
- * Nested lists
- */
-
-/* Modifier: `uk-list-line`
- ========================================================================== */
-
-/* Modifier: `uk-list-striped`
- ========================================================================== */
-
-/* Modifier: `uk-list-space`
- ========================================================================== */
-
-/* ========================================================================
-   Component: Description list
- ========================================================================== */
-
-/* Modifier: `uk-description-list-horizontal`
- ========================================================================== */
-
-/* Tablet and bigger */
-
-/* Modifier: `uk-description-list-line`
- ========================================================================== */
-
-/* ========================================================================
-   Component: Table
- ========================================================================== */
-
-/*
- * 1. Remove most spacing between table cells.
- * 2. Block element behavior
- * 3. Style
- */
-
-/*
- * Add margin if adjacent element
- */
-
-/*
- * Set alignment
- */
-
-/*
- * Caption and footer
- */
-
-/* Sub-modifier: `uk-table-middle`
- ========================================================================== */
-
-/* Modifier: `uk-table-striped`
- ========================================================================== */
-
-/* Modifier: `uk-table-condensed`
- ========================================================================== */
-
-/* Modifier: `uk-table-hover`
- ========================================================================== */
-
-/* ========================================================================
-   Component: Form
- ========================================================================== */
-
-/*
- * 1. Define consistent box sizing.
- *    Default is `content-box` with following exceptions set to `border-box`
- *    `button`, `select`, `input[type="checkbox"]` and `input[type="radio"]`
- *    `input[type="search"]` in Chrome, Safari and Opera
- *    `input[type="color"]` in Firefox
- * 2. Address margins set differently in Firefox/IE and Chrome/Safari/Opera.
- * 3. Remove `border-radius` in iOS.
- * 4. Correct `font` properties and `color` not being inherited.
- */
-
-/*
- * Address inconsistent `text-transform` inheritance which is only inherit in Firefox
- */
-
-/*
- * 1. Correct `font` properties not being inherited.
- * 2. Don't inherit the `font-weight` and use `bold` instead.
- * NOTE: Both declarations don't work in Chrome, Safari and Opera.
- */
-
-/*
- * Removes inner padding and border in Firefox 4+.
- */
 
 .uk-form input::-moz-focus-inner {
   border: 0;
   padding: 0;
 }
 
-/*
- * Removes excess padding in IE 8/9/10.
- */
-
-/*
- * Improves consistency of cursor style for clickable elements
- */
-
-.uk-form input[type="checkbox"]:not(:disabled),
-.uk-form input[type="radio"]:not(:disabled) {
-  cursor: pointer;
+.uk-form :-ms-input-placeholder {
+  color: #999!important;
 }
-
-/*
- * Remove default style in iOS.
- */
-
-/*
- * Remove inner padding and search cancel button in Chrome, Safari and Opera on OS X.
- */
-
-/*
- * Fix the cursor style for Chrome's increment/decrement buttons. For certain
- * `font-size` values of the `input`, it causes the cursor style of the
- * decrement button to change from `default` to `text`.
- */
-
-/*
- * Define consistent border, margin, and padding.
- */
-
-/*
- * 1. Remove default vertical scrollbar in IE 8/9/10/11.
- * 2. Improve readability and alignment in all browsers.
- */
-
-/*
- * Removes placeholder transparency in Firefox.
- */
 
 .uk-form ::-moz-placeholder {
   opacity: 1;
-}
-
-/*
- * Removes `box-shadow` for invalid controls in Firefox.
- */
-
-/*
- * Vertical alignment
- */
-
-/* Style
- ========================================================================== */
-
-/*
- * Remove margin from the last-child
- */
-
-/*
- * Controls
- * Except for `range`, `radio`, `checkbox`, `file`, `submit`, `reset`, `button` and `image`
- * 1. Must be `height` because `min-height` is not working in OSX
- * 2. Responsiveness: Sets a maximum width relative to the parent to scale on narrower viewports
- * 3. Vertical `padding` needed for `select` elements in Firefox
- * 4. Style
- */
-
-/*
- * Placeholder
- */
-
-.uk-form :-ms-input-placeholder {
-  color: #999999 !important;
-}
-
-.uk-form ::-moz-placeholder {
-  color: #999999;
+  color: #999;
 }
 
 .uk-form :disabled:-ms-input-placeholder {
-  color: #999999 !important;
+  color: #999!important;
 }
 
 .uk-form :disabled::-moz-placeholder {
-  color: #999999;
+  color: #999;
 }
-
-/*
- * Legend
- * 1. Behave like block element
- * 2. Correct `color` not being inherited in IE 8/9/10/11.
- * 3. Remove padding
- * 4. `margin-bottom` is not working in Safari and Opera.
- *    Using `padding` and :after instead to create the border
- * 5. Style
- */
-
-/*
- * 1. Fixes IE9
- */
-
-/* Size modifiers
- * Higher specificity needed to override defaults
- ========================================================================== */
-
-/* Reset height
- * Must be after size modifiers
- ========================================================================== */
-
-/* Validation states
- * Using !important to keep the selector simple
- ========================================================================== */
-
-/*
- * Error state
- */
-
-/*
- * Success state
- */
-
-/* Style modifiers
- * Using !important to keep the selector simple
- ========================================================================== */
-
-/*
- * Blank form
- */
-
-/* Size sub-modifiers
- ========================================================================== */
-
-/*
- * Fixed widths
- * Different widths for mini sized `input` and `select` elements
- */
-
-/* Sub-objects: `uk-form-row`
- * Groups labels and controls in rows
- ========================================================================== */
-
-/*
- * Micro clearfix
- * Needed for `uk-form-horizontal` modifier
- */
-
-/*
- * Vertical gutter
- */
-
-/* Help text
- * Sub-object: `uk-form-help-inline`, `uk-form-help-block`
- ========================================================================== */
-
-/* Controls content
- * Sub-object: `uk-form-controls`, `uk-form-controls-condensed`
- ========================================================================== */
-
-/*
- * Remove margins
- */
-
-/*
- * Group controls and text into blocks with a small spacing between blocks
- */
-
-/* Modifier: `uk-form-stacked`
- * Requires sub-object: `uk-form-label`
- ========================================================================== */
-
-/* Modifier: `uk-form-horizontal`
- * Requires sub-objects: `uk-form-label`, `uk-form-controls`
- ========================================================================== */
-
-/* Tablet portrait and smaller */
-
-@media (max-width: 959px) {
-  /* Behave like `uk-form-stacked` */
-}
-
-/* Desktop and bigger */
-
-@media (min-width: 960px) {
-  /* Better vertical alignment if controls are checkboxes and radio buttons with text */
-}
-
-/* Sub-object: `uk-form-icon`
- ========================================================================== */
-
-/*
- * 1. Container width fits its content
- * 2. Create position context
- * 3. Prevent `inline-block` consequences
- */
-
-/*
- * 1. Make form element clickable through icon
- */
-
-/*
- * Sub-modifier: `uk-form-icon-flip`
- */
-
-/* ========================================================================
-   Component: Button
- ========================================================================== */
-
-/*
- * Removes inner padding and border in Firefox 4+.
- */
 
 .uk-button::-moz-focus-inner {
   border: 0;
   padding: 0;
 }
 
-/*
- * 1. Correct inability to style clickable `input` types in iOS.
- * 2. Remove margins in Chrome, Safari and Opera.
- * 3. Remove borders for `button`.
- * 4. Address `overflow` set to `hidden` in IE 8/9/10/11.
- * 5. Correct `font` properties and `color` not being inherited for `button`.
- * 6. Address inconsistent `text-transform` inheritance which is only inherit in Firefox and IE
- * 7. Style
- * 8. `line-height` is used to create a height
- * 9. `min-height` is necessary for `input` elements in Firefox and Opera because `line-height` is not working.
- * 10. Reset button group whitespace hack
- * 11. Required for `a`.
- */
-
-.uk-button:not(:disabled) {
-  cursor: pointer;
-}
-
-/*
- * Hover
- * 1. Apply hover style also to focus state
- * 2. Remove default focus style
- * 3. Required for `a` elements
- */
-
-/* Active */
-
-/* Color modifiers
- ========================================================================== */
-
-/*
- * Modifier: `uk-button-primary`
- */
-
-/* Hover */
-
-/* Active */
-
-/*
- * Modifier: `uk-button-success`
- */
-
-/* Hover */
-
-/* Active */
-
-/*
- * Modifier: `uk-button-danger`
- */
-
-/* Hover */
-
-/* Active */
-
-/* Disabled state
- * Overrides also the color modifiers
- ========================================================================== */
-
-/* Equal for all button types */
-
-/* Modifier: `uk-button-link`
- ========================================================================== */
-
-/* Reset */
-
-/* Color */
-
-/* Focus */
-
-/* Size modifiers
- ========================================================================== */
-
-/* Sub-object `uk-button-group`
- ========================================================================== */
-
-/*
- * 1. Behave like buttons
- * 2. Create position context for dropdowns
- * 3. Remove whitespace between child elements when using `inline-block`
- * 4. Prevent buttons from wrapping
- * 5. Remove whitespace between child elements when using `inline-block`
- */
-
-/* 5 */
-
-/* Sub-object: `uk-button-dropdown`
- ========================================================================== */
-
-/*
- * 1. Behave like buttons
- * 2. Create position context for dropdowns
- */
-
-/* ========================================================================
-   Component: Icon
- ========================================================================== */
-
 @font-face {
-  font-family: 'FontAwesome';
-  src: url("../fonts/fontawesome-webfont.eot");
-  src: url("../fonts/fontawesome-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/fontawesome-webfont.woff") format("woff"), url("../fonts/fontawesome-webfont.ttf") format("truetype");
-  font-weight: normal;
+  font-family: FontAwesome;
+  src: url(../fonts/fontawesome-webfont.eot);
+  src: url(../fonts/fontawesome-webfont.eot?#iefix) format("embedded-opentype"),url(../fonts/fontawesome-webfont.woff) format("woff"),url(../fonts/fontawesome-webfont.ttf) format("truetype");
+  font-weight: 400;
   font-style: normal;
 }
 
-/*
- * 1. Allow margin
- * 2. Prevent inherit font style
- * 4. Correct line-height
- * 5. Better font rendering
- */
-
-[class*='uk-icon-'] {
+[class*=uk-icon-] {
   font-family: FontAwesome;
-  /* 1 */
   display: inline-block;
-  /* 2 */
-  font-weight: normal;
+  font-weight: 400;
   font-style: normal;
-  /* 4 */
   line-height: 1;
-  /* 5 */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
-/* Size modifiers
- ========================================================================== */
-
-/* Modifier: `uk-icon-spin`
- ========================================================================== */
-
-/* Modifier: `uk-icon-button`
- ========================================================================== */
-
-/*
- * Hover
- * 1. Apply hover style also to focus state
- * 2. Remove default focus style
- */
-
-/* Active */
-
-/* Icon mapping
- ========================================================================== */
 
 .uk-icon-expand:before {
   content: "\f065";
 }
 
-/* ========================================================================
-   Component: Close
- ========================================================================== */
-
-/*
- * Removes inner padding and border in Firefox 4+.
- */
+.uk-clearfix:after,
+.uk-clearfix:before {
+  content: "";
+}
 
 .uk-close::-moz-focus-inner {
   border: 0;
   padding: 0;
 }
 
-/*
- * 1. Correct inability to style clickable `input` types in iOS.
- * 2. Remove margins in Chrome, Safari and Opera.
- * 3. Remove borders for `button`.
- * 4. Address `overflow` set to `hidden` in IE 8/9/10/11.
- * 5. Correct `font` properties and `color` not being inherited for `button`.
- * 6. Address inconsistent `text-transform` inheritance which is only inherit in Firefox and IE
- * 7. Remove default `button` padding and background color
- * 8. Style
- */
-
-/* Icon */
-
-/*
- * Hover
- * 1. Apply hover style also to focus state
- * 2. Remove default focus style
- * 3. Required for `a` elements
- */
-
-/* Modifier
- ========================================================================== */
-
-/* Hover */
-
-/* Icon */
-
-/* ========================================================================
-   Component: Badge
- ========================================================================== */
-
-/*
- * Keep color when badge is a link
- */
-
-/* Modifier: `uk-badge-notification`;
- ========================================================================== */
-
-/* Color modifier
- ========================================================================== */
-
-/*
- * Modifier: `uk-badge-success`
- */
-
-/*
- * Modifier: `uk-badge-warning`
- */
-
-/*
- * Modifier: `uk-badge-danger`
- */
-
-/* ========================================================================
-   Component: Alert
- ========================================================================== */
-
-/*
- * Add margin if adjacent element
- */
-
-/*
- * Remove margin from the last-child
- */
-
-/*
- * Keep color for headings if the default heading color is changed
- */
-
-/* Close in alert
- ========================================================================== */
-
-/*
- * Remove margin from adjacent element
- */
-
-/* Modifier: `uk-alert-success`
- ========================================================================== */
-
-/* Modifier: `uk-alert-warning`
- ========================================================================== */
-
-/* Modifier: `uk-alert-danger`
- ========================================================================== */
-
-/* Modifier: `uk-alert-large`
- ========================================================================== */
-
-/* ========================================================================
-   Component: Thumbnail
- ========================================================================== */
-
-/*
- * 1. Container width fits its content
- * 2. Responsive behavior
- * 3. Corrects `max-width` behavior sed
- * 4. Required for `figure` element
- * 5. Style
- */
-
-/*
- * Hover state for `a` elements
- * 1. Apply hover style also to focus state
- * 2. Needed for caption
- * 3. Remove default focus style
- */
-
-/* Caption
- ========================================================================== */
-
-/* Sizes
- ========================================================================== */
-
-/* ========================================================================
-   Component: Overlay
- ========================================================================== */
-
-/*
- * 1. Container width fits its content
- * 2. Create position context
- * 3. Set max-width for responsive images to prevent `inline-block` consequences
- * 4. Remove the gap between the container and its child element
- * 5. Fixed wrong scaling calculation for images in Chrome
- */
-
-/*
- * Remove margin from content
- */
-
-/* Sub-object `uk-overlay-area`
- ========================================================================== */
-
-/*
- * 1. Set position
- * 2. Set style
- * 3. Fade-in transition
- */
-
-/*
- * Hover
- * 1. `uk-hover` to support touch devices
- * 2. Use optional `uk-overlay-toggle` to trigger the overlay earlier
- */
-
-/*
- * Icon
- */
-
-/* Sub-object `uk-overlay-area-content`
- ========================================================================== */
-
-/*
- * Remove whitespace between child elements when using `inline-block`
- * Needed for Firefox
- */
-
-/*
- * 1. Needed for vertical alignment
- */
-
-/*
- * 1. Set vertical alignment
- * 2. Reset whitespace hack
- * 3. Set horizontal alignment
- * 4. Set style
- */
-
-/*
- * Remove margin from the last-child
- */
-
-/*
- * Links in overlay area
- */
-
-/* DEPRECATED
- * Sub-object `uk-overlay-caption`
- ========================================================================== */
-
-/*
- * 1. Set position
- * 2. Set style
- * 3. Fade-in transition
- */
-
-/*
- * Hover
- * 1. `uk-hover` to support touch devices
- * 2. Use optional `uk-overlay-toggle` to trigger the overlay earlier
- */
-
-/* ========================================================================
-   Component: Progress
- ========================================================================== */
-
-/*
- * 1. Clearing
- * 2. Vertical alignment if text is used
- */
-
-/*
- * Add margin if adjacent element
- */
-
-/* Sub-object: `uk-progress-bar`
- ========================================================================== */
-
-/*
- * 1. Transition
- * 2. Needed for text
- */
-
-/* Size modifiers
- ========================================================================== */
-
-/* Mini */
-
-/* Small */
-
-/* Color modifiers
- ========================================================================== */
-
-/* Modifier: `uk-progress-striped`
- ========================================================================== */
-
-/*
- * Animation
- */
-
-/* ========================================================================
-   Component: Animation
- ========================================================================== */
-
-/* Hide animated element if scrollspy is used */
-
-/*
- * Fade
- * Higher specificity (!important) needed because of reverse modifier
- */
-
-/*
- * Fade with scale
- */
-
-/*
- * Fade with slide
- */
-
-/*
- * Scale
- */
-
-/*
- * Shake
- */
-
-/* Direction modifiers
- ========================================================================== */
-
-/* Duration modifiers
-========================================================================== */
-
-/* Origin modifiers
-========================================================================== */
-
-/* Sub-object: `uk-animation-hover`
-========================================================================== */
-
-/*
- * Enable animation only on hover
- * Needed for Firefox because animations are not triggered when switching between display `hidden` and `block`
- */
-
 .uk-animation-hover:not(:hover),
-.uk-animation-hover:not(:hover) [class*='uk-animation-'] {
+.uk-animation-hover:not(:hover) [class*=uk-animation-] {
   -webkit-animation-name: none;
   animation-name: none;
 }
 
-/* Keyframes: Fade
- * Used by dropdown, datepicker and slideshow component
- ========================================================================== */
-
-/* Keyframes: Fade with slide
- ========================================================================== */
-
-/*
- * Top
- */
-
-/*
- * Bottom
- */
-
-/*
- * Left
- */
-
-/*
- * Right
- */
-
-/* Keyframes: Fade with scale
- ========================================================================== */
-
-/*
- * Scale by 0.2
- */
-
-/*
- * Scale by 1.5
- * Used by slideshow component
- */
-
-/*
- * Scale by 1.8
- */
-
-/* Keyframes: Slide
- * Used by slideshow component
- ========================================================================== */
-
-/*
- * Left
- */
-
-/*
- * Right
- */
-
-/*
- * Left third
- */
-
-/*
- * Right third
- */
-
-/* Keyframes: Scale
- ========================================================================== */
-
-/* Keyframes: Rotate
- * Used by icon component
- ========================================================================== */
-
-/* Keyframes: Shake
- ========================================================================== */
-
-/* Keyframes: Fade with slide fixed
- * Used by dropdown and search component
- ========================================================================== */
-
-/*
- * Top fixed
- */
-
-/*
- * Bottom fixed
- */
-
-/* ========================================================================
-   Component: Dropdown
- ========================================================================== */
-
-/*
- * 1. Hide by default
- * 2. Set position
- * 3. Box-sizing is needed for `uk-dropdown-justify`
- * 4. Set style
- * 5. Reset button group whitespace hack
- */
-
-/*
- * 1. Show dropdown
- * 2. Set animation
- * 3. Needed for scale animation
- */
-
-/* Alignment modifiers
- ========================================================================== */
-
-/*
- * Modifier `uk-dropdown-flip`
- */
-
-/*
- * Modifier `uk-dropdown-up`
- */
-
-/* Nav in dropdown
- ========================================================================== */
-
-/* Grid and panel in dropdown
- ========================================================================== */
-
-/*
-* Vertical gutter
-*/
-
-/*
- * Grid
- * Higher specificity to override large gutter
- */
-
-/* Panels */
-
-/* Tablet and bigger */
-
-@media (min-width: 768px) {
-  /*
-     * Horizontal gutter
-     */
-
-  /*
-     * Column divider
-     */
-
-  /*
-     * Width multiplier for dropdown columns
-     */
-}
-
-/* Phone landscape and smaller */
-
-@media (max-width: 767px) {
-  /*
-     * Stack columns and take full width
-     */
-
-  /*
-     * Vertical gutter
-     */
-}
-
-/*
-* Stack grid columns
-*/
-
-/* Modifier `uk-dropdown-small`
- ========================================================================== */
-
-/*
- * Set min-width and text expands dropdown if needed
- */
-
-/*
- * Nav in dropdown
- */
-
-/* Modifier: `uk-dropdown-navbar`
- ========================================================================== */
-
-/* Modifier `uk-dropdown-scrollable`
- ========================================================================== */
-
-/*
- * Usefull for long lists
- */
-
-/* ========================================================================
-   Component: Modal
- ========================================================================== */
-
-/*
- * This is the modal overlay and modal dialog container
- * 1. Hide by default
- * 2. Set fixed position
- * 3. Allow scrolling for the modal dialog
- * 4. Mask the background page
- * 5. Fade-in transition
- */
-
-/*
- * Open state
- */
-
-/*
- * Prevents duplicated scrollbar caused by 4.
- */
-
-/* Sub-object: `uk-modal-dialog`
- ========================================================================== */
-
-/*
- * 1. Create position context for `uk-modal-dialog-frameless`
- * 2. Set box sizing
- * 3. Min-height needed for initial loading and spinner
- * 4. Set style
- * 5. Slide-in transition
- */
-
-/* Phone landscape and smaller */
-
-@media (max-width: 767px) {
-  /*
-     * Fit in small screen
-     */
-}
-
-/*
- * Open state
- */
-
-/*
- * Remove margin from the last-child
- */
-
-/* Close in modal
- ========================================================================== */
-
-/*
- * Remove margin from adjacent element
- */
-
-/* Modifier: `uk-modal-dialog-frameless`
- ========================================================================== */
-
-/*
- * Close in modal
- */
-
-/* Phone landscape and smaller */
-
-/* Modifier: `uk-modal-dialog-large`
- ========================================================================== */
-
-/* Tablet and bigger */
-
-/* Large screen and bigger */
-
-/* Sub-Object: `uk-modal-header`
- ========================================================================== */
-
-/* Sub-Object: `uk-modal-footer`
- ========================================================================== */
-
-/* Sub-Object: `uk-modal-caption`
- ========================================================================== */
-
-/* Sub-Object: `uk-modal-spinner`
- ========================================================================== */
-
-/* ========================================================================
-   Component: Off-canvas
- ========================================================================== */
-
-/*
- * This is the offcanvas overlay and bar container
- * 1. Hide by default
- * 2. Set fixed position
- * 3. Deactivate browser touch actions in IE11
- * 4. Mask the background page
- */
-
-/* Sub-object `uk-offcanvas-page`
- ========================================================================== */
-
-/*
- * Prepares the whole HTML page to slide-out
- * 1. Fix the main page and disallow scrolling
- * 2. Side-out transition
- */
-
-/* Sub-object `uk-offcanvas-bar`
- ========================================================================== */
-
-/*
- * This is the offcanvas bar
- * 1. Set fixed position
- * 2. Size and style
- * 3. Allow scrolling
- * 4. Side-out transition
- * 5. Deavtivate scroll chaining in IE11
- */
-
-/* Modifier `uk-offcanvas-bar-flip`
- ========================================================================== */
-
-/* Panel in offcanvas
- ========================================================================== */
-
-/* ========================================================================
-   Component: Switcher
- ========================================================================== */
-
-/*
- * Items
- */
-
-/* ========================================================================
-   Component: Tooltip
- ========================================================================== */
-
-/*
- * 1. Hide by default
- * 2. Set fixed position
- * 3. Set dimensions
- * 4. Set style
- */
-
-/* Triangle
- ========================================================================== */
-
-/*
- * 1. Dashed is less antialised than solid
- */
-
-/* Direction modifiers
- ========================================================================== */
-
-/*
- * Top
- */
-
-/*
- * Bottom
- */
-
-/*
- * Top/Bottom center
- */
-
-/*
- * Top/Bottom left
- */
-
-/*
- * Top/Bottom right
- */
-
-/*
- * Left
- */
-
-/*
- * Right
- */
-
-/* ========================================================================
-   Component: Text
- ========================================================================== */
-
-/* Size modifiers
- ========================================================================== */
-
-/* Weight modifiers
- ========================================================================== */
-
-/* Color modifiers
- ========================================================================== */
-
-/* Alignment modifiers
- ========================================================================== */
-
-/* Only tablets portrait and smaller */
-
-/* Phone landscape and smaller */
-
-/* Wrap modifiers
- ========================================================================== */
-
-/*
- * Prevent text from wrapping onto multiple lines
- */
-
-/*
- * Prevent text from wrapping onto multiple lines, and truncate with an ellipsis
- */
-
-/*
- * Break strings if their length exceeds the width of their container
- */
-
-/* ========================================================================
-   Component: Utility
- ========================================================================== */
-
-/* Container
- ========================================================================== */
-
-/* Large screen and bigger */
-
-/*
- * Micro clearfix
- */
-
-/*
- * Center container
- */
-
-/* Clearing
- ========================================================================== */
-
-/*
- * Micro clearfix
-* `table-cell` is used with `:before` because `table` creates a 1px gap when it becomes a flex item, only in Webkit
- * `table` is used again with `:after` because `clear` only works with block elements.
- * Note: `display: block` with `overflow: hidden` is currently not working in the latest Safari
- */
-
 .uk-clearfix:before {
-  content: "";
   display: table-cell;
 }
 
 .uk-clearfix:after {
-  content: "";
   display: table;
   clear: both;
 }
-
-/*
- *  Create a new block formatting context
- */
-
-/* Alignment of block elements
- ========================================================================== */
-
-/*
- * Float blocks
- * 1. Prevent content overflow on small devices
- */
-
-/* 1 */
-
-/* Alignment of images and objects
- ========================================================================== */
-
-/*
- * Alignment
- */
-
-/* Tablet and bigger */
-
-/* Vertical alignment
- ========================================================================== */
-
-/*
- * Remove whitespace between child elements when using `inline-block`
- */
-
-/*
- *  The `uk-vertical-align` container needs a specific height
- */
-
-/*
- * Sub-object which can have any height
- * 1. Reset whitespace hack
- */
-
-/* Height
- ========================================================================== */
-
-/*
- * More robust if padding and border are used
- */
-
-/*
- * Useful to extend the `html` and `body` element to the full height of the page.
- */
-
-/*
- * Useful to create image teasers
- */
-
-/* Responsive objects
- * Note: Images are already responsive by default, see Base component
- ========================================================================== */
-
-/*
- * 1. Corrects `max-width` and `max-height` behavior if padding and border are used
- */
-
-/*
- * Responsiveness: Sets a maximum width relative to the parent and auto scales the height
- * `important` needed to override `uk-img-preserve img`
- */
-
-/*
- * Responsiveness: Sets a maximum height relative to the parent and auto scales the width
- * Only works if the parent element has a fixed height.
- */
-
-/* Margin
- ========================================================================== */
-
-/*
- * Create a block with the same margin of a paragraph
- * Add margin if adjacent element
- */
-
-/*
- * Larger margins
- */
-
-/*
- * Smaller margins
- */
-
-/*
- * Remove margins
- */
-
-/* Border
- ========================================================================== */
-
-/* Headings
- ========================================================================== */
-
-/* Tablet and bigger */
-
-/* Link
- ========================================================================== */
-
-/*
- * Let links appear in default text color
- */
-
-/*
- * Reset link style
- */
-
-/* Scrollable
- ========================================================================== */
-
-/*
- * Enable scrolling for preformatted text
- */
-
-/*
- * Box with scrolling enabled
- */
-
-/* Overflow
- ========================================================================== */
-
-/*
- * Enable scrollbars if content is clipped
- */
-
-/* Position
- ========================================================================== */
-
-/* Display
- ========================================================================== */
-
-/*
- * Display
- */
-
-/*
- * Visibility
- * Avoids setting display to `block` so it works also with `inline-block` and `table`
- */
-
-/* Desktop and bigger */
-
-/* Tablets portrait */
-
-/* Phone landscape and smaller*/
-
-/* Remove from the flow and screen readers on any device */
-
-/* It's hidden, but still affects layout */
-
-/* Show on hover */
-
-/* Hide on touch */
-
-/* ========================================================================
-   Component: Print
- ========================================================================== */
-
-@media print {
-  * {
-    background: transparent !important;
-    color: black !important;
-    box-shadow: none !important;
-    text-shadow: none !important;
-  }
-
-  a,
-  a:visited {
-    text-decoration: underline;
-  }
-
-  pre {
-    border: 1px solid #999;
-    page-break-inside: avoid;
-  }
-
-  img {
-    page-break-inside: avoid;
-  }
-
-  img {
-    max-width: 100% !important;
-  }
-
-@page {
-    margin: 0.5cm;
-}
-
-  p,
-  h3 {
-    orphans: 3;
-    widows: 3;
-  }
-
-  h3 {
-    page-break-after: avoid;
-  }
-}
-
-/*** uncss> filename: http://127.0.0.1:8000/static/css/bootstrap.css ***/
 
 /*!
  * Bootstrap v3.3.5 (http://getbootstrap.com)
@@ -2490,23 +285,9 @@ nav {
 
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 
-html {
-  font-family: sans-serif;
-  -webkit-text-size-adjust: 100%;
-  -ms-text-size-adjust: 100%;
-}
-
-body {
-  margin: 0;
-}
-
 footer,
 nav {
   display: block;
-}
-
-a {
-  background-color: transparent;
 }
 
 a:active,
@@ -2514,31 +295,9 @@ a:hover {
   outline: 0;
 }
 
-strong {
-  font-weight: bold;
-}
-
 h1 {
   margin: .67em 0;
-  font-size: 2em;
-}
-
-small {
-  font-size: 80%;
-}
-
-img {
-  border: 0;
-}
-
-pre {
-  overflow: auto;
-}
-
-code,
-pre {
-  font-family: monospace, monospace;
-  font-size: 1em;
+  font-size: 36px;
 }
 
 button,
@@ -2551,15 +310,8 @@ textarea {
 
 button {
   overflow: visible;
-}
-
-button {
   text-transform: none;
-}
-
-button {
   -webkit-appearance: button;
-  cursor: pointer;
 }
 
 button::-moz-focus-inner,
@@ -2568,25 +320,26 @@ input::-moz-focus-inner {
   border: 0;
 }
 
-input {
-  line-height: normal;
-}
-
-textarea {
-  overflow: auto;
-}
-
 /*! Source: https://github.com/h5bp/html5-boilerplate/blob/master/src/css/main.css */
 
 @media print {
+@page {
+    margin: .5cm;
+}
+
+  img,
+  pre {
+    page-break-inside: avoid;
+  }
+
   *,
-  *:before,
-  *:after {
-    color: #000 !important;
-    text-shadow: none !important;
-    background: transparent !important;
-    -webkit-box-shadow: none !important;
-    box-shadow: none !important;
+  :after,
+  :before {
+    color: #000!important;
+    text-shadow: none!important;
+    background: 0 0!important;
+    -webkit-box-shadow: none!important;
+    box-shadow: none!important;
   }
 
   a,
@@ -2600,19 +353,14 @@ textarea {
 
   pre {
     border: 1px solid #999;
-    page-break-inside: avoid;
   }
 
   img {
-    page-break-inside: avoid;
+    max-width: 100%!important;
   }
 
-  img {
-    max-width: 100% !important;
-  }
-
-  p,
-  h3 {
+  h3,
+  p {
     orphans: 3;
     widows: 3;
   }
@@ -2624,12 +372,36 @@ textarea {
   .navbar {
     display: none;
   }
+
+  .CodeMirror div.CodeMirror-cursors {
+    visibility: hidden;
+  }
+}
+
+.btn,
+.btn-default:active,
+.btn-primary:active,
+.btn-success:active,
+.btn:active,
+.form-control,
+.navbar-toggle {
+  background-image: none;
+}
+
+.btn:focus,
+.btn:hover,
+.navbar-brand:focus,
+.navbar-brand:hover,
+.panel .panel-heading a,
+.uk-htmleditor-navbar-nav>li>a,
+a {
+  text-decoration: none;
 }
 
 @font-face {
   font-family: 'Glyphicons Halflings';
-  src: url('../fonts/glyphicons-halflings-regular.eot');
-  src: url('../fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/glyphicons-halflings-regular.woff2') format('woff2'), url('../fonts/glyphicons-halflings-regular.woff') format('woff'), url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');
+  src: url(../fonts/glyphicons-halflings-regular.eot);
+  src: url(../fonts/glyphicons-halflings-regular.eot?#iefix) format('embedded-opentype'),url(../fonts/glyphicons-halflings-regular.woff2) format('woff2'),url(../fonts/glyphicons-halflings-regular.woff) format('woff'),url(../fonts/glyphicons-halflings-regular.ttf) format('truetype'),url(../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular) format('svg');
 }
 
 .glyphicon {
@@ -2638,7 +410,7 @@ textarea {
   display: inline-block;
   font-family: 'Glyphicons Halflings';
   font-style: normal;
-  font-weight: normal;
+  font-weight: 400;
   line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -2652,34 +424,24 @@ textarea {
   content: "\e044";
 }
 
-* {
+*,
+:after,
+:before {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-}
-
-*:before,
-*:after {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-html {
-  font-size: 10px;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 14px;
+  margin: 0;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   line-height: 1.42857143;
   color: #333;
   background-color: #fff;
 }
 
-input,
 button,
+input,
 textarea {
   font-family: inherit;
   font-size: inherit;
@@ -2688,23 +450,18 @@ textarea {
 
 a {
   color: #337ab7;
-  text-decoration: none;
 }
 
-a:hover,
-a:focus {
+a:focus,
+a:hover {
   color: #23527c;
   text-decoration: underline;
 }
 
 a:focus {
-  outline: thin dotted;
-  outline: 5px auto -webkit-focus-ring-color;
+  outline: dotted thin;
+  outline: -webkit-focus-ring-color auto 5px;
   outline-offset: -2px;
-}
-
-img {
-  vertical-align: middle;
 }
 
 .img-circle {
@@ -2718,8 +475,22 @@ img {
   padding: 0;
   margin: -1px;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
+  clip: rect(0,0,0,0);
   border: 0;
+}
+
+h1,
+h3,
+h4,
+h5,
+h6,
+ul {
+  margin-bottom: 10px;
+}
+
+p,
+pre {
+  margin: 0 0 10px;
 }
 
 h1,
@@ -2733,49 +504,33 @@ h6 {
   color: inherit;
 }
 
+.form-control,
+pre {
+  display: block;
+  line-height: 1.42857143;
+}
+
 h1,
 h3 {
   margin-top: 20px;
-  margin-bottom: 10px;
 }
 
 h4,
 h5,
 h6 {
   margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-h1 {
-  font-size: 36px;
-}
-
-h3 {
-  font-size: 24px;
 }
 
 h4 {
   font-size: 18px;
 }
 
-h5 {
-  font-size: 14px;
-}
-
 h6 {
   font-size: 12px;
 }
 
-p {
-  margin: 0 0 10px;
-}
-
 small {
   font-size: 85%;
-}
-
-.text-center {
-  text-align: center;
 }
 
 .text-muted {
@@ -2784,12 +539,11 @@ small {
 
 ul {
   margin-top: 0;
-  margin-bottom: 10px;
 }
 
 code,
 pre {
-  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
 }
 
 code {
@@ -2801,11 +555,8 @@ code {
 }
 
 pre {
-  display: block;
   padding: 9.5px;
-  margin: 0 0 10px;
   font-size: 13px;
-  line-height: 1.42857143;
   color: #333;
   word-break: break-all;
   word-wrap: break-word;
@@ -2819,8 +570,12 @@ pre code {
   font-size: inherit;
   color: inherit;
   white-space: pre-wrap;
-  background-color: transparent;
   border-radius: 0;
+}
+
+.badge,
+.btn {
+  white-space: nowrap;
 }
 
 .container {
@@ -2830,19 +585,19 @@ pre code {
   margin-left: auto;
 }
 
-@media (min-width: 768px) {
+@media (min-width:768px) {
   .container {
     width: 750px;
   }
 }
 
-@media (min-width: 992px) {
+@media (min-width:992px) {
   .container {
     width: 970px;
   }
 }
 
-@media (min-width: 1200px) {
+@media (min-width:1200px) {
   .container {
     width: 1170px;
   }
@@ -2853,21 +608,21 @@ pre code {
   margin-left: -15px;
 }
 
+.col-md-12,
 .col-md-3,
 .col-md-4,
-.col-sm-6,
 .col-md-9,
 .col-sm-12,
-.col-md-12 {
+.col-sm-6 {
   position: relative;
   min-height: 1px;
   padding-right: 15px;
   padding-left: 15px;
 }
 
-@media (min-width: 768px) {
-  .col-sm-6,
-  .col-sm-12 {
+@media (min-width:768px) {
+  .col-sm-12,
+  .col-sm-6 {
     float: left;
   }
 
@@ -2880,11 +635,11 @@ pre code {
   }
 }
 
-@media (min-width: 992px) {
+@media (min-width:992px) {
+  .col-md-12,
   .col-md-3,
   .col-md-4,
-  .col-md-9,
-  .col-md-12 {
+  .col-md-9 {
     float: left;
   }
 
@@ -2909,30 +664,34 @@ pre code {
   }
 }
 
+.container>.navbar-collapse,
+.container>.navbar-header,
+.form-horizontal .form-group {
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
 .form-control {
-  display: block;
   width: 100%;
   height: 34px;
   padding: 6px 12px;
   font-size: 14px;
-  line-height: 1.42857143;
   color: #555;
   background-color: #fff;
-  background-image: none;
   border: 1px solid #ccc;
   border-radius: 4px;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
-  -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
-  -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
 }
 
 .form-control:focus {
   border-color: #66afe9;
   outline: 0;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
-  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
 }
 
 .form-control::-moz-placeholder {
@@ -2953,6 +712,12 @@ pre code {
   margin-bottom: 15px;
 }
 
+.btn,
+.nav {
+  margin-bottom: 0;
+}
+
+.form-group-lg .form-control,
 .input-lg {
   height: 46px;
   padding: 10px 16px;
@@ -2961,59 +726,38 @@ pre code {
   border-radius: 6px;
 }
 
-.form-group-lg .form-control {
-  height: 46px;
-  padding: 10px 16px;
-  font-size: 18px;
-  line-height: 1.3333333;
-  border-radius: 6px;
-}
-
-.form-horizontal .form-group {
-  margin-right: -15px;
-  margin-left: -15px;
-}
-
 .btn {
   display: inline-block;
   padding: 6px 12px;
-  margin-bottom: 0;
   font-size: 14px;
-  font-weight: normal;
+  font-weight: 400;
   line-height: 1.42857143;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: middle;
   -ms-touch-action: manipulation;
   touch-action: manipulation;
-  cursor: pointer;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  background-image: none;
   border: 1px solid transparent;
   border-radius: 4px;
 }
 
-.btn:focus,
-.btn:active:focus {
-  outline: thin dotted;
-  outline: 5px auto -webkit-focus-ring-color;
+.btn:active:focus,
+.btn:focus {
+  outline: dotted thin;
+  outline: -webkit-focus-ring-color auto 5px;
   outline-offset: -2px;
 }
 
-.btn:hover,
-.btn:focus {
+.btn:focus,
+.btn:hover {
   color: #333;
-  text-decoration: none;
 }
 
 .btn:active {
-  background-image: none;
   outline: 0;
-  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
-  box-shadow: inset 0 3px 5px rgba(0, 0, 0, .125);
+  -webkit-box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+  box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
 }
 
 .btn-default {
@@ -3028,27 +772,18 @@ pre code {
   border-color: #8c8c8c;
 }
 
+.btn-default:active,
 .btn-default:hover {
   color: #333;
   background-color: #e6e6e6;
   border-color: #adadad;
 }
 
-.btn-default:active {
-  color: #333;
-  background-color: #e6e6e6;
-  border-color: #adadad;
-}
-
-.btn-default:active:hover,
-.btn-default:active:focus {
+.btn-default:active:focus,
+.btn-default:active:hover {
   color: #333;
   background-color: #d4d4d4;
   border-color: #8c8c8c;
-}
-
-.btn-default:active {
-  background-image: none;
 }
 
 .btn-primary {
@@ -3063,27 +798,18 @@ pre code {
   border-color: #122b40;
 }
 
+.btn-primary:active,
 .btn-primary:hover {
   color: #fff;
   background-color: #286090;
   border-color: #204d74;
 }
 
-.btn-primary:active {
-  color: #fff;
-  background-color: #286090;
-  border-color: #204d74;
-}
-
-.btn-primary:active:hover,
-.btn-primary:active:focus {
+.btn-primary:active:focus,
+.btn-primary:active:hover {
   color: #fff;
   background-color: #204d74;
   border-color: #122b40;
-}
-
-.btn-primary:active {
-  background-image: none;
 }
 
 .btn-success {
@@ -3098,27 +824,18 @@ pre code {
   border-color: #255625;
 }
 
+.btn-success:active,
 .btn-success:hover {
   color: #fff;
   background-color: #449d44;
   border-color: #398439;
 }
 
-.btn-success:active {
-  color: #fff;
-  background-color: #449d44;
-  border-color: #398439;
-}
-
-.btn-success:active:hover,
-.btn-success:active:focus {
+.btn-success:active:focus,
+.btn-success:active:hover {
   color: #fff;
   background-color: #398439;
   border-color: #255625;
-}
-
-.btn-success:active {
-  background-image: none;
 }
 
 .btn-lg {
@@ -3137,25 +854,22 @@ pre code {
   display: none;
 }
 
+.nav>li,
+.nav>li>a {
+  display: block;
+  position: relative;
+}
+
 .nav {
   padding-left: 0;
-  margin-bottom: 0;
-  list-style: none;
 }
 
-.nav > li {
-  position: relative;
-  display: block;
-}
-
-.nav > li > a {
-  position: relative;
-  display: block;
+.nav>li>a {
   padding: 10px 15px;
 }
 
-.nav > li > a:hover,
-.nav > li > a:focus {
+.nav>li>a:focus,
+.nav>li>a:hover {
   text-decoration: none;
   background-color: #eee;
 }
@@ -3167,29 +881,35 @@ pre code {
   border: 1px solid transparent;
 }
 
-@media (min-width: 768px) {
-  .navbar {
-    border-radius: 4px;
-  }
-}
-
-@media (min-width: 768px) {
-  .navbar-header {
-    float: left;
-  }
-}
-
 .navbar-collapse {
   padding-right: 15px;
   padding-left: 15px;
   overflow-x: visible;
   -webkit-overflow-scrolling: touch;
   border-top: 1px solid transparent;
-  -webkit-box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .1);
+  -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,.1);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.1);
 }
 
-@media (min-width: 768px) {
+.navbar-fixed-top .navbar-collapse {
+  max-height: 340px;
+}
+
+@media (max-device-width:480px) and (orientation:landscape) {
+  .navbar-fixed-top .navbar-collapse {
+    max-height: 200px;
+  }
+}
+
+@media (min-width:768px) {
+  .navbar {
+    border-radius: 4px;
+  }
+
+  .navbar-header {
+    float: left;
+  }
+
   .navbar-collapse {
     width: auto;
     border-top: 0;
@@ -3198,39 +918,25 @@ pre code {
   }
 
   .navbar-collapse.collapse {
-    display: block !important;
-    height: auto !important;
+    display: block!important;
+    height: auto!important;
     padding-bottom: 0;
-    overflow: visible !important;
+    overflow: visible!important;
   }
 
   .navbar-fixed-top .navbar-collapse {
     padding-right: 0;
     padding-left: 0;
   }
-}
 
-.navbar-fixed-top .navbar-collapse {
-  max-height: 340px;
-}
-
-@media (max-device-width: 480px) and (orientation: landscape) {
-  .navbar-fixed-top .navbar-collapse {
-    max-height: 200px;
-  }
-}
-
-.container > .navbar-header,
-.container > .navbar-collapse {
-  margin-right: -15px;
-  margin-left: -15px;
-}
-
-@media (min-width: 768px) {
-  .container > .navbar-header,
-  .container > .navbar-collapse {
+  .container>.navbar-collapse,
+  .container>.navbar-header {
     margin-right: 0;
     margin-left: 0;
+  }
+
+  .navbar-fixed-top {
+    border-radius: 0;
   }
 }
 
@@ -3239,15 +945,6 @@ pre code {
   right: 0;
   left: 0;
   z-index: 1030;
-}
-
-@media (min-width: 768px) {
-  .navbar-fixed-top {
-    border-radius: 0;
-  }
-}
-
-.navbar-fixed-top {
   top: 0;
   border-width: 0 0 1px;
 }
@@ -3255,20 +952,9 @@ pre code {
 .navbar-brand {
   float: left;
   height: 50px;
-  padding: 15px 15px;
+  padding: 15px;
   font-size: 18px;
   line-height: 20px;
-}
-
-.navbar-brand:hover,
-.navbar-brand:focus {
-  text-decoration: none;
-}
-
-@media (min-width: 768px) {
-  .navbar > .container .navbar-brand {
-    margin-left: -15px;
-  }
 }
 
 .navbar-toggle {
@@ -3279,7 +965,6 @@ pre code {
   margin-right: 15px;
   margin-bottom: 8px;
   background-color: transparent;
-  background-image: none;
   border: 1px solid transparent;
   border-radius: 4px;
 }
@@ -3295,11 +980,15 @@ pre code {
   border-radius: 1px;
 }
 
-.navbar-toggle .icon-bar + .icon-bar {
+.navbar-toggle .icon-bar+.icon-bar {
   margin-top: 4px;
 }
 
-@media (min-width: 768px) {
+@media (min-width:768px) {
+  .navbar>.container .navbar-brand {
+    margin-left: -15px;
+  }
+
   .navbar-toggle {
     display: none;
   }
@@ -3309,31 +998,29 @@ pre code {
   margin: 7.5px -15px;
 }
 
-.navbar-nav > li > a {
+.navbar-nav>li>a {
   padding-top: 10px;
   padding-bottom: 10px;
   line-height: 20px;
 }
 
-@media (min-width: 768px) {
+@media (min-width:768px) {
   .navbar-nav {
     float: left;
     margin: 0;
   }
 
-  .navbar-nav > li {
+  .navbar-nav>li {
     float: left;
   }
 
-  .navbar-nav > li > a {
+  .navbar-nav>li>a {
     padding-top: 15px;
     padding-bottom: 15px;
   }
-}
 
-@media (min-width: 768px) {
   .navbar-right {
-    float: right !important;
+    float: right!important;
     margin-right: -15px;
   }
 }
@@ -3347,25 +1034,25 @@ pre code {
   color: #777;
 }
 
-.navbar-default .navbar-brand:hover,
-.navbar-default .navbar-brand:focus {
+.navbar-default .navbar-brand:focus,
+.navbar-default .navbar-brand:hover {
   color: #5e5e5e;
   background-color: transparent;
 }
 
-.navbar-default .navbar-nav > li > a {
+.navbar-default .navbar-nav>li>a {
   color: #777;
 }
 
-.navbar-default .navbar-nav > li > a:hover,
-.navbar-default .navbar-nav > li > a:focus {
+.navbar-default .navbar-nav>li>a:focus,
+.navbar-default .navbar-nav>li>a:hover {
   color: #333;
   background-color: transparent;
 }
 
-.navbar-default .navbar-nav > .active > a,
-.navbar-default .navbar-nav > .active > a:hover,
-.navbar-default .navbar-nav > .active > a:focus {
+.navbar-default .navbar-nav>.active>a,
+.navbar-default .navbar-nav>.active>a:focus,
+.navbar-default .navbar-nav>.active>a:hover {
   color: #555;
   background-color: #e7e7e7;
 }
@@ -3374,8 +1061,8 @@ pre code {
   border-color: #ddd;
 }
 
-.navbar-default .navbar-toggle:hover,
-.navbar-default .navbar-toggle:focus {
+.navbar-default .navbar-toggle:focus,
+.navbar-default .navbar-toggle:hover {
   background-color: #ddd;
 }
 
@@ -3390,8 +1077,6 @@ pre code {
 .pager {
   padding-left: 0;
   margin: 20px 0;
-  text-align: center;
-  list-style: none;
 }
 
 .badge {
@@ -3399,17 +1084,14 @@ pre code {
   min-width: 10px;
   padding: 3px 7px;
   font-size: 12px;
-  font-weight: bold;
+  font-weight: 700;
   line-height: 1;
   color: #fff;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: middle;
   background-color: #777;
   border-radius: 10px;
 }
 
-.list-group-item > .badge {
+.list-group-item>.badge {
   float: right;
 }
 
@@ -3417,14 +1099,9 @@ pre code {
   margin-top: 15px;
 }
 
-.media:first-child {
+.media:first-child,
+.panel-title {
   margin-top: 0;
-}
-
-.media,
-.media-body {
-  overflow: hidden;
-  zoom: 1;
 }
 
 .media-body {
@@ -3439,8 +1116,8 @@ pre code {
   padding-right: 10px;
 }
 
-.media-left,
-.media-body {
+.media-body,
+.media-left {
   display: table-cell;
   vertical-align: top;
 }
@@ -3480,8 +1157,13 @@ pre code {
   background-color: #fff;
   border: 1px solid transparent;
   border-radius: 4px;
-  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
-  box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
+  -webkit-box-shadow: 0 1px 1px rgba(0,0,0,.05);
+  box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+
+.panel-title,
+.panel>.list-group {
+  margin-bottom: 0;
 }
 
 .panel-body {
@@ -3496,9 +1178,6 @@ pre code {
 }
 
 .panel-title {
-  margin-top: 0;
-  margin-bottom: 0;
-  font-size: 16px;
   color: inherit;
 }
 
@@ -3510,22 +1189,18 @@ pre code {
   border-bottom-left-radius: 3px;
 }
 
-.panel > .list-group {
-  margin-bottom: 0;
-}
-
-.panel > .list-group .list-group-item {
+.panel>.list-group .list-group-item {
   border-width: 1px 0;
   border-radius: 0;
 }
 
-.panel > .list-group:last-child .list-group-item:last-child {
+.panel>.list-group:last-child .list-group-item:last-child {
   border-bottom: 0;
   border-bottom-right-radius: 3px;
   border-bottom-left-radius: 3px;
 }
 
-.panel-heading + .list-group .list-group-item:first-child {
+.panel-heading+.list-group .list-group-item:first-child {
   border-top-width: 0;
 }
 
@@ -3533,57 +1208,41 @@ pre code {
   border-color: #ddd;
 }
 
-.panel-default > .panel-heading {
+.panel-default>.panel-heading {
   color: #333;
   background-color: #f5f5f5;
   border-color: #ddd;
 }
 
-.container:before,
 .container:after,
-.row:before,
-.row:after,
-.form-horizontal .form-group:before,
+.container:before,
 .form-horizontal .form-group:after,
-.nav:before,
+.form-horizontal .form-group:before,
 .nav:after,
-.navbar:before,
-.navbar:after,
-.navbar-header:before,
-.navbar-header:after,
-.navbar-collapse:before,
+.nav:before,
 .navbar-collapse:after,
-.pager:before,
+.navbar-collapse:before,
+.navbar-header:after,
+.navbar-header:before,
+.navbar:after,
+.navbar:before,
 .pager:after,
+.pager:before,
+.panel-body:after,
 .panel-body:before,
-.panel-body:after {
+.row:after,
+.row:before {
   display: table;
   content: " ";
 }
 
-.container:after,
-.row:after,
-.form-horizontal .form-group:after,
-.nav:after,
-.navbar:after,
-.navbar-header:after,
-.navbar-collapse:after,
-.pager:after,
-.panel-body:after {
-  clear: both;
-}
-
 .pull-left {
-  float: left !important;
+  float: left!important;
 }
 
 @-ms-viewport {
   width: device-width;
 }
-
-/*# sourceMappingURL=bootstrap.css.map */
-
-/*** uncss> filename: http://127.0.0.1:8000/static/css/loading-bar.css ***/
 
 /*! 
  * angular-loading-bar v0.8.0
@@ -3592,135 +1251,35 @@ pre code {
  * License: MIT
  */
 
-/* Make clicks pass-through */
-
-/* Fancy blur effect */
-
-/*** uncss> filename: http://127.0.0.1:8000/static/css/pygments/vs.css ***/
-
 .codehilite .c {
-  color: #008000;
+  color: green;
 }
 
-/* Comment */
-
-/* Error */
-
-.codehilite .k {
-  color: #0000ff;
-}
-
-/* Keyword */
-
-/* Comment.Multiline */
-
-/* Comment.Preproc */
-
-/* Comment.Single */
-
-/* Comment.Special */
-
-/* Generic.Emph */
-
-/* Generic.Heading */
-
-/* Generic.Prompt */
-
-/* Generic.Strong */
-
-/* Generic.Subheading */
-
-/* Keyword.Constant */
-
-/* Keyword.Declaration */
-
+.codehilite .k,
 .codehilite .kn {
-  color: #0000ff;
+  color: #00f;
 }
 
-/* Keyword.Namespace */
-
-/* Keyword.Pseudo */
-
-/* Keyword.Reserved */
-
-/* Keyword.Type */
-
-.codehilite .s {
+.codehilite .s,
+.hljs-tag .hljs-value,
+.hljs-title {
   color: #a31515;
 }
-
-/* Literal.String */
-
-/* Name.Class */
-
-/* Operator.Word */
-
-/* Literal.String.Backtick */
-
-/* Literal.String.Char */
-
-/* Literal.String.Doc */
-
-/* Literal.String.Double */
-
-/* Literal.String.Escape */
-
-/* Literal.String.Heredoc */
-
-/* Literal.String.Interpol */
-
-/* Literal.String.Other */
-
-/* Literal.String.Regex */
-
-/* Literal.String.Single */
-
-/* Literal.String.Symbol */
-
-/*** uncss> filename: http://127.0.0.1:8000/static/css/highlight/vs.css ***/
-
-/*
-
-Visual Studio-like style based on original C# coloring by Jason Diamond <jason@diamond.name>
-
-*/
-
-.hljs-title,
-.hljs-tag .hljs-value {
-  color: #a31515;
-}
-
-/*** uncss> filename: http://127.0.0.1:8000/static/css/codemirror.css ***/
-
-/* BASICS */
-
-.CodeMirror {
-  /* Set height, width, borders, and global font properties here */
-  font-family: monospace;
-  height: 300px;
-  color: black;
-}
-
-/* PADDING */
 
 .CodeMirror-lines {
   padding: 4px 0;
-  /* Vertical padding around content */
+  cursor: text;
+  min-height: 1px;
 }
 
 .CodeMirror pre {
   padding: 0 4px;
-  /* Horizontal padding of content */
 }
 
-.CodeMirror-scrollbar-filler,
-.CodeMirror-gutter-filler {
-  background-color: white;
-  /* The little square between H and V scrollbars */
+.CodeMirror-gutter-filler,
+.CodeMirror-scrollbar-filler {
+  background-color: #fff;
 }
-
-/* GUTTER */
 
 .CodeMirror-gutters {
   border-right: 1px solid #ddd;
@@ -3728,44 +1287,28 @@ Visual Studio-like style based on original C# coloring by Jason Diamond <jason@d
   white-space: nowrap;
 }
 
-/* CURSOR */
-
 .CodeMirror-cursor {
-  border-left: 1px solid black;
+  border-left: 1px solid #000;
   border-right: none;
   width: 0;
 }
 
-/* Shown when moving in bi-directional text */
-
-/* Can style cursor different in overwrite (non-insert) mode */
-
-/* DEFAULT THEME */
-
-/* Default styles for common addons */
-
-/* STOP */
-
-/* The rest of this file contains styles related to the mechanics of
-   the editor. You probably shouldn't touch them. */
-
 .CodeMirror {
+  font-family: monospace;
+  height: 300px;
+  color: #000;
   position: relative;
   overflow: hidden;
-  background: white;
+  background: #fff;
 }
 
 .CodeMirror-scroll {
-  overflow: scroll !important;
-  /* Things will break if this is overridden */
-  /* 30px is the magic margin used to hide the element's real scrollbars */
-  /* See overflow: hidden in .CodeMirror */
+  overflow: scroll!important;
   margin-bottom: -30px;
   margin-right: -30px;
   padding-bottom: 30px;
   height: 100%;
-  outline: none;
-  /* Prevent dragging from highlighting the element */
+  outline: 0;
   position: relative;
 }
 
@@ -3774,14 +1317,10 @@ Visual Studio-like style based on original C# coloring by Jason Diamond <jason@d
   border-right: 30px solid transparent;
 }
 
-/* The fake, visible scrollbars. Used to force redraw during scrolling
-   before actuall scrolling happens, thus preventing shaking and
-   flickering artifacts. */
-
-.CodeMirror-vscrollbar,
+.CodeMirror-gutter-filler,
 .CodeMirror-hscrollbar,
 .CodeMirror-scrollbar-filler,
-.CodeMirror-gutter-filler {
+.CodeMirror-vscrollbar {
   position: absolute;
   z-index: 6;
   display: none;
@@ -3818,19 +1357,12 @@ Visual Studio-like style based on original C# coloring by Jason Diamond <jason@d
   z-index: 3;
 }
 
-.CodeMirror-lines {
-  cursor: text;
-  min-height: 1px;
-  /* prevents collapsing before first draw */
-}
-
 .CodeMirror pre {
-  /* Reset some styles that the rest of the page might have set */
   -moz-border-radius: 0;
   -webkit-border-radius: 0;
   border-radius: 0;
   border-width: 0;
-  background: transparent;
+  background: 0 0;
   font-family: inherit;
   font-size: inherit;
   margin: 0;
@@ -3841,7 +1373,6 @@ Visual Studio-like style based on original C# coloring by Jason Diamond <jason@d
   z-index: 2;
   position: relative;
   overflow: visible;
-  -webkit-tap-highlight-color: transparent;
 }
 
 .CodeMirror-wrap pre {
@@ -3851,14 +1382,12 @@ Visual Studio-like style based on original C# coloring by Jason Diamond <jason@d
 }
 
 .CodeMirror-code {
-  outline: none;
+  outline: 0;
 }
 
-/* Force content-box sizing for the elements where we expect it */
-
+.CodeMirror-gutters,
 .CodeMirror-scroll,
-.CodeMirror-sizer,
-.CodeMirror-gutters {
+.CodeMirror-sizer {
   -moz-box-sizing: content-box;
   box-sizing: content-box;
 }
@@ -3882,68 +1411,28 @@ div.CodeMirror-cursors {
 }
 
 .CodeMirror-line::selection,
-.CodeMirror-line > span::selection,
-.CodeMirror-line > span > span::selection {
+.CodeMirror-line>span::selection,
+.CodeMirror-line>span>span::selection {
   background: #d7d4f0;
 }
 
 .CodeMirror-line::-moz-selection,
-.CodeMirror-line > span::-moz-selection,
-.CodeMirror-line > span > span::-moz-selection {
+.CodeMirror-line>span::-moz-selection,
+.CodeMirror-line>span>span::-moz-selection {
   background: #d7d4f0;
 }
 
-/* IE7 hack to prevent it from returning funny offsetTops on the spans */
-
-.CodeMirror span {
-  *vertical-align: text-bottom;
-}
-
-/* Used to force a border model for a node */
-
-@media print {
-  /* Hide the cursor when printing */
-
-  .CodeMirror div.CodeMirror-cursors {
-    visibility: hidden;
-  }
-}
-
-/* See issue #2901 */
-
-/* Help users use markselection to safely style text background */
-
-/*** uncss> filename: http://127.0.0.1:8000/static/css/uikit/htmleditor.css ***/
-
 /*! UIkit 2.15.0 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
 
-/* ========================================================================
-   Component: HTML editor
- ========================================================================== */
-
-/* Sub-object `uk-htmleditor-navbar`
- ========================================================================== */
-
 .uk-htmleditor-navbar {
-  background: #eeeeee;
+  background: #eee;
 }
 
-/*
- * Micro clearfix
- */
-
-.uk-htmleditor-navbar:before,
-.uk-htmleditor-navbar:after {
+.uk-htmleditor-navbar:after,
+.uk-htmleditor-navbar:before {
   content: "";
   display: table;
 }
-
-.uk-htmleditor-navbar:after {
-  clear: both;
-}
-
-/* Sub-object `uk-htmleditor-navbar-nav`
- ========================================================================== */
 
 .uk-htmleditor-navbar-nav {
   margin: 0;
@@ -3952,97 +1441,55 @@ div.CodeMirror-cursors {
   float: left;
 }
 
-.uk-htmleditor-navbar-nav > li {
+.uk-htmleditor-navbar-nav>li {
   float: left;
 }
 
-/*
- * 1. Dimensions
- * 2. Style
- */
-
-.uk-htmleditor-navbar-nav > li > a {
+.uk-htmleditor-navbar-nav>li>a {
   display: block;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  text-decoration: none;
-  /* 1 */
   height: 40px;
   padding: 0 15px;
   line-height: 40px;
-  /* 2 */
-  color: #444444;
+  color: #444;
   font-size: 11px;
   cursor: pointer;
 }
 
-/*
- * Hover
- * 1. Apply hover style also to focus state
- * 2. Remove default focus style
- */
-
-.uk-htmleditor-navbar-nav > li:hover > a,
-.uk-htmleditor-navbar-nav > li > a:focus {
+.uk-htmleditor-navbar-nav>li:hover>a,
+.uk-htmleditor-navbar-nav>li>a:focus {
   background-color: #f5f5f5;
-  color: #444444;
-  outline: none;
-  /* 2 */
+  color: #444;
+  outline: 0;
 }
 
-/* OnClick */
-
-.uk-htmleditor-navbar-nav > li > a:active {
-  background-color: #dddddd;
-  color: #444444;
+.uk-htmleditor-navbar-nav>li>a:active {
+  background-color: #ddd;
+  color: #444;
 }
-
-/* Active */
-
-/* Sub-object: `uk-htmleditor-navbar-flip`
- ========================================================================== */
 
 .uk-htmleditor-navbar-flip {
   float: right;
 }
 
-/* Sub-object for special buttons
- ========================================================================== */
-
-[data-mode='split'] .uk-htmleditor-button-code,
-[data-mode='split'] .uk-htmleditor-button-preview {
+[data-mode=split] .uk-htmleditor-button-code,
+[data-mode=split] .uk-htmleditor-button-preview {
   display: none;
 }
 
-/* Sub-object `uk-htmleditor-content`
- ========================================================================== */
-
 .uk-htmleditor-content {
-  border-left: 1px solid #dddddd;
-  border-right: 1px solid #dddddd;
-  border-bottom: 1px solid #dddddd;
-  background: #ffffff;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  background: #fff;
 }
 
-/*
- * Micro clearfix
- */
-
-.uk-htmleditor-content:before,
-.uk-htmleditor-content:after {
+.uk-htmleditor-content:after,
+.uk-htmleditor-content:before {
   content: "";
   display: table;
 }
-
-.uk-htmleditor-content:after {
-  clear: both;
-}
-
-/* Modifier `uk-htmleditor-fullscreen`
- ========================================================================== */
-
-/* Sub-objects `uk-htmleditor-code` and `uk-htmleditor-preview`
- ========================================================================== */
 
 .uk-htmleditor-code,
 .uk-htmleditor-preview {
@@ -4056,53 +1503,21 @@ div.CodeMirror-cursors {
   position: relative;
 }
 
-/*
- * Tab view
- */
-
-/*
- * Split view
- */
-
-[data-mode='split'] .uk-htmleditor-code,
-[data-mode='split'] .uk-htmleditor-preview {
+[data-mode=split] .uk-htmleditor-code,
+[data-mode=split] .uk-htmleditor-preview {
   float: left;
   width: 50%;
 }
 
-[data-mode='split'] .uk-htmleditor-code {
-  border-right: 1px solid #eeeeee;
+[data-mode=split] .uk-htmleditor-code {
+  border-right: 1px solid #eee;
 }
-
-/* Sub-object `uk-htmleditor-iframe`
- ========================================================================== */
-
-/* CodeMirror modifications
- ========================================================================== */
 
 .uk-htmleditor .CodeMirror {
   padding: 10px;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-
-/*** uncss> filename: http://127.0.0.1:8000/static/css/selectize/selectize.bootstrap3.css ***/
-
-/**
- * selectize.bootstrap3.css (v0.12.1) - Bootstrap 3 Theme
- * Copyright (c) 2013–2015 Brian Reavis & contributors
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
- * file except in compliance with the License. You may obtain a copy of the License at:
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under
- * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
- * ANY KIND, either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- *
- * @author Brian Reavis <brian@thirdroute.com>
- */
 
 .selectize-control {
   position: relative;
@@ -4111,7 +1526,7 @@ div.CodeMirror-cursors {
 .selectize-dropdown,
 .selectize-input,
 .selectize-input input {
-  color: #333333;
+  color: #333;
   font-family: inherit;
   font-size: inherit;
   line-height: 20px;
@@ -4119,13 +1534,9 @@ div.CodeMirror-cursors {
 }
 
 .selectize-input {
-  background: #ffffff;
+  background: #fff;
   cursor: text;
-  display: inline-block;
-}
-
-.selectize-input {
-  border: 1px solid #cccccc;
+  border: 1px solid #ccc;
   padding: 6px 12px;
   display: inline-block;
   width: 100%;
@@ -4146,45 +1557,44 @@ div.CodeMirror-cursors {
   padding: 5px 12px 2px;
 }
 
-.selectize-input > * {
+.selectize-input>* {
   vertical-align: baseline;
   display: -moz-inline-stack;
   display: inline-block;
   zoom: 1;
-  *display: inline;
 }
 
-.selectize-control.multi .selectize-input > div {
+.selectize-control.multi .selectize-input>div {
   cursor: pointer;
   margin: 0 3px 3px 0;
   padding: 1px 3px;
   background: #efefef;
-  color: #333333;
-  border: 0 solid rgba(0, 0, 0, 0);
+  color: #333;
+  border: 0 solid transparent;
 }
 
-.selectize-input > input {
-  display: inline-block !important;
-  padding: 0 !important;
-  min-height: 0 !important;
-  max-height: none !important;
-  max-width: 100% !important;
-  margin: 0 !important;
-  text-indent: 0 !important;
-  border: 0 none !important;
-  background: none !important;
-  line-height: inherit !important;
-  -webkit-user-select: auto !important;
-  -webkit-box-shadow: none !important;
-  box-shadow: none !important;
+.selectize-input>input {
+  display: inline-block!important;
+  padding: 0!important;
+  min-height: 0!important;
+  max-height: none!important;
+  max-width: 100%!important;
+  margin: 0!important;
+  text-indent: 0!important;
+  border: 0!important;
+  background: 0 0!important;
+  line-height: inherit!important;
+  -webkit-user-select: auto!important;
+  -webkit-box-shadow: none!important;
+  box-shadow: none!important;
 }
 
-.selectize-input > input::-ms-clear {
+.selectize-input>input::-ms-clear {
   display: none;
 }
 
-.selectize-input > input:focus {
-  outline: none !important;
+.selectize-input>input:focus {
+  outline: 0!important;
 }
 
 .selectize-input::after {
@@ -4193,54 +1603,35 @@ div.CodeMirror-cursors {
   clear: left;
 }
 
-.selectize-dropdown {
-  position: absolute;
-  z-index: 10;
-  border: 1px solid #d0d0d0;
-  background: #ffffff;
-  margin: -1px 0 0 0;
-  border-top: 0 none;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  -webkit-border-radius: 0 0 4px 4px;
-  -moz-border-radius: 0 0 4px 4px;
-  border-radius: 0 0 4px 4px;
-}
-
 .selectize-dropdown [data-selectable] {
   cursor: pointer;
   overflow: hidden;
+  padding: 3px 12px;
 }
 
-.selectize-dropdown [data-selectable] {
-  padding: 3px 12px;
+.selectize-dropdown {
+  position: absolute;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  height: auto;
+  padding: 0;
+  margin: 2px 0 0;
+  z-index: 1000;
+  background: #fff;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0,0,0,.15);
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+  box-shadow: 0 6px 12px rgba(0,0,0,.175);
 }
 
 .selectize-dropdown-content {
   overflow-y: auto;
   overflow-x: hidden;
   max-height: 200px;
-}
-
-.selectize-dropdown {
-  height: auto;
-  padding: 0;
-  margin: 2px 0 0 0;
-  z-index: 1000;
-  background: #ffffff;
-  border: 1px solid #cccccc;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
-  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
-}
-
-.selectize-dropdown-content {
   padding: 5px 0;
 }
 
@@ -4253,13 +1644,11 @@ div.CodeMirror-cursors {
   padding-right: 9px;
 }
 
-.selectize-control.multi .selectize-input > div {
+.selectize-control.multi .selectize-input>div {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
 }
-
-/*** uncss> filename: http://127.0.0.1:8000/static/css/bootstrap-theme.css ***/
 
 html {
   position: relative;
@@ -4272,9 +1661,8 @@ body {
 }
 
 footer {
-  padding: 20px 0px;
+  padding: 20px 0;
   color: #999;
-  text-align: center;
   background-color: #F9F9F9;
   border-top: 1px solid #E5E5E5;
   position: absolute;
@@ -4285,7 +1673,6 @@ footer {
 
 .panel .panel-heading a {
   color: #337AB7;
-  text-decoration: none;
 }
 
 .panel .panel-heading img {
@@ -4312,6 +1699,7 @@ h3 {
 
 .media,
 .media-body {
+  zoom: 1;
   overflow: visible;
 }
 
@@ -4319,22 +1707,22 @@ h3 {
   color: #999;
 }
 
-.panel-google-plus > .panel-heading > a > img {
+.panel-google-plus>.panel-heading>a>img {
   margin-right: 15px;
 }
 
-.panel-google-plus > .panel-heading >  h3 {
-  margin: 0px;
+.panel-google-plus>.panel-heading>h3 {
+  margin: 0;
   font-size: 18px;
   font-weight: 700;
 }
 
-.panel-google-plus > .panel-heading > h5 {
-  color: rgb(153, 153, 153);
+.panel-google-plus>.panel-heading>h5 {
+  color: #999;
   font-size: 12px;
   font-weight: 400;
 }
 
-.panel-google-plus > .panel-body {
+.panel-google-plus>.panel-body {
   padding-top: 5px;
 }
