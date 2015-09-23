@@ -43,11 +43,9 @@ INSTALLED_APPS = (
     'friends',
     'rest_framework',
     'rest_framework.authtoken',
-
     'allauth',
     'allauth.account',
     'rest_auth.registration',
-
     'rest_auth',
     'api',
 )
