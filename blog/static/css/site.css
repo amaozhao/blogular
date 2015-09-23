@@ -1,15 +1,5 @@
 /*** uncss> filename: http://127.0.0.1:8000/static/css/site.min.css ***/
 
-strong {
-  font-weight: 700;
-}
-
-.badge,
-.btn,
-img {
-  vertical-align: middle;
-}
-
 .container:after,
 .form-horizontal .form-group:after,
 .nav:after,
@@ -19,9 +9,39 @@ img {
 .pager:after,
 .panel-body:after,
 .row:after,
+.uk-clearfix:after,
 .uk-htmleditor-content:after,
 .uk-htmleditor-navbar:after {
   clear: both;
+}
+
+strong {
+  font-weight: 700;
+}
+
+a:active,
+a:hover {
+  outline: 0;
+}
+
+button,
+h1,
+h3,
+h4,
+h5,
+h6 {
+  text-transform: none;
+}
+
+.badge,
+.btn,
+img {
+  vertical-align: middle;
+}
+
+.glyphicon,
+[class*=uk-icon-] {
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .CodeMirror pre,
@@ -29,27 +49,9 @@ html {
   -webkit-tap-highlight-color: transparent;
 }
 
-.nav,
-.pager {
-  list-style: none;
-}
-
 .hljs-tag .hljs-value,
 .hljs-title {
   color: #a31515;
-}
-
-.badge,
-.btn,
-.pager,
-.text-center,
-footer {
-  text-align: center;
-}
-
-[data-mode=split] .uk-htmleditor-button-code,
-[data-mode=split] .uk-htmleditor-button-preview {
-  display: none;
 }
 
 .CodeMirror-gutters,
@@ -61,16 +63,6 @@ footer {
 
 /*! UIkit 2.15.0 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
 
-[data-mode=split] .uk-htmleditor-code,
-[data-mode=split] .uk-htmleditor-preview {
-  float: left;
-  width: 50%;
-}
-
-[data-mode=split] .uk-htmleditor-code {
-  border-right: 1px solid #eee;
-}
-
 .selectize-input {
   background: #fff;
   cursor: text;
@@ -79,15 +71,6 @@ footer {
 
 .selectize-dropdown [data-selectable] {
   padding: 3px 12px;
-}
-
-.btn,
-.uk-button:not(:disabled),
-.uk-form input[type=checkbox]:not(:disabled),
-.uk-form input[type=radio]:not(:disabled),
-a,
-button {
-  cursor: pointer;
 }
 
 .selectize-dropdown {
@@ -105,23 +88,177 @@ button {
   box-shadow: 0 6px 12px rgba(0,0,0,.175);
 }
 
-pre,
-textarea {
-  overflow: auto;
+.panel .panel-heading a {
+  text-decoration: none;
 }
 
 h3 {
   font-size: 20px;
 }
 
-body,
-h5 {
-  font-size: 14px;
+/*!
+ * Bootstrap v3.3.5 (http://getbootstrap.com)
+ * Copyright 2011-2015 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ */
+
+/*!
+ * Generated using the Bootstrap Customizer (http://getbootstrap.com/customize/?id=362ee424638cde81a2d0)
+ * Config saved to config.json and https://gist.github.com/362ee424638cde81a2d0
+ */
+
+/*!
+ * Bootstrap v3.3.5 (http://getbootstrap.com)
+ * Copyright 2011-2015 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ */
+
+/*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
+
+footer,
+nav {
+  display: block;
+}
+
+code,
+pre {
+  font-family: monospace,monospace;
+  font-size: 1em;
+}
+
+button,
+input,
+textarea {
+  color: inherit;
+  font: inherit;
+  margin: 0;
+}
+
+button {
+  -webkit-appearance: button;
+  cursor: pointer;
+}
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  padding: 0;
+}
+
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: url(../fonts/glyphicons-halflings-regular.eot);
+  src: url(../fonts/glyphicons-halflings-regular.eot?#iefix) format('embedded-opentype'),url(../fonts/glyphicons-halflings-regular.woff2) format('woff2'),url(../fonts/glyphicons-halflings-regular.woff) format('woff'),url(../fonts/glyphicons-halflings-regular.ttf) format('truetype'),url(../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular) format('svg');
+}
+
+button,
+input,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
 }
 
 a,
 pre code {
   background-color: transparent;
+}
+
+.btn,
+.uk-button:not(:disabled),
+.uk-form input[type=checkbox]:not(:disabled),
+.uk-form input[type=radio]:not(:disabled),
+a,
+button {
+  cursor: pointer;
+}
+
+.codehilite .k,
+.codehilite .kn {
+  color: #00f;
+}
+
+.codehilite .s,
+.hljs-tag .hljs-value,
+.hljs-title {
+  color: #a31515;
+}
+
+/*! UIkit 2.15.0 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
+
+.form-control {
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+}
+
+/*!
+ * Bootstrap v3.3.5 (http://getbootstrap.com)
+ * Copyright 2011-2015 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ */
+
+/*!
+ * Generated using the Bootstrap Customizer (http://getbootstrap.com/customize/?id=362ee424638cde81a2d0)
+ * Config saved to config.json and https://gist.github.com/362ee424638cde81a2d0
+ */
+
+/*!
+ * Bootstrap v3.3.5 (http://getbootstrap.com)
+ * Copyright 2011-2015 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ */
+
+/*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
+
+button,
+input,
+textarea {
+  margin: 0;
+}
+
+button {
+  overflow: visible;
+  -webkit-appearance: button;
+}
+
+@font-face {
+  font-family: 'Glyphicons Halflings';
+  src: url(../fonts/glyphicons-halflings-regular.eot);
+  src: url(../fonts/glyphicons-halflings-regular.eot?#iefix) format('embedded-opentype'),url(../fonts/glyphicons-halflings-regular.woff2) format('woff2'),url(../fonts/glyphicons-halflings-regular.woff) format('woff'),url(../fonts/glyphicons-halflings-regular.ttf) format('truetype'),url(../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular) format('svg');
+}
+
+img {
+  border: 0;
+  height: auto;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+strong {
+  font-weight: 700;
+}
+
+.nav,
+.pager {
+  list-style: none;
+}
+
+.badge,
+.btn,
+.pager,
+.text-center,
+footer {
+  text-align: center;
+}
+
+/*! UIkit 2.15.0 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
+
+pre,
+textarea {
+  overflow: auto;
+}
+
+body,
+h5 {
+  font-size: 14px;
 }
 
 /*! UIkit 2.15.0 | http://www.getuikit.com | (c) 2014 YOOtheme | MIT License */
@@ -138,13 +275,6 @@ html {
 
 a {
   background: 0 0;
-}
-
-img {
-  height: auto;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  border: 0;
 }
 
 p,
@@ -165,7 +295,6 @@ h4,
 h5,
 h6 {
   margin: 0 0 15px;
-  text-transform: none;
 }
 
 *+h3,
@@ -245,7 +374,6 @@ pre {
   font-style: normal;
   line-height: 1;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 .uk-icon-expand:before {
@@ -274,7 +402,6 @@ pre {
 
 .uk-clearfix:after {
   display: table;
-  clear: both;
 }
 
 /*!
@@ -290,11 +417,6 @@ nav {
   display: block;
 }
 
-a:active,
-a:hover {
-  outline: 0;
-}
-
 h1 {
   margin: .67em 0;
   font-size: 36px;
@@ -303,20 +425,12 @@ h1 {
 button,
 input,
 textarea {
-  margin: 0;
   font: inherit;
   color: inherit;
 }
 
-button {
-  overflow: visible;
-  text-transform: none;
-  -webkit-appearance: button;
-}
-
 button::-moz-focus-inner,
 input::-moz-focus-inner {
-  padding: 0;
   border: 0;
 }
 
@@ -413,7 +527,6 @@ a {
   font-weight: 400;
   line-height: 1;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 .glyphicon-time:before {
@@ -680,7 +793,6 @@ pre code {
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 4px;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
   box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
   -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
   -o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
@@ -1253,11 +1365,6 @@ pre code {
 
 .codehilite .c {
   color: green;
-}
-
-.codehilite .k,
-.codehilite .kn {
-  color: #00f;
 }
 
 .codehilite .s,
