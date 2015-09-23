@@ -41,8 +41,10 @@ except AttributeError:
 
 @python_2_unicode_compatible
 class TagBase(models.Model):
-    name = models.CharField(verbose_name=_('Name'), unique=True, max_length=100)
-    slug = models.SlugField(verbose_name=_('Slug'), unique=True, max_length=100)
+    name = models.CharField(
+        verbose_name=_('Name'), unique=True, max_length=100)
+    slug = models.SlugField(
+        verbose_name=_('Slug'), unique=True, max_length=100)
 
     def __str__(self):
         return self.name
@@ -94,6 +96,7 @@ class TagBase(models.Model):
 
 
 class Tag(TagBase):
+
     class Meta:
         verbose_name = _("Tag")
         verbose_name_plural = _("Tags")
@@ -101,6 +104,7 @@ class Tag(TagBase):
 
 @python_2_unicode_compatible
 class ItemBase(models.Model):
+
     def __str__(self):
         return ugettext("%(object)s tagged with %(tag)s") % {
             "object": self.content_object,
@@ -176,13 +180,15 @@ class GenericTaggedItemBase(ItemBase):
             # Can do a real object_id IN (SELECT ..) query.
             return {
                 "object_id__in": instances,
-                "content_type": ContentType.objects.get_for_model(instances.model),
+                "content_type": ContentType.objects.get_for_model(
+                    instances.model),
             }
         else:
             # TODO: instances[0], can we assume there are instances.
             return {
                 "object_id__in": [instance.pk for instance in instances],
-                "content_type": ContentType.objects.get_for_model(instances[0]),
+                "content_type": ContentType.objects.get_for_model(
+                    instances[0]),
             }
 
     @classmethod
@@ -199,6 +205,7 @@ class GenericTaggedItemBase(ItemBase):
 
 
 class TaggedItem(GenericTaggedItemBase, TaggedItemBase):
+
     class Meta:
         verbose_name = _("Tagged Item")
         verbose_name_plural = _("Tagged Items")
