@@ -19,7 +19,7 @@ class EntryViewSet(viewsets.ModelViewSet):
     queryset = Entry.objects.filter(status=2)
     serializer_class = EntrySerializer
     permission_classes = (IsOwnerOrReadOnly,)
-    paginate_by = 20
+    paginate_by = 10
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)

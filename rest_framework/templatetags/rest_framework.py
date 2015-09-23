@@ -41,9 +41,8 @@ def optional_login(request):
     except NoReverseMatch:
         return ''
 
-    snippet = "<li><a href='{href}?next={next}'>Log in</a></li>"
-    snippet = snippet.format(href=login_url, next=escape(request.path))
-    return mark_safe(snippet)
+    snippet = "<li><a href='{href}?next={next}'>Log in</a></li>".format(href=login_url, next=escape(request.path))
+    return snippet
 
 
 @register.simple_tag
@@ -65,8 +64,8 @@ def optional_logout(request, user):
             <li><a href='{href}?next={next}'>Log out</a></li>
         </ul>
     </li>"""
-    snippet = snippet.format(user=escape(user), href=logout_url, next=escape(request.path))
-    return mark_safe(snippet)
+
+    return snippet.format(user=user, href=logout_url, next=escape(request.path))
 
 
 @register.simple_tag
