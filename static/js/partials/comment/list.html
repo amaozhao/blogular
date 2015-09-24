@@ -1,0 +1,46 @@
+<div class="media" ng-repeat="comment in data.results" style="border-bottom: 1px solid #DDD !important;">
+  <a class="media-left" ng-href="/users/{{comment.author.id}}">
+    <img src="https://avatars.githubusercontent.com/{{comment.author.username}}?v=3&s=32" class="media-object img-circle">
+  </a>
+  <div class="media-body">
+    <div class="dropdown pull-right" ng-if="authuser.id==comment.author.id && !comment.edit">
+      <span class="dropdown-toggle" type="button" data-toggle="dropdown">
+        <span class="glyphicon glyphicon-chevron-down"></span>
+      </span>
+      <ul class="dropdown-menu" role="menu">
+        <li><a ng-click="edit(comment)">编辑</a></li>
+        <li class="divider"></li>
+        <li><a href="#" ng-click="delete(comment)">删除</a></li>
+      </ul>
+    </div>
+    <div ng-if="!comment.edit">
+      <h4 class="media-heading"><a ng-href="/users/{{comment.author.id}}">{{comment.author.username}}</a></h4>
+      <h6 class="media-heading"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> <span am-time-ago="comment.created"></span></h6>
+      <div marked="comment.content"></div>
+    </div>
+    <div ng-if="comment.edit">
+      <textarea uikit-editor ng-model="comment.content" placeholder="评论" options='{"height":160}'></textarea>
+      <div style="margin: 10px 0;">
+        <button type="button" class="btn btn-primary" ng-click="save(comment)">修改评论</button>
+        <button type="button" class="btn btn-default" ng-click="cancel(comment)">取消</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="media" ng-if="authuser.id">
+  <a class="media-left" ng-href="/users/{{comment.author.id}}">
+    <img src="https://avatars.githubusercontent.com/{{authuser.username}}?v=3&s=32" class="media-object img-circle">
+  </a>
+  <div class="media-body" style="height: 40px;">
+    <textarea uikit-editor ng-model="comment.content" placeholder="评论" options='{"height":160}'></textarea>
+    <div style="margin-top: 10px;">
+      <button type="button" class="btn btn-primary" ng-click="add()">添加评论</button>
+    </div>
+  </div>
+</div>
+
+<div class="media" ng-if="!authuser.id">
+  <div class="media-body text-center">
+    <a class="btn btn-success" ng-href="/signin">请先登陆</a>
+</div>

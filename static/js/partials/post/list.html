@@ -1,0 +1,50 @@
+<div class="col-md-9">
+  <div class="panel panel-default panel-google-plus" ng-repeat="entry in data.results">
+    <div class="dropdown pull-right" ng-if="authuser.id==entry.author.id">
+      <span class="dropdown-toggle" data-toggle="dropdown">
+        <span class="glyphicon glyphicon-chevron-down"></span>
+      </span>
+      <ul class="dropdown-menu" role="menu">
+        <li><a ng-href="/post/{{entry.id}}">编辑</a></li>
+        <li class="divider"></li>
+        <li><a href="#" ng-click="delete(entry)">删除</a></li>
+      </ul>
+    </div>
+    <div class="panel-heading">
+      <a ng-href="/users/{{ entry.author.id }}">
+        <img class="img-circle pull-left" ng-src="https://avatars.githubusercontent.com/{{entry.author.username}}?v=3&s=48" alt="{{ entry.author.username }}" />
+      </a>
+      <h3><a ng-href="/posts/{{ entry.id }}">{{ entry.title }}</a></h3>
+      <h5>
+        <span class="glyphicon glyphicon-time" aria-hidden="true"></span>  <span am-time-ago="entry.created"></span>
+        <span class="glyphicon glyphicon-bookmark" aria-hidden="true" ng-if="entry.tags.length"></span>
+        <span ng-repeat="tag in entry.tags" ng-if="entry.tags.length">
+          <a ng-href="/tags/{{ tag.id }}">{{ tag.name }}</a>
+          <span ng-if="!$last">, </span>
+        </span>
+      </h5>
+    </div>
+    <div class="panel-body">
+      <div ng-bind-html="entry.excerpt"></div>
+    </div>
+    <div class="panel-footer">
+      <a ng-href="/posts/{{ entry.id }}" class="btn btn-primary">阅读全文</a>
+    </div>
+  </div>
+  <nav>
+    <ul class="pager">
+      <li class="previous" ng-if="data.previous">
+        <a href="#" ng-click="previous()">
+          <span class="glyphicon glyphicon-chevron-left"></span> 前一页
+        </a>
+      </li>
+      <li class="next" ng-if="data.next">
+        <a href="#" ng-click="next()">
+          下一页 <span class="glyphicon glyphicon-chevron-right"></span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
+
+<div class="col-md-3" ng-include="'/static/js/partials/nav/sidebar.html'" ng-controller="SidebarCtrl"></div>
