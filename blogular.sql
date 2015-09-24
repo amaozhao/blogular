@@ -19,6 +19,7 @@
 -- Table structure for table `account_emailaddress`
 --
 
+DROP TABLE IF EXISTS `account_emailaddress`;
 CREATE TABLE `account_emailaddress` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(254) NOT NULL,
