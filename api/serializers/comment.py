@@ -7,12 +7,12 @@ Created on 2015年1月9日
 
 from blog.models import Comment
 from rest_framework import serializers
-from api.serializers.user import UserSerializer
+from rest_auth.serializers import UserDetailsSerializer
 from api.serializers.entry import CommentEntrySerializer
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    author = UserSerializer(read_only=True)
+    author = UserDetailsSerializer(read_only=True)
     entry = serializers.IntegerField(source='id', required=False)
 
     class Meta:
@@ -21,7 +21,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class RecentCommentSerializer(serializers.ModelSerializer):
-    author = UserSerializer(read_only=True)
+    author = UserDetailsSerializer(read_only=True)
     entry = CommentEntrySerializer(read_only=True)
 
     class Meta:
