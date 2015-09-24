@@ -104,6 +104,7 @@ module.exports = function(grunt){
                         '../css/pygments/vs.css',
                         '../css/highlight/vs.css',
                         '../css/codemirror.css',
+                        '../css/uikit.min.css',
                         '../css/uikit/htmleditor.min.css',
                         '../css/selectize/selectize.bootstrap3.css',
                         '../css/bootstrap-theme.css',
