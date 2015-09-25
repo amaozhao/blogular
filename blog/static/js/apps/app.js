@@ -11,6 +11,7 @@ var blog = angular.module('blog', [
   'angular-loading-bar',
   'selectize',
   'ngHolder',
+  'angularUtils.directives.dirDisqus',
   'blog.user.controllers',
   'blog.tag.controllers',
   'blog.nav.controllers',

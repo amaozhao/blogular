@@ -25,7 +25,12 @@
       </h5>
     </div>
     <div class="panel-body" marked="entry.content"></div>
-    <div class="panel-footer" ng-include="'/static/js/partials/comment/list.html'" ng-controller="CommentListCtrl">
+    <div class="panel-footer">
+      <dir-disqus disqus-shortname="amaozhao"
+        disqus-identifier="{{entry.id}}"
+        disqus-url="http://amaozhao.sinaapp.com/posts/{{entry.id}}"
+        disqus-on-ready="ready()">
+      </dir-disqus>
     </div>
   </div>
 </div>

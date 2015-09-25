@@ -20,8 +20,6 @@ module.exports = function(grunt){
                     banner: ''
                 },
                 src: [
-                    'libs/holder/holder.min.js',
-                    'libs/selectize/selectize.min.js', 
                     'libs/bootstrap/bootstrap.min.js', 
                     'libs/angular/angular.min.js', 
                     'libs/angular/angular-animate.min.js', 
@@ -52,6 +50,7 @@ module.exports = function(grunt){
                     'libs/angular-ui/ui-bootstrap.js', 
                     'libs/ng-holder/holder.js', 
                     'libs/angular-selectize/selectize.js', 
+                    'libs/disqus/dirDisqus.js',
                     'apps/**/*.js'
                 ],
                 dest: 'dist/apps-<%= pkg.version %>.js'
