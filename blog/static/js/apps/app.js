@@ -11,6 +11,7 @@ var blog = angular.module('blog', [
   'angular-loading-bar',
   'selectize',
   'ngHolder',
+  'ngDisqusApi',
   'angularUtils.directives.dirDisqus',
   'blog.user.controllers',
   'blog.tag.controllers',
@@ -21,8 +22,8 @@ var blog = angular.module('blog', [
   'blog.friendship.controllers'
 ]);
 
-blog.config(['$routeProvider', '$locationProvider', '$httpProvider', 'markedProvider',
-  function($routeProvider, $locationProvider, $httpProvider, markedProvider) {
+blog.config(['$routeProvider', '$locationProvider', '$httpProvider', 'markedProvider', '$disqusApiProvider',
+  function($routeProvider, $locationProvider, $httpProvider, markedProvider, $disqusApiProvider) {
   $routeProvider.when('/', {
     templateUrl: '/static/js/partials/post/list.html',
     controller: 'PostListCtrl'
@@ -66,9 +67,10 @@ blog.config(['$routeProvider', '$locationProvider', '$httpProvider', 'markedProv
   });
 
   $locationProvider.html5Mode({enabled: true, requireBase: false});
-
   $httpProvider.defaults.xsrfCookieName = 'csrftoken';
   $httpProvider.defaults.xsrfHeaderName = 'X-CSRFToken';
+  $disqusApiProvider.setApiKey('t7ooOuVaSSY3OI5cJtGfm1e0S7J3xpKn9L35yIqA73IOMMo6yyvxRjGeSTSmRxHO');
+  $disqusApiProvider.setForumName('amaozhao');
 }]).run(function(amMoment) {
   amMoment.changeLocale('zh-cn');
 });

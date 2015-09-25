@@ -1,0 +1,27 @@
+<div>
+  <div class="media" ng-repeat="comment in comments" class="comment">
+    <a class="media-left" ng-href="{{comment.author.profileUrl}}">
+      <img ng-src="{{comment.author.avatar.permalink}}" class="img-circle" height="32" width="32" style="max-width: none;">
+    </a>
+    <div class="media-body">
+      <h5 class="media-heading">
+        <a ng-href="{{comment.author.profileUrl}}" target="_blank">{{comment.author.name}}</a>
+      </h5>
+         - 
+        <small>
+          <time class="timeago" am-time-ago="comment.createdAt"></time>
+        </small>
+      <div>
+        {{comment.raw_message}}
+      </div>
+      <div ng-repeat="image in comment.media">
+        <a ng-href="{{image.location}}" target="_blank">
+          <img ng-src="{{image.thumbnailURL}}" class="img-responsive" />
+        </a>
+      </div>
+      <div>
+        评论于 <a ng-href="{{comment.thread.link}}" target="_blank">{{comment.thread.title}}</a>
+      </div>
+    </div>
+  </div>
+</div>

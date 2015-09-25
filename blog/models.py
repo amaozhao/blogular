@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.text import Truncator
+from django.contrib.sites.models import Site
 
 from taggit.managers import TaggableManager
 
@@ -62,6 +63,11 @@ class Entry(models.Model):
                 'markdown.extensions.fenced_code'
             ]
         )
+
+    @property
+    def url(self):
+        site = Site.objects.get(pk=1)
+        return site.domain + '/posts/' + str(self.id)
 
     def __str__(self):
         return self.title

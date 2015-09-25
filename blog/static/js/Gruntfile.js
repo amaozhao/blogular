@@ -51,6 +51,7 @@ module.exports = function(grunt){
                     'libs/ng-holder/holder.js', 
                     'libs/angular-selectize/selectize.js', 
                     'libs/disqus/dirDisqus.js',
+                    'libs/disqus/disqusApi.js',
                     'apps/**/*.js'
                 ],
                 dest: 'dist/apps-<%= pkg.version %>.js'
