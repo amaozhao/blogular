@@ -12,6 +12,10 @@ module.exports = function(grunt){
             build: {
                 src: ['dist/apps-<%= pkg.version %>.js'],
                 dest: 'apps.min.js'
+            },
+            admin: {
+                src: ['dist/admin.js'],
+                dest: 'admin.min.js'
             }
         },
         concat: {
@@ -56,28 +60,36 @@ module.exports = function(grunt){
                 ],
                 dest: 'dist/apps-<%= pkg.version %>.js'
             },
+            admin: {
+                options: {
+                    banner: ''
+                },
+                src: [
+                    'libs/codemirror/lib/codemirror.js',
+                    'libs/codemirror/addon/mode/overlay.js',
+                    'libs/codemirror/mode/xml/xml.js',
+                    'libs/codemirror/mode/markdown/markdown.js',
+                    'libs/codemirror/mode/gfm/gfm.js',
+                    'libs/codemirror/mode/javascript/javascript.js',
+                    'libs/codemirror/mode/css/css.js',
+                    'libs/codemirror/mode/htmlmixed/htmlmixed.js',
+                    'libs/codemirror/mode/clike/clike.js',
+                    'libs/codemirror/mode/python/python.js',
+                    'libs/codemirror/mode/meta.js',
+                    'libs/marked/marked.min.js',
+                    'libs/highlight/highlight.js',
+                    'libs/uikit/uikit.js',
+                    'libs/uikit/components/htmleditor.js',
+                    'editor/editor.js'
+                ],
+                dest: 'dist/admin.js'
+            },
             dist_tpls: {
                 options: {
                     banner: '<%= meta.banner %><%= meta.all %>\n<%= meta.tplmodules %>\n'
                 },
                 src: [],
                 dest: '<%= dist %>/<%= filename %>-tpls-<%= pkg.version %>.js'
-            }
-        },
-        closurecompiler: {
-            minify: {
-                files: {
-                    "apps.min.js": ['dist/apps.min.js']
-                },
-                options: {
-                    "compilation_level": "SIMPLE_OPTIMIZATIONS",
-
-                    // Plus a simultaneous processes limit
-                    "max_processes": 5,
-
-                    // And an option to add a banner, license or similar on top
-                    "banner": "/* wifi manager js */"
-                }
             }
         },
         uncss: {
@@ -124,7 +136,8 @@ module.exports = function(grunt){
 
     // 默认任务
     grunt.registerTask('default', [
-        'concat:dist', 
+        'concat:dist',
+        'concat:admin',
         'uglify',
         'uncss',
         'cssmin'
