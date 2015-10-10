@@ -14,7 +14,7 @@ from rest_auth.serializers import UserDetailsSerializer
 class EntrySerializer(serializers.ModelSerializer):
     author = UserDetailsSerializer(read_only=True)
     tags = BaseTagSerializer(many=True, read_only=True)
-    url = serializers.URLField(max_length=100)
+    url = serializers.URLField(max_length=100, read_only=True)
 
     def create(self, validated_data):
         instance = super(EntrySerializer, self).create(validated_data)
