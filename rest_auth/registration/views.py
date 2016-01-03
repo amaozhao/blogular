@@ -49,9 +49,13 @@ class RegisterView(APIView, SignupView):
                                app_settings.EMAIL_VERIFICATION,
                                self.get_success_url())
 
+    def get_form_kwargs(self, *args, **kwargs):
+        kwargs = super(RegisterView, self).get_form_kwargs(*args, **kwargs)
+        kwargs['data'] = self.request.data
+        return kwargs
+
     def post(self, request, *args, **kwargs):
         self.initial = {}
-        self.request.POST = self.request.data.copy()
         form_class = self.get_form_class()
         self.form = self.get_form(form_class)
         if self.form.is_valid():
@@ -62,7 +66,8 @@ class RegisterView(APIView, SignupView):
 
     def get_response(self):
         # serializer = self.user_serializer_class(instance=self.user)
-        serializer = self.serializer_class(instance=self.token)
+        serializer = self.serializer_class(instance=self.token,
+                                           context={'request': self.request})
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def get_response_with_errors(self):

@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 import django
+from django import VERSION
 from django.contrib.contenttypes.models import ContentType
 from django.db import IntegrityError, models, transaction
 from django.db.models.query import QuerySet
@@ -41,10 +42,8 @@ except AttributeError:
 
 @python_2_unicode_compatible
 class TagBase(models.Model):
-    name = models.CharField(
-        verbose_name=_('Name'), unique=True, max_length=100)
-    slug = models.SlugField(
-        verbose_name=_('Slug'), unique=True, max_length=100)
+    name = models.CharField(verbose_name=_('Name'), unique=True, max_length=100)
+    slug = models.SlugField(verbose_name=_('Slug'), unique=True, max_length=100)
 
     def __str__(self):
         return self.name
@@ -96,7 +95,6 @@ class TagBase(models.Model):
 
 
 class Tag(TagBase):
-
     class Meta:
         verbose_name = _("Tag")
         verbose_name_plural = _("Tags")
@@ -104,7 +102,6 @@ class Tag(TagBase):
 
 @python_2_unicode_compatible
 class ItemBase(models.Model):
-
     def __str__(self):
         return ugettext("%(object)s tagged with %(tag)s") % {
             "object": self.content_object,
@@ -116,11 +113,13 @@ class ItemBase(models.Model):
 
     @classmethod
     def tag_model(cls):
-        return _get_field(cls, 'tag').rel.to
+        field = _get_field(cls, 'tag')
+        return field.remote_field.model if VERSION >= (1, 9) else field.rel.to
 
     @classmethod
     def tag_relname(cls):
-        return _get_field(cls, 'tag').rel.related_name
+        field = _get_field(cls, 'tag')
+        return field.remote_field.related_name if VERSION >= (1, 9) else field.rel.related_name
 
     @classmethod
     def lookup_kwargs(cls, instance):
@@ -136,7 +135,7 @@ class ItemBase(models.Model):
 
 
 class TaggedItemBase(ItemBase):
-    tag = models.ForeignKey(Tag, related_name="%(app_label)s_%(class)s_items")
+    tag = models.ForeignKey(Tag, related_name="%(app_label)s_%(class)s_items", on_delete=models.CASCADE)
 
     class Meta:
         abstract = True
@@ -155,10 +154,10 @@ class TaggedItemBase(ItemBase):
         return cls.tag_model().objects.filter(**kwargs).distinct()
 
 
-class GenericTaggedItemBase(ItemBase):
-    object_id = models.IntegerField(verbose_name=_('Object id'), db_index=True)
+class CommonGenericTaggedItemBase(ItemBase):
     content_type = models.ForeignKey(
         ContentType,
+        on_delete=models.CASCADE,
         verbose_name=_('Content type'),
         related_name="%(app_label)s_%(class)s_tagged_items"
     )
@@ -180,15 +179,13 @@ class GenericTaggedItemBase(ItemBase):
             # Can do a real object_id IN (SELECT ..) query.
             return {
                 "object_id__in": instances,
-                "content_type": ContentType.objects.get_for_model(
-                    instances.model),
+                "content_type": ContentType.objects.get_for_model(instances.model),
             }
         else:
             # TODO: instances[0], can we assume there are instances.
             return {
                 "object_id__in": [instance.pk for instance in instances],
-                "content_type": ContentType.objects.get_for_model(
-                    instances[0]),
+                "content_type": ContentType.objects.get_for_model(instances[0]),
             }
 
     @classmethod
@@ -204,8 +201,23 @@ class GenericTaggedItemBase(ItemBase):
         return cls.tag_model().objects.filter(**kwargs).distinct()
 
 
-class TaggedItem(GenericTaggedItemBase, TaggedItemBase):
+class GenericTaggedItemBase(CommonGenericTaggedItemBase):
+    object_id = models.IntegerField(verbose_name=_('Object id'), db_index=True)
 
+    class Meta:
+        abstract = True
+
+
+if VERSION >= (1, 8):
+
+    class GenericUUIDTaggedItemBase(CommonGenericTaggedItemBase):
+        object_id = models.UUIDField(verbose_name=_('Object id'), db_index=True)
+
+        class Meta:
+            abstract = True
+
+
+class TaggedItem(GenericTaggedItemBase, TaggedItemBase):
     class Meta:
         verbose_name = _("Tagged Item")
         verbose_name_plural = _("Tagged Items")

@@ -1,6 +1,8 @@
 # coding: utf-8
 from __future__ import unicode_literals
 
+from collections import OrderedDict
+
 from django.core.exceptions import ImproperlyConfigured, ObjectDoesNotExist
 from django.core.urlresolvers import (
     NoReverseMatch, Resolver404, get_script_prefix, resolve
@@ -12,7 +14,6 @@ from django.utils.encoding import smart_text
 from django.utils.six.moves.urllib import parse as urlparse
 from django.utils.translation import ugettext_lazy as _
 
-from rest_framework.compat import OrderedDict
 from rest_framework.fields import (
     Field, empty, get_attribute, is_simple_callable, iter_options
 )
@@ -30,6 +31,9 @@ class Hyperlink(six.text_type):
         ret = six.text_type.__new__(self, url)
         ret.name = name
         return ret
+
+    def __getnewargs__(self):
+        return(str(self), self.name,)
 
     is_hyperlink = True
 
@@ -379,7 +383,7 @@ class HyperlinkedIdentityField(HyperlinkedRelatedField):
 
 class SlugRelatedField(RelatedField):
     """
-    A read-write field the represents the target of the relationship
+    A read-write field that represents the target of the relationship
     by a unique 'slug' attribute.
     """
 
